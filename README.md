@@ -1,5 +1,5 @@
 
-<img src="https://googledrive.com/host/0ByqWUM5YoR35QUxZY3hrTDZTWGs/type-converter-big.png" align="right" height="64" />
+<img src="https://googledrive.com/host/0ByqWUM5YoR35QUxZY3hrTDZTWGs/type-converter-big.png" align="right" height="84" />
 
 ## Portable TypeCast -  <small>Cast, Convert & Transform without compromises.</small>    
 ##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Intuitive, easy-to-use, portable, tested, documented, serializable, thread-safe, strongly typed,...
