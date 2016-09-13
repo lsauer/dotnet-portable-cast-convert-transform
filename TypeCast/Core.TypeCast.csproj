@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C79492BC-D45C-469A-AF8F-0952141B2369}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Core.TypeCast</RootNamespace>
+    <AssemblyName>Core.TypeCast</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Base\Converter.cs" />
+    <Compile Include="Base\BaseClassFactoryRT.cs" />
+    <Compile Include="Base\DependencyInjection.cs" />
+    <Compile Include="Base\ConverterFactoryRT.cs" />
+    <Compile Include="Base\ConverterFactoryGeneric.cs" />
+    <Compile Include="Base\ConvertContext.cs" />
+    <Compile Include="Base\Factory.cs" />
+    <Compile Include="Base\ConverterFactory.cs" />
+    <Compile Include="ConverterCollection.AddBuilder.cs" />
+    <Compile Include="ConverterCollectionLookup.cs" />
+    <Compile Include="DependencyInjectionException.cs" />
+    <Compile Include="Extension\ObjectExtension[Transform].cs" />
+    <Compile Include="Extension\ObjectExtension[Cast].cs" />
+    <Compile Include="Extension\ObjectExtension[Convert].cs" />
+    <Compile Include="Interface\IConvertContext.cs" />
+    <Compile Include="Interface\IFactory.cs" />
+    <Compile Include="Converter_2T.cs" />
+    <Compile Include="ConverterCollectionFilters.cs" />
+    <Compile Include="ConverterMethodAttribute.cs" />
+    <Compile Include="ConverterCollectionSettings.cs" />
+    <Compile Include="ConverterCollectionException.cs" />
+    <Compile Include="Base\ConverterCollectionDependency.cs" />
+    <Compile Include="Converters\ConverterDefaults.cs" />
+    <Compile Include="ConverterCollection.cs" />
+    <Compile Include="Converter_3T.cs" />
+    <Compile Include="ConverterParameters.cs" />
+    <Compile Include="Extension\ConverterExtension.cs" />
+    <Compile Include="Interface\IRepositoryEnumerable.cs" />
+    <Compile Include="Interface\IRepository.cs" />
+    <Compile Include="Extension\ObjectExtension.cs" />
+    <Compile Include="Enum\ConverterCollectionCause.cs" />
+    <Compile Include="Enum\ConverterCause.cs" />
+    <Compile Include="Interface\IConverter.cs" />
+    <Compile Include="Interface\IConverterCollection.cs" />
+    <Compile Include="Interface\IException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ConverterException.cs" />
+    <Compile Include="ConverterAttribute.cs" />
+    <Compile Include="Extension\TypeInfoExtension.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Core.Extensions">
+      <HintPath>..\packages\CSharp.Portable-Singleton.2.0.0.4\lib\Core.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Core.Singleton">
+      <HintPath>..\packages\CSharp.Portable-Singleton.2.0.0.4\lib\Core.Singleton.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
