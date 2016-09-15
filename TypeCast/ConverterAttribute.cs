@@ -48,7 +48,7 @@ namespace Core.TypeCast
         /// <param name="nameSpace"> The namespace as a string, ideally set via the <see cref="nameof"/> operator to group converters and enable lazy-loading upon first use.  </param>
         /// <param name="name"> A custom label for the converter or `null` if none is set, particularly used for Transform function disambiguates (i.e. identical In/Out parameters) </param>
         /// <param name="dependencyInjection">Whether the declaring converter class is instantiated via dependency Injection.</param>
-        public ConverterAttribute(string nameSpace = "", string name = "", bool loadOnDemand = true, bool dependencyInjection = false)
+        public ConverterAttribute(string nameSpace = "", string name = "", bool loadOnDemand = false, bool dependencyInjection = false)
         {
             this.Id = Guid.NewGuid();
             this.LoadOnDemand = loadOnDemand;
@@ -58,7 +58,7 @@ namespace Core.TypeCast
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ConverterAttribute(string nameSpace, Enum name, bool loadOnDemand = true, bool dependencyInjection = false)
+        public ConverterAttribute(string nameSpace, Enum name, bool loadOnDemand = false, bool dependencyInjection = false)
             : this(loadOnDemand: loadOnDemand, nameSpace: nameSpace, name: name.ToString(), dependencyInjection: dependencyInjection)
         {
         }

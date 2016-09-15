@@ -135,6 +135,14 @@ namespace Core.TypeCast
             this.Settings = new ConverterCollectionSettings();
             this.loadOnDemandConverters = new Dictionary<string, List<Type>>();
 
+            this.Factory = new ConverterFactory();
+            this.FactoryBaseClass = new BaseClassFactoryRT();
+
+            this.AssemblyInitialized = new ConcurrentDictionary<Assembly, bool>();
+            this.ConverterClassInitialized = new ConcurrentDictionary<TypeInfo, bool>();
+            this.ConstructorAddedClasses = new List<Type>();
+            this.Items = new BlockingCollection<Converter>(boundedCapacity: this.Settings.BoundedCapacity);
+
             if(application != null)
             {
                 ApplicationNameSpace = application.Namespace;
@@ -158,14 +166,6 @@ namespace Core.TypeCast
                     }
                 }
             }
-
-            this.Factory = new ConverterFactory();
-            this.FactoryBaseClass = new BaseClassFactoryRT();
-
-            this.AssemblyInitialized = new ConcurrentDictionary<Assembly, bool>();
-            this.ConverterClassInitialized = new ConcurrentDictionary<TypeInfo, bool>();
-            this.ConstructorAddedClasses = new List<Type>();
-            this.Items = new BlockingCollection<Converter>(boundedCapacity: this.Settings.BoundedCapacity);
 
             // Load any declared converters from the own assembly
             this.Initialize(this.GetType().GetTypeInfo()?.Assembly.DefinedTypes);
@@ -715,8 +715,6 @@ namespace Core.TypeCast
         /// <returns>Returns the updated <paramref name="attribute"/>, if <paramref name="update"/> was set to `true`</returns>
         public ConverterAttribute ConverterAttributeFromIConverter(TypeInfo baseType, ConverterAttribute attribute = null, bool update = false)
         {
-            attribute = attribute ?? baseType?.GetCustomAttribute<ConverterAttribute>();
-
             if(baseType == null || (attribute != null && update == false))
             {
                 return attribute;
@@ -944,28 +942,34 @@ namespace Core.TypeCast
         /// <remarks>Use the <see cref="CreateConverterClassInstance"/> method to instantiate a custom converter type without regard towards the <see cref="ConverterAttribute"/> properties</remarks>
         private bool AddAllConvertersByAttribute(TypeInfo type)
         {
-            var attribute = this.ConverterAttributeFromIConverter(type, update: true);
-            if(attribute == null)
+            if(ConstructorAddedClasses?.Contains(type.AsType()) == false)
             {
-                // the type is not a converter, let's return
-                return false;
-            }
-
-            if(attribute?.LoadOnDemand == true)
-            {
-                if(this.loadOnDemandConverters?.ContainsKey(attribute.NameSpace) == false)
+                var attribute = type.GetCustomAttribute<ConverterAttribute>();
+                if(attribute == null)
                 {
-                    this.loadOnDemandConverters.Add(attribute.NameSpace, new List<Type>());
+                    if(type.IsClass == true && type.ImplementedInterfaces.Contains(typeof(IConverter)) == true)
+                    {
+                        attribute = this.ConverterAttributeFromIConverter(type, attribute, update: true);
+                    }
+                    // the type is not a converter, let's return
+                    return false;
                 }
 
-                if(this.loadOnDemandConverters[attribute.NameSpace]?.Contains(type.AsType()) == false)
+                if(attribute?.LoadOnDemand == true)
                 {
-                    this.loadOnDemandConverters[attribute.NameSpace].Add(type.AsType());
+                    if(this.loadOnDemandConverters?.ContainsKey(attribute.NameSpace) == false)
+                    {
+                        this.loadOnDemandConverters.Add(attribute.NameSpace, new List<Type>());
+                    }
+
+                    if(this.loadOnDemandConverters[attribute.NameSpace]?.Contains(type.AsType()) == false)
+                    {
+                        this.loadOnDemandConverters[attribute.NameSpace].Add(type.AsType());
+                    }
+
+                    return false;
                 }
-
-                return false;
             }
-
 
             var converterCustom = this.CreateConverterClassInstance(type.AsType());
             // discover attributed methods
