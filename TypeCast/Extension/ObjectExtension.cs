@@ -109,9 +109,19 @@ namespace Core.TypeCast
                 }
                 catch(Exception exc)
                 {
-                    if(throwException == true && exc is IException)
+                    if(exc is IException)
                     {
-                        throw;
+                        if(throwException == true)
+                        {
+                            throw;
+                        }
+                    }
+                    else if(exc is System.FormatException)
+                    {
+                        if(throwException == true)
+                        {
+                            throw new ConverterException(ConverterCause.BadInputFormat, exc);
+                        }
                     }
                     else
                     {

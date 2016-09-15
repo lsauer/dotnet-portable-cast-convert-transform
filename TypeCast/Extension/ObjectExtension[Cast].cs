@@ -115,7 +115,7 @@ namespace Core.TypeCast
                 throw new ConverterException(ConverterCause.ConverterArgumentGenericType);
             }
 
-            self.TryCast<TIn, TOut>(out result, defaultValue, throwException: defaultValue == null);
+            self.TryCast<TIn, TOut>(out result, defaultValue, throwException: false);
             return result;
         }
 
@@ -148,7 +148,7 @@ namespace Core.TypeCast
         public static object CastTo(this object self, Type typeTo, object defaultValue = null)
         {
             object result;
-            self.TryCast(typeTo, out result, defaultValue, throwException: defaultValue != null);
+            self.TryCast(typeTo, out result, defaultValue, throwException: false);
             return result;
         }
 

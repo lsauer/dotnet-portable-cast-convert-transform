@@ -158,6 +158,12 @@ namespace Core.TypeCast
         [Description("Indicates that the argument types of a given delegate do not match the return type and / or types of the provided parameters.")]
         DelegateArgumentWrongType = 1 << 20,
 
+        /// <summary>
+        /// Indicates that the input argument was badly formatted.
+        /// </summary>
+        [Description("Indicates that the input argument was badly formatted.")]
+        BadInputFormat = 1 << 21,
+
         /// <para>Flag Combinations</para>
         /// <para></para>
         /// <summary>

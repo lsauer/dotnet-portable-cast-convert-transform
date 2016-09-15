@@ -35,7 +35,7 @@ namespace Core.TypeCast.Converters
             this.self = this.GetType();
 
             // use a custom number format, set in the ConverterCollection instance
-            this.NumberFormat = ConverterCollectionSettings.DefaultNumberFormat.Clone() as NumberFormatInfo;
+            this.NumberFormat = collection.Settings.NumberFormat as NumberFormatInfo;
 
             // convert from `string` to `System.T`
             this.AddObjectConverter(collection: collection);
