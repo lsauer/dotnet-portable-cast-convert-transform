@@ -64,6 +64,7 @@ namespace Core.TypeCast.Base
                 converter = Instantiate<Converter>(typeof(Converter<,,>), parameters: parameterTypes.ToArray(), args: new[] { converterDelegate ?? methodInfo, parameterTypes.Arg });
 
                 converter.FunctionDefaultAttribute = methodAttribute;
+                converter.FunctionAttribute = methodAttribute;
             }
             else if(parameterInfos.Length == 1)
             {

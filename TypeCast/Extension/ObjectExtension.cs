@@ -58,7 +58,7 @@ namespace Core.TypeCast
             {
                 if(throwException == true && unboxObjectType == false)
                 {
-                    throw new ConverterException(ConverterCause.ConverterTypeInIsExplicitObject);
+                    //throw new ConverterException(ConverterCause.ConverterTypeInIsExplicitObject);
                 }
 
                 var typeFrom = unboxObjectType ? self.GetType() : typeof(object);

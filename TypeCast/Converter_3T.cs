@@ -192,8 +192,6 @@ namespace Core.TypeCast
 
             try
             {
-
-                //if(converter.HasDefaultFunctionOnly == false || )
                 if(this.HasDefaultFunctionOnly == true || (defaultValue != null && ObjectExtension.IsDefaultValue<TOut>(defaultValue) == false))
                 {
                     return this.ConvertDefault(ref value, ref defaultValue);
@@ -201,6 +199,11 @@ namespace Core.TypeCast
 
                 if(this.ConverterFunc != null)
                 {
+                    if(this.Base != null && this.FunctionAttribute?.IsStatic == false && this.FunctionInfo?.IsStatic == false)
+                    {
+                        return this.FunctionInfo.Invoke(this.Base, new[] { value });
+                    }
+
                     return this.ConverterFunc.Invoke((TIn)value);
                 }
             }
