@@ -622,6 +622,11 @@ namespace Core.TypeCast
             {
                 converter.SetCollectionDefaults(this);
 
+                if(allowDisambiguates == false && baseType?.GetTypeInfo().BaseType == typeof(MulticastDelegate))
+                {
+                    allowDisambiguates = true;
+                }
+
                 converter.AllowDisambiguates = allowDisambiguates;
                 // if there is already a standard converter try to merge them. The condition is that the converter argument type match or is not used
                 if(allowDisambiguates == false && converter.Standard)
