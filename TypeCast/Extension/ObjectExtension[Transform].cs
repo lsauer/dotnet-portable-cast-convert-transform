@@ -129,7 +129,15 @@ namespace Core.TypeCast
         public static TOut Transform<TBase, TOut>(this object self, object model = null, string functionAlias = null, bool strictTypeCheck = false, bool withContext = false)
         {
             CheckTransformTypes<TOut>(self, strictTypeCheck);
-            return (TOut)Transform(self: self, model: model, typeBase: typeof(TBase), typeTo: typeof(TOut), functionAlias: functionAlias, throwException: false, withContext: withContext);
+            return (TOut)Transform<TBase, object, TOut>(self: self, model: model, functionAlias: functionAlias, strictTypeCheck: strictTypeCheck, withContext: withContext);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TOut Transform<TBase, TIn, TOut>(this object self, object model = null, string functionAlias = null, bool strictTypeCheck = false, bool withContext = false)
+        {
+            CheckTransformTypes<TOut>(self, strictTypeCheck);
+            Converter converter = null;
+            return (TOut)Transform<TIn>(self: (TIn)self, converter: out converter, model: model, typeBase: typeof(TBase), typeTo: typeof(TOut), functionAlias: functionAlias, throwException: false, withContext: withContext);
         }
 
         /// <summary>
@@ -213,17 +221,17 @@ namespace Core.TypeCast
         /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
         /// <returns>Returns the transformed value of the <see cref="Type"/> as <typeparamref name="TOut" /> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static object Transform(this object self, out Converter converter, object model = null, Type typeBase = null, Type typeTo = null, string functionAlias = null, bool throwException = true, bool withContext = false)
+        public static object Transform<TIn>(this TIn self, out Converter converter, object model = null, Type typeBase = null, Type typeTo = null, string functionAlias = null, bool throwException = true, bool withContext = false)
         {
             object result = null;
             // transform should be used for similar or same types as the input type, as such if no typeTo is supplied let's use the delegate's return-type
             typeTo = typeTo ?? typeBase?.GetTypeInfo().GetReturnParameterType();
-            if(typeBase?.GetTypeInfo().IsInvokableWithParameters(typeTo, self.GetType(), model?.GetType()) == false)
+            if(typeof(TIn) != typeof(object) && typeBase?.GetTypeInfo().IsInvokableWithParameters(typeTo, self.GetType(), model?.GetType()) == false)
             {
                 throw new ConverterException(ConverterCause.DelegateArgumentWrongType);
             }
-            GetConverterOrDefault(self, out converter, out result, typeArgument: model?.GetType(), typeTo: functionAlias != null ? null : typeTo, typeBase: typeBase,
-                throwException: throwException, unboxObjectType: true, attributeName: functionAlias);
+            GetConverterOrDefault<TIn, object>(self, out converter, out result, typeArgument: model?.GetType(), typeTo: functionAlias != null ? null : typeTo, typeBase: typeBase,
+                throwException: throwException, unboxObjectType: typeof(TIn) != typeof(object), attributeName: functionAlias);
 
             InvokeConvert(self, out result, model, throwException: throwException, converter: converter, contextInstance: (withContext ? new ConvertContext(model) : null));
             return result;
@@ -372,7 +380,7 @@ namespace Core.TypeCast
         public static bool TryTransform<TBase, TIn, TOut>(this TIn self, out TOut result, object model = null, string functionAlias = null, bool throwException = false, bool withContext = false)
         {
             Converter converter = null;
-            result = (TOut)Transform(self: self, converter: out converter, model: model, typeBase: typeof(TBase), typeTo: typeof(TOut), functionAlias: functionAlias, throwException: throwException, withContext: withContext);
+            result = (TOut)Transform<TIn>(self: self, converter: out converter, model: model, typeBase: typeof(TBase), typeTo: typeof(TOut), functionAlias: functionAlias, throwException: throwException, withContext: withContext);
             return converter != null;
         }
 
@@ -388,7 +396,7 @@ namespace Core.TypeCast
         private static void CheckTransformTypes<TOut>(object self, bool strictTypeCheck)
         {
             var sameOrSimilar = self.GetType().GetTypeInfo().IsSameOrSimilar<TOut>();
-            if((strictTypeCheck == true && sameOrSimilar != TypeMatch.Same) || (strictTypeCheck == false && sameOrSimilar != TypeMatch.Similar))
+            if((strictTypeCheck == true && sameOrSimilar == TypeMatch.None))
             {
                 throw new ConverterException(ConverterCause.TransformRequiresEqualInOutTypes);
             }
