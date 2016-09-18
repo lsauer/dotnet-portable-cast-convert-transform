@@ -105,7 +105,7 @@ namespace Core.TypeCast
                 try
                 {
                     result = (TOut)converter.Convert(self, contextInstance ?? defaultValue);
-                    return true;
+                    return IsDefaultValue<TOut>(result) == false;
                 }
                 catch(Exception exc)
                 {
