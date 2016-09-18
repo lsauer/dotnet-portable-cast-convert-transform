@@ -759,6 +759,12 @@ namespace Core.TypeCast
             return 0;
         }
 
+
+        /// <summary>
+        /// `True` when the ConverterCollection has been loading assemblies through auto-discovery as implemented in <see cref="AutoInitialize"/>
+        /// </summary>
+        private static bool AutoInitialized;
+
         /// <summary>
         /// Checks if the <see cref="ConverterCollection"/> is initialized. Attempts to initialize and load the user-assembly if <see cref="ConverterCollection.Initialized"/> is `false`
         /// </summary>
@@ -770,7 +776,7 @@ namespace Core.TypeCast
         public static void AutoInitialize()
         {
             // is the ConverterCollection Initialized?
-            if(Initialized == false)
+            if(AutoInitialized == false)
             {
                 try
                 {
@@ -778,6 +784,7 @@ namespace Core.TypeCast
                     var assembly = getEntryAssembly.Invoke(null, null) as Assembly;
                     CurrentInstance.Initialize(assembly);
                     CurrentInstance.ApplicationNameSpace = assembly?.GetNamespacesByLevel(0).FirstOrDefault();
+                    AutoInitialized = true;
                 }
                 catch(Exception exc)
                 {
