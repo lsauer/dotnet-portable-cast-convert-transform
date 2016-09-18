@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 namespace Core.TypeCast.Base
 {
     using System.Collections.Generic;
+    using System.Text;
     using Extensions;
 
 
@@ -100,6 +101,22 @@ namespace Core.TypeCast.Base
         /// The <see cref="MethodInfo"/> instance of the <see cref="Method"/>
         /// </summary>
         public MethodInfo MethodInfo { get; set; }
+
+        /// <summary>
+        /// A string representation of the current instance.
+        /// </summary>
+        /// <returns>
+        /// Returns a <see cref="string"/> representation of the fields in <see cref="ConvertContext"/>.
+        /// </returns>
+        public override string ToString()
+        {
+            var ret = new StringBuilder("{" + Environment.NewLine);
+            foreach(var property in this.GetType().GetRuntimeProperties())
+            {
+                ret.Append($"\t {property.Name} {{{property.PropertyType}}}: '{property.GetValue(this)}'" + Environment.NewLine);
+            }
+            return ret.ToString() + "}";
+        }
     }
 
 
