@@ -34,13 +34,15 @@ namespace Core.TypeCast
         /// </summary>
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
         /// <param name="typeFrom">The <see cref="Converter.From"/> Type to look for</param>
+        /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
         /// <returns>Returns a new filtered query as <see cref="IQueryable{Converter}"/> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IQueryable<Converter> WithFrom(this IQueryable<Converter> query, TypeInfo typeFrom)
+        public static IQueryable<Converter> WithFrom(this IQueryable<Converter> query, TypeInfo typeFrom, bool assignable = false)
         {
             if(typeFrom != null)
             {
-                query = query.Where(c => c.From == typeFrom);
+                var tmpquery = query.Where(c => c.From == typeFrom);
+                query = WithAssignable(query, tmpquery, typeFrom, assignable);
             }
             return query;
         }
@@ -50,11 +52,12 @@ namespace Core.TypeCast
         /// </summary>
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
         /// <param name="typeFrom">The <see cref="Converter.From"/> Type to look for</param>
+        /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
         /// <returns>Returns a new filtered query as <see cref="IQueryable{Converter}"/> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IQueryable<Converter> WithFrom(this IQueryable<Converter> query, Type typeFrom)
+        public static IQueryable<Converter> WithFrom(this IQueryable<Converter> query, Type typeFrom, bool assignable = false)
         {
-            return WithFrom(query, typeFrom?.GetTypeInfo());
+            return WithFrom(query, typeFrom?.GetTypeInfo(), assignable);
         }
 
         /// <summary>
@@ -62,13 +65,15 @@ namespace Core.TypeCast
         /// </summary>
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
         /// <param name="typeTo">The <see cref="Converter.To"/> Type to look for</param>
+        /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
         /// <returns>Returns a new filtered query as <see cref="IQueryable{Converter}"/> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IQueryable<Converter> WithTo(this IQueryable<Converter> query, TypeInfo typeTo)
+        public static IQueryable<Converter> WithTo(this IQueryable<Converter> query, TypeInfo typeTo, bool assignable = false)
         {
             if(typeTo != null)
             {
-                query = query.Where(c => c.To == typeTo);
+                var tmpquery = query.Where(c => c.To == typeTo);
+                query = WithAssignable(query, tmpquery, typeTo, assignable);
             }
             return query;
         }
@@ -78,11 +83,12 @@ namespace Core.TypeCast
         /// </summary>
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
         /// <param name="typeTo">The <see cref="Converter.To"/> Type to look for</param>
+        /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
         /// <returns>Returns a new filtered query as <see cref="IQueryable{Converter}"/> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IQueryable<Converter> WithTo(this IQueryable<Converter> query, Type typeTo)
+        public static IQueryable<Converter> WithTo(this IQueryable<Converter> query, Type typeTo, bool assignable = false)
         {
-            return WithTo(query, typeTo?.GetTypeInfo());
+            return WithTo(query, typeTo?.GetTypeInfo(), assignable);
         }
 
         /// <summary>
@@ -90,13 +96,15 @@ namespace Core.TypeCast
         /// </summary>
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
         /// <param name="typeBase">The <see cref="Converter.BaseType"/> Type to look for</param>
+        /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
         /// <returns>Returns a new filtered query as <see cref="IQueryable{Converter}"/> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IQueryable<Converter> WithBaseType(this IQueryable<Converter> query, TypeInfo typeBase)
+        public static IQueryable<Converter> WithBaseType(this IQueryable<Converter> query, TypeInfo typeBase, bool assignable = false)
         {
             if(typeBase != null)
             {
-                query = query.Where(c => c.BaseType == typeBase);
+                var tmpquery = query.Where(c => c.BaseType == typeBase);
+                query = WithAssignable(query, tmpquery, typeBase, assignable);
             }
             return query;
         }
@@ -106,11 +114,12 @@ namespace Core.TypeCast
         /// </summary>
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
         /// <param name="typeBase">The <see cref="Converter.BaseType"/> Type to look for</param>
+        /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
         /// <returns>Returns a new filtered query as <see cref="IQueryable{Converter}"/> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IQueryable<Converter> WithBaseType(this IQueryable<Converter> query, Type typeBase)
+        public static IQueryable<Converter> WithBaseType(this IQueryable<Converter> query, Type typeBase, bool assignable = false)
         {
-            return WithBaseType(query, typeBase?.GetTypeInfo());
+            return WithBaseType(query, typeBase?.GetTypeInfo(), assignable);
         }
 
         /// <summary>
@@ -119,23 +128,38 @@ namespace Core.TypeCast
         /// </summary>
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
         /// <param name="typeArgument">The <see cref="Converter.Argument"/> Type to look for</param>
-        /// <param name="assignableFrom">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
+        /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
         /// <returns>Returns a new filtered query as <see cref="IQueryable{Converter}"/> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IQueryable<Converter> WithArgument(this IQueryable<Converter> query, TypeInfo typeArgument, bool assignableFrom = true)
+        public static IQueryable<Converter> WithArgument(this IQueryable<Converter> query, TypeInfo typeArgument, bool assignable = false)
         {
             if(typeArgument != null && typeArgument.AsType() != typeof(object))
             {
                 var tmpquery = query.Where(c => c.Argument == typeArgument);
-                if(tmpquery.Any() || assignableFrom == false)
-                {
-                    query = tmpquery;
-                }
-                else
-                {
-                    // check for interfaces, sub-types ...
-                    query = query.Where(c => c.Argument.IsAssignableFrom(typeArgument));
-                }
+                query = WithAssignable(query, tmpquery, typeArgument, assignable);
+            }
+            return query;
+        }
+
+        /// <summary>
+        /// Extends a type-based query lookup to assignable types such as interfaces or sub-types, with the exclusion of `object`
+        /// </summary>
+        /// <param name="query">The current query which will be returned should the testQuery fail to yield any result.</param>
+        /// <param name="testQuery">The test query to check for possible results</param>
+        /// <param name="type">The assignable / inheritable type</param>
+        /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static IQueryable<Converter> WithAssignable(IQueryable<Converter> query, IQueryable<Converter> testQuery, TypeInfo type, bool assignable)
+        {
+            if(type.AsType() == typeof(object) || testQuery.Any() || assignable == false)
+            {
+                query = testQuery;
+            }
+            else
+            {
+                // check for interfaces, sub-types ...
+                query = query.Where(c => c.Argument.IsAssignableFrom(type));
             }
             return query;
         }
