@@ -99,7 +99,15 @@ namespace Core.TypeCast
         /// <exception cref="ConverterException">Throws an exception of type <see cref="ConverterException" />if the conversion fails</exception>
         private static bool InvokeConvert<TIn, TOut>(TIn self, out TOut result, object defaultValue, bool throwException, Converter converter, IConvertContext contextInstance = null, [CallerMemberName] string caller = null)
         {
-            contextInstance = SetContext<TIn, TOut>(contextInstance, defaultValue, throwException, converter, caller);
+            if(defaultValue is IConvertContext)
+            {
+                contextInstance = SetContext<TIn, TOut>(defaultValue as IConvertContext, ((IConvertContext)defaultValue).Value, throwException, converter, caller);
+            }
+            else
+            {
+                contextInstance = SetContext<TIn, TOut>(contextInstance, defaultValue, throwException, converter, caller);
+            }
+
             if(converter != null)
             {
                 try
