@@ -97,6 +97,7 @@ Use library functions which suit the change of type descriptively:
 Provided below is an abbreviated example of what code may look like in your project: 
 
 ```cs
+    using System.Runtime.CompilerServices;
     // IPolyNucleotide.cs
     public interface IPolyNucleotide { ... }
 
@@ -114,7 +115,7 @@ Provided below is an abbreviated example of what code may look like in your proj
         }
 
         [ConverterMethod]
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DNA Complimentary(string dnaSequence, AModelClass arguments)
         {
             ... ...
@@ -182,8 +183,9 @@ portable alternative class filling in for the missing functionality.
 The example above, may be written even more concise by adding an Interconverter pair at once:
 
 ```cs
-    ConverterCollection.CurrentInstance
-        .Add((string s) => new Point(int.Parse(s?.Split(',').First()), int.Parse(s?.Split(',').Last())), p => $"{p?.X},{p?.Y}");
+    ConverterCollection.CurrentInstance.Add(
+        (string s) => new Point(int.Parse(s?.Split(',').First()), int.Parse(s?.Split(',').Last())), 
+                 p => $"{p?.X},{p?.Y}");
 
 ```
 
@@ -632,7 +634,9 @@ You can declare a custom NumberFormatter during adding, load serialized function
 
 ```cs
 
-    ConverterCollection.CurrentInstance.Add<string, int>(s => int.Parse(s?.Trim(), new NumberFormatInfo() { NumberGroupSeparator = ",", NumberDecimalDigits = 3 }));
+    ConverterCollection.CurrentInstance.Add<string, int>(
+        s => int.Parse(s?.Trim(),  new NumberFormatInfo() { NumberGroupSeparator = ",", NumberDecimalDigits = 3 })
+    );
 
     var stream = new FileStream(@"converters.dat", FileMode.Create);
 
@@ -751,7 +755,9 @@ In an actual project, be advised to put a converter of this complexity in a sepa
 pragmatically adhering to the Single Responsibility Principle.
 
 ```cs
-    ConverterCollection.CurrentInstance.Add((int[] a, string b) => new MemoryStream(Encoding.ASCII.GetBytes(a.ToString() + b.ToString())));
+    ConverterCollection.CurrentInstance.Add(
+        (int[] a, string b) => new MemoryStream(Encoding.ASCII.GetBytes(a.ToString() + b.ToString()))
+    );
     new[] { 1, 3, 4, 5 }.ConvertTo<MemoryStream>("");
 
     // A more complex converter example: convert a string to text taking a Data-Model Object as second argument. 
@@ -800,7 +806,8 @@ This will pass a `ConvertContext` instance to the converter similar to the follo
 {Core.TypeCast.Base.ConvertContext<object, string>}
     Argument: {Name = "Int32" FullName = "System.Int32"}
     Caller: "TryConvert"
-    Converter: Converter`3[(Boolean, Object) => String] BaseType: StringToImage, Attribute: [LoD:False,Base:StringToImage,DepInj:True,NamSp:System,Name:]
+    Converter: Converter`3[(Boolean, Object) => String] BaseType: StringToImage, 
+                Attribute: [LoD:False,Base:StringToImage,DepInj:True,NamSp:System,Name:]
     From: {Name = "Object" FullName = "System.Object"}
     Method: null
     MethodInfo: null
@@ -1063,7 +1070,7 @@ Following are the most common ways of adding converters at runtime:
            public ConverterDefaults(IConverterCollection collection) : base(collection)
            {
                 this.NumberFormat = ConverterCollectionSettings.DefaultNumberFormat.Clone() as NumberFormatInfo;
-                collection.Add<object, int>(o => int.Parse(o != null ? o.ToString() : string.Empty, this.NumberFormat), this.GetType())
+                collection.Add<object, int>(o => int.Parse(o?.ToString() ?? string.Empty, this.NumberFormat), this.GetType())
             }
         }
         
