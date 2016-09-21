@@ -56,9 +56,9 @@ namespace Core.TypeCast
             ConverterCollection.AutoInitialize();
             if(typeof(TIn) == typeof(object))
             {
-                if(throwException == true && unboxObjectType == false)
+                if(throwException == true && unboxObjectType == false && ConverterCollection.CurrentInstance.Settings.AllowGenericTypes == false)
                 {
-                    //throw new ConverterException(ConverterCause.ConverterTypeInIsExplicitObject);
+                    throw new ConverterException(ConverterCause.ConverterTypeInIsExplicitObject);
                 }
 
                 var typeFrom = unboxObjectType ? self.GetType() : typeof(object);
