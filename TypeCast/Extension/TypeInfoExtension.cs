@@ -13,12 +13,12 @@ namespace Core.Extensions
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
+
     /// <summary>
     /// The  <see cref="TypeInfo"/> extension.
     /// </summary>
     public static partial class TypeInfoExtension
     {
-
         /// <summary>
         /// Get a an <seealso cref="IEnumerable{System.Reflection.ConstructorInfo}"/> of all constructors that match the argument <paramref name="parameterType"/>
         /// </summary>
@@ -43,11 +43,11 @@ namespace Core.Extensions
         public static ConstructorInfo GetConstructorByParameterTypes(this TypeInfo type, Type[] parameterTypes)
         {
             return (from constructorInfo in type.DeclaredConstructors
-                   let parameterInfos = constructorInfo.GetParameters()
-                   where
-                        parameterInfos.Length == parameterTypes.Length
-                        && parameterInfos.Select(p => p.ParameterType.Name).SequenceEqual(parameterTypes.Select(t => t.Name))
-                   select constructorInfo)?.
+                    let parameterInfos = constructorInfo.GetParameters()
+                    where
+                         parameterInfos.Length == parameterTypes.Length
+                         && parameterInfos.Select(p => p.ParameterType.Name).SequenceEqual(parameterTypes.Select(t => t.Name))
+                    select constructorInfo)?.
                    FirstOrDefault();
         }
 
@@ -58,6 +58,7 @@ namespace Core.Extensions
         /// <param name="interfaceType">The parameter argument <see cref="Type"/> which should be, but does not strictly has to be, an <see cref="interface"/>.</param>
         /// <returns>Returns true if <paramref name="type"/> has a constructor that can be used for Dependency Injection of <paramref name="interfaceType"/>.</returns>
         /// <remarks>The method-extension can be used to dynamically detect if a constructor is present for Dependency Injection via <paramref name="interfaceType"/>. </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsDependencyInjectable(this TypeInfo type, Type interfaceType)
         {
             return type.GetConstructorsByParameterType(interfaceType).Any();
@@ -80,7 +81,7 @@ namespace Core.Extensions
             }
             var parameters = methodInfo.GetParameters();
             bool trueForAll = true;
-            for(int i = 0;  i < argumentParameters.Length; i++)
+            for(int i = 0; i < argumentParameters.Length; i++)
             {
                 if(argumentParameters[i] == null)
                 {
@@ -99,6 +100,7 @@ namespace Core.Extensions
         /// </summary>
         /// <param name="type">The own instance of the <see cref="TypeInfo"/> which invokes the static extension method. </param>
         /// <returns>Returns an object that is either null or containing the default value of the underlying value type.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static object GetDefault(this TypeInfo type)
         {
             if(type.GetConstructorsByParameterType(null) != null && type.IsAbstract == false && type.IsValueType == true)
@@ -118,6 +120,7 @@ namespace Core.Extensions
         /// <param name="defaultType">A default <see cref="Type"/> to be passed out in case of no parameter being present. 
         /// If the input type does not inherit from <see cref="Delegate"/> the result will still be `null`</param>
         /// <returns>Returns an <see cref="Type"/> instance of the delegate's return-parameter or null `null`.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Type GetReturnParameterType(this TypeInfo type, Type defaultType = null)
         {
             if(typeof(Delegate).GetTypeInfo().IsAssignableFrom(type) == true)
@@ -146,7 +149,7 @@ namespace Core.Extensions
         public static TypeMatch IsSameOrSimilar<TOut>(this TypeInfo self, bool? checkIsSame = null)
         {
             var typeOut = typeof(TOut).GetTypeInfo();
-            if((checkIsSame  == null || checkIsSame == true) && self == typeOut)
+            if((checkIsSame == null || checkIsSame == true) && self == typeOut)
             {
                 return TypeMatch.Same;
             }
@@ -157,31 +160,24 @@ namespace Core.Extensions
             }
             return TypeMatch.None;
         }
-    }
 
-    /// <summary>
-    /// An enumerating of values containing a rough 2bit classification of relationship between two types
-    /// </summary>
-    /// <remarks>The enumeration relates to the type change classification of Cast, Convert and Transform</remarks>
-    public enum TypeMatch
-    {
 
         /// <summary>
-        /// Unknown or no relationship between the types
+        /// Returns <see cref="true"/> if a <see cref="Type"/> <paramref name="self"/> is assignable by <see cref="Type"/> <paramref name="typeBase"/> or vice versa, 
+        /// else <see cref="false"/> is returned.
         /// </summary>
-        [Description("Unknown or no relationship between the types")]
-        None,
-
-        /// <summary>
-        /// Identical or same relationship between the types
-        /// </summary>
-        [Description("Identical or same relationship between the types")]
-        Same,
-
-        /// <summary>
-        /// Similar or same base relationship between the types
-        /// </summary>
-        [Description("Similar or same base relationship between the types")]
-        Similar,
+        /// <param name="self">The current instance holding the boxed value to convert from</param>
+        /// <param name="typeBase">The <see cref="Type"/> to check whether it is a sub or super-<see cref="Type"/> of <paramref name="self"/></param>
+        /// <returns>Returns <see cref="true"/> if a <see cref="Type"/> <paramref name="self"/> is assignable by <see cref="Type"/> <paramref name="typeBase"/> or vice versa, 
+        /// else <see cref="false"/></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsSuperOrSubType(this TypeInfo self, TypeInfo typeBase)
+        {
+            if(self == typeBase)
+            {
+                return true;
+            }
+            return self.AsType() != typeof(object) && (self.IsAssignableFrom(typeBase) || typeBase.IsAssignableFrom(self));
+        }
     }
 }
