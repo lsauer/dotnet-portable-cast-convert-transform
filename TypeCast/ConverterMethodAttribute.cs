@@ -3,7 +3,7 @@
 // </copyright>
 // <summary>   A generic, portable and easy to use Converter pattern library    </summary
 // <language>  C# > 6.0                                                         </language>
-// <version>   3.0.1.4                                                          </version>
+// <version>   3.1.0.2                                                          </version>
 // <author>    Lo Sauer; people credited in the sources                         </author>
 // <project>   https://github.com/lsauer/csharp-Converter                       </project>
 namespace Core.TypeCast

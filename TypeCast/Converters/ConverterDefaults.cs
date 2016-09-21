@@ -3,7 +3,7 @@
 // </copyright>
 // <summary>   A tested, generic, portable, runtime-extensible type converter library   </summary
 // <language>  C# > 6.0                                                                 </language>
-// <version>   3.0.1.4                                                                  </version>
+// <version>   3.1.0.2                                                                  </version>
 // <author>    Lorenz Lo Sauer; people credited in the sources                          </author>
 // <project>   https://github.com/lsauer/dotnet-portable-type-cast                      </project>
 namespace Core.TypeCast.Converters

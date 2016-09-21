@@ -11,7 +11,7 @@
 **license** | <a href="http://lsauer.mit-license.org/" target="_blank">MIT license</a>   
 **package** | `PM> Install-Package Core.TypeCast`  
 **description** | An easy to use, portable library for changing between unrestricted, arbitrary data types
-**documentation** |  <a href="https://dotnet-cast-convert-transform.firebaseapp.com/">complete reference v3.0.1.4</a>
+**documentation** |  <a href="https://dotnet-cast-convert-transform.firebaseapp.com/">complete reference v3.1.0.2</a>
 **supported** | <ul><li><a href="https://msdn.microsoft.com/en-us/library/gg597391(v=vs.110).aspx" target="_blank">Portable Class Library (PLC)</a></li> <li><a href="https://en.wikipedia.org/wiki/.NET_Framework#.NET_Core" target="_blank">.NET Core</a></li> <li>.NET Framework 4.5</li> <li>Windows Phone 8.1</li>  <li>Windows 8, 10</li> <li><a href="https://developer.xamarin.com/guides/android/" target="_blank">Xamarin.Android</a></li> <li><a href="https://developer.xamarin.com/guides/ios/" target="_blank">Xamarin.iOS</a></li>  <li>Xamarin.iOS Classic</li><li>XBOX 360 XNA (req. adaptations)</li></ul>   
 
 
