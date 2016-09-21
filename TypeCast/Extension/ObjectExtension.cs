@@ -139,6 +139,18 @@ namespace Core.TypeCast
             }
 
             result = default(TOut);
+
+            if(ConverterCollection.CurrentInstance.Settings.AllowDynamicType == true)
+            {
+                // lets use the internal CLR reflection logic via `dynamic` to invoke a Type's dynamic implicit cast method if available
+                try { 
+                    dynamic tmp = self;
+                    result = (TOut)tmp;
+                    return true;
+                }
+                // don't handle exceptions any further at this point
+                catch(Exception) { }
+            }
             return false;
         }
 
