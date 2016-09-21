@@ -182,6 +182,12 @@ namespace Core.TypeCast
                 query = query.WithFrom(typeFrom).WithTo(typeTo);
             }
 
+            // with disambiguates and no specified type-argument, pick the most generic converter
+            if(query.Count() > 1 && typeArgument == null)
+            {
+                query = query.WithArgument(typeof(object), assignable: false);
+            }
+
             return query.FirstOrDefault();
         }
 
