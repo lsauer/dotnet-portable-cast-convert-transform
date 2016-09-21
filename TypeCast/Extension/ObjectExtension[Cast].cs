@@ -115,7 +115,7 @@ namespace Core.TypeCast
                 throw new ConverterException(ConverterCause.ConverterArgumentGenericType);
             }
 
-            self.TryCast<TIn, TOut>(out result, defaultValue, throwException: false);
+            self.TryCast<TIn, TOut>(out result, defaultValue, throwException: true);
             return result;
         }
 
@@ -188,7 +188,7 @@ namespace Core.TypeCast
         public static bool TryCast<TIn, TOut>(this TIn self, out TOut result, TOut defaultValue = default(TOut), bool throwException = false, bool unboxObjectType = false, IConvertContext contextInstance = null)
         {
             Converter converter;
-            var typeArgument = defaultValue?.IsDefaultValue() == true ? null : typeof(TOut);
+            var typeArgument = (defaultValue == null || defaultValue.IsDefaultValue() == true) ? null : typeof(TOut);
             if(GetConverterOrDefault(self, out converter, out result, typeArgument: typeArgument, throwException: throwException, unboxObjectType: unboxObjectType))
             {
                 return true;
