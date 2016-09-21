@@ -131,11 +131,25 @@ namespace Core.TypeCast
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IQueryable<Converter> WithArgument(this IQueryable<Converter> query, TypeInfo typeArgument, bool assignable = false)
         {
-            if(typeArgument != null && typeArgument.AsType() != typeof(object))
+            if(typeArgument != null && (assignable == false || typeArgument.AsType() != typeof(object)))
             {
                 query = WithAssignable(query, c => c.Argument == typeArgument, c => /*c.Argument.AsType() != typeof(object) && */c.Argument.IsAssignableFrom(typeArgument), typeArgument, assignable);
             }
             return query;
+        }
+
+        /// <summary>
+        /// Filters items in <see cref="ConverterCollection"/> which have <see cref="Converter.Argument"/> set equal to <paramref name="typeArgument"/>, or
+        /// if that query yields no results, checks via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.
+        /// </summary>
+        /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
+        /// <param name="typeArgument">The <see cref="Converter.Argument"/> Type to look for</param>
+        /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
+        /// <returns>Returns a new filtered query as <see cref="IQueryable{Converter}"/> </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IQueryable<Converter> WithArgument(this IQueryable<Converter> query, Type typeArgument, bool assignable = true)
+        {
+            return WithArgument(query, typeArgument?.GetTypeInfo(), assignable);
         }
 
         /// <summary>
@@ -163,20 +177,6 @@ namespace Core.TypeCast
                 query = query.Where(predicateAssignable);
             }
             return query;
-        }
-
-        /// <summary>
-        /// Filters items in <see cref="ConverterCollection"/> which have <see cref="Converter.Argument"/> set equal to <paramref name="typeArgument"/>, or
-        /// if that query yields no results, checks via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.
-        /// </summary>
-        /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
-        /// <param name="typeArgument">The <see cref="Converter.Argument"/> Type to look for</param>
-        /// <param name="assignableFrom">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
-        /// <returns>Returns a new filtered query as <see cref="IQueryable{Converter}"/> </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IQueryable<Converter> WithArgument(this IQueryable<Converter> query, Type typeArgument, bool assignableFrom = true)
-        {
-            return WithArgument(query, typeArgument?.GetTypeInfo(), assignableFrom);
         }
 
         /// <summary>
