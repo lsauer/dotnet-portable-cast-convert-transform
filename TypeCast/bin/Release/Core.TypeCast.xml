@@ -345,6 +345,14 @@
             The <see cref="P:Core.TypeCast.Base.ConvertContext.MethodInfo"/> instance of the <see cref="P:Core.TypeCast.Base.ConvertContext.Method"/>
             </summary>
         </member>
+        <member name="M:Core.TypeCast.Base.ConvertContext.ToString">
+            <summary>
+            A string representation of the current instance.
+            </summary>
+            <returns>
+            Returns a <see cref="T:System.String"/> representation of the fields in <see cref="T:Core.TypeCast.Base.ConvertContext"/>.
+            </returns>
+        </member>
         <member name="T:Core.TypeCast.Base.Factory`3">
             <summary>
             The abstract generic factory for creating arbitrary instances requiring up to two arguments. Use a container type such as <see cref="T:System.Tuple"/> or <see cref="!:struct"/> 
@@ -454,6 +462,55 @@
             <param name="method">The converter method taking two input parameters of <see cref="T:System.Type"/> <typeparamref name="TIn"/> and <typeparamref name="TOut"/></param>
             <remarks>Only one method may be passed during instance creation, as compatible standard converters (<see cref="P:Core.TypeCast.Base.Converter.Standard"/>) are merged automatically.</remarks>
             <returns>Returns a new instance of <see cref="T:Core.TypeCast.Converter`3"/> upon success</returns>
+        </member>
+        <member name="M:Core.TypeCast.Base.ConverterFactory.CreateWrapper(System.Reflection.TypeInfo,System.Reflection.MethodInfo)">
+            <summary>
+            Create a converter-wrapper which passes the own class-instance of a given method <paramref name="declaredMethod"/> as first argument for methods which are attributed 
+            by <see cref="T:Core.TypeCast.ConverterMethodAttribute"/> yet do not have any arguments in their function declaration or have <see cref="P:Core.TypeCast.ConverterMethodAttribute.PassInstance"/> set to <see cref="!:true"/>
+            </summary>
+            <param name="type">The <see cref="T:System.Type"/> of the class which contains the method <paramref name="declaredMethod"/></param>
+            <param name="declaredMethod">The method declared to be bound to the new <see cref="T:Core.TypeCast.Base.Converter"/> instance.</param>
+            <returns>A new <see cref="T:Core.TypeCast.Base.Converter"/> instance with the bound method of <paramref name="declaredMethod"/>.</returns>
+        </member>
+        <member name="M:Core.TypeCast.Base.ConverterFactory.ConverterWrapper``2(System.Reflection.MethodInfo)">
+            <summary>
+            Wraps an argument-less function to be invoked as an instance method and creates a new <see cref="T:Core.TypeCast.Base.Converter"/> instance
+            </summary>
+            <typeparam name="TClass">The <see cref="T:System.Type"/> of the class instance which invokes the method</typeparam>
+            <typeparam name="TOut">The <see cref="T:System.Type"/> of the function return argument</typeparam>
+            <param name="declaredMethod">The method declared to be bound to the new <see cref="T:Core.TypeCast.Base.Converter"/> instance.</param>
+            <returns>Returns a new <see cref="T:Core.TypeCast.Base.Converter"/> instance bound to an function-wrapper taking an instance method of <see cref="T:System.Type"/> <typeparamref name="TClass"/> as first argument.</returns>
+        </member>
+        <member name="M:Core.TypeCast.Base.ConverterFactory.ConverterWrapperAny``3(System.Reflection.MethodInfo)">
+            <summary>
+            Wraps an argument-less function to be invoked as an instance method and creates a new <see cref="T:Core.TypeCast.Base.Converter"/> instance
+            </summary>
+            <typeparam name="TClass">The <see cref="T:System.Type"/> of the class instance which invokes the method</typeparam>
+            <typeparam name="TArg">The <see cref="T:System.Type"/> of the function argument</typeparam>
+            <typeparam name="TOut">The <see cref="T:System.Type"/> of the function return argument</typeparam>
+            <param name="declaredMethod">The method declared to be bound to the new <see cref="T:Core.TypeCast.Base.Converter"/> instance.</param>
+            <returns>Returns a new <see cref="T:Core.TypeCast.Base.Converter"/> instance bound to an function-wrapper taking an instance method of <see cref="T:System.Type"/> <typeparamref name="TClass"/> as first argument,
+             and an secondly any arbitrary parameter of <see cref="T:System.Type"/> <typeparamref name="TArg"/>.</returns>
+        </member>
+        <member name="M:Core.TypeCast.Base.ConverterFactory.InvocationWrapper``2(System.Reflection.MethodInfo)">
+            <summary>
+            Wraps an argument-less function to be invoked as an instance method whose first argument is the instance of <see cref="T:System.Type"/> <typeparamref name="TClass"/>
+            </summary>
+            <typeparam name="TClass">The <see cref="T:System.Type"/> of the class instance which invokes the method</typeparam>
+            <typeparam name="TOut">The <see cref="T:System.Type"/> of the function return argument</typeparam>
+            <param name="declaredMethod">The method declared to be bound to the new <see cref="T:Core.TypeCast.Base.Converter"/> instance.</param>
+            <returns>Returns a new <see cref="T:System.Func`2"/> taking an instance method of <see cref="T:System.Type"/> <typeparamref name="TClass"/> as first argument.</returns>
+        </member>
+        <member name="M:Core.TypeCast.Base.ConverterFactory.InvocationWrapper``3(System.Reflection.MethodInfo)">
+            <summary>
+            Wraps an argument-less function to be invoked as an instance method whose first argument is the instance of <see cref="T:System.Type"/> <typeparamref name="TClass"/>
+            </summary>
+            <typeparam name="TClass">The <see cref="T:System.Type"/> of the class instance which invokes the method</typeparam>
+            <typeparam name="TArg">The <see cref="T:System.Type"/> of the function argument</typeparam>
+            <typeparam name="TOut">The <see cref="T:System.Type"/> of the function return argument</typeparam>
+            <param name="declaredMethod">The method declared to be bound to the new <see cref="T:Core.TypeCast.Base.Converter"/> instance.</param>
+            <returns>Returns a new <see cref="T:System.Func`3"/> taking an instance method of <see cref="T:System.Type"/> <typeparamref name="TClass"/> as first argument, 
+            and an secondly any arbitrary parameter of <see cref="T:System.Type"/> <typeparamref name="TArg"/>.</returns>
         </member>
         <member name="T:Core.TypeCast.Base.ConverterCollectionDependency">
             <summary>The converter dependency provides loose implementation of Converters, merely constricting the constructor to be passed an
@@ -968,7 +1025,7 @@
             Returns <see cref="T:System.Boolean"/>  `true` if the <see cref="T:Core.TypeCast.ConverterCollection"/> supports conversion for a given Type <paramref name="typeFrom"/>, else `false`.
             </summary>
             <param name="typeFrom">The source <see cref="T:System.Type"/> to look up in <see cref="P:Core.TypeCast.ConverterCollection.Items"/></param>
-            <remarks>The function is a wrapper for <see cref="M:Core.TypeCast.ConverterCollectionFilters.WithFrom(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Reflection.TypeInfo)"/>.</remarks>
+            <remarks>The function is a wrapper for <see cref="!:ConverterCollectionFilters.WithFrom(IQueryable&lt;Converter&gt;, TypeInfo)"/>.</remarks>
             <returns>`true` if the source <see cref="T:System.Type"/> is supported as source type by any converter in the <see cref="T:Core.TypeCast.ConverterCollection"/>, else `false`</returns>
         </member>
         <member name="M:Core.TypeCast.ConverterCollection.CanConvertFrom``1">
@@ -976,7 +1033,7 @@
             Returns <see cref="T:System.Boolean"/>  `true` if the <see cref="T:Core.TypeCast.ConverterCollection"/> supports conversion for a given Type <paramref name="typeFrom"/>, else `false`.
             </summary>
             <typeparam name="TIn">The source <see cref="T:System.Type"/> to look up in <see cref="P:Core.TypeCast.ConverterCollection.Items"/></typeparam>
-            <remarks>The function is a wrapper for <see cref="M:Core.TypeCast.ConverterCollectionFilters.WithFrom(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Reflection.TypeInfo)"/>.</remarks>
+            <remarks>The function is a wrapper for <see cref="!:ConverterCollectionFilters.WithFrom(IQueryable&lt;Converter&gt;, TypeInfo)"/>.</remarks>
             <returns>`true` if the source <see cref="T:System.Type"/> is supported as source type by any converter in the <see cref="T:Core.TypeCast.ConverterCollection"/>, else `false`</returns>
         </member>
         <member name="M:Core.TypeCast.ConverterCollection.CanConvertTo(System.Type)">
@@ -984,7 +1041,7 @@
             Returns <see cref="T:System.Boolean"/>  `true` if the <see cref="T:Core.TypeCast.ConverterCollection"/> supports conversion for a given Type <paramref name="typeTo"/>, else `false`.
             </summary>
             <param name="typeTo">The target <see cref="T:System.Type"/> to look up in <see cref="P:Core.TypeCast.ConverterCollection.Items"/></param>
-            <remarks>The function is a wrapper for <see cref="M:Core.TypeCast.ConverterCollectionFilters.WithTo(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Reflection.TypeInfo)"/>.</remarks>
+            <remarks>The function is a wrapper for <see cref="!:ConverterCollectionFilters.WithTo(IQueryable&lt;Converter&gt;, TypeInfo)"/>.</remarks>
             <returns>`true` if the target <see cref="T:System.Type"/> is supported as source type by any converter in the <see cref="T:Core.TypeCast.ConverterCollection"/>, else `false`</returns>
         </member>
         <member name="M:Core.TypeCast.ConverterCollection.CanConvertTo``1">
@@ -992,7 +1049,7 @@
             Returns <see cref="T:System.Boolean"/>  `true` if the <see cref="T:Core.TypeCast.ConverterCollection"/> supports conversion for a given Type <paramref name="typeTo"/>, else `false`.
             </summary>
             <typeparam name="TIn">The target <see cref="T:System.Type"/> to look up in <see cref="P:Core.TypeCast.ConverterCollection.Items"/></typeparam>
-            <remarks>The function is a wrapper for <see cref="M:Core.TypeCast.ConverterCollectionFilters.WithTo(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Reflection.TypeInfo)"/>.</remarks>
+            <remarks>The function is a wrapper for <see cref="!:ConverterCollectionFilters.WithTo(IQueryable&lt;Converter&gt;, TypeInfo)"/>.</remarks>
             <returns>`true` if the target <see cref="T:System.Type"/> is supported as source type by any converter in the <see cref="T:Core.TypeCast.ConverterCollection"/>, else `false`</returns>
         </member>
         <member name="M:Core.TypeCast.ConverterCollection.ConverterAttributeFromIConverter(System.Reflection.TypeInfo,Core.TypeCast.ConverterAttribute,System.Boolean)">
@@ -1014,6 +1071,11 @@
             converters does not have a direct relationship to the <see cref="P:Core.TypeCast.ConverterCollection.Count"/>
             </remarks>
             <returns>Returns <see cref="T:System.Boolean"/> an integer number > `0` if the Converters of the namespace from <paramref name="typeTo"/> were successfully added, otherwise returns `0`</returns>
+        </member>
+        <member name="F:Core.TypeCast.ConverterCollection.AutoInitialized">
+            <summary>
+            `True` when the ConverterCollection has been loading assemblies through auto-discovery as implemented in <see cref="M:Core.TypeCast.ConverterCollection.AutoInitialize"/>
+            </summary>
         </member>
         <member name="M:Core.TypeCast.ConverterCollection.AutoInitialize">
             <summary>
@@ -1220,7 +1282,7 @@
             <param name="loadOnDemand">Whether to look for any <see cref="T:Core.TypeCast.Base.Converter"/> in the Load-On-Demand list, if no results are yielded.</param>
             <returns>A converter instance if the query yielded a result, or `null` if no suitable <see cref="T:Core.TypeCast.Base.Converter"/> could be found.</returns>
         </member>
-        <member name="M:Core.TypeCast.ConverterCollectionLookup.Get(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Reflection.TypeInfo,System.Reflection.TypeInfo,System.Reflection.TypeInfo,System.Reflection.TypeInfo,System.Nullable{System.Boolean},System.Boolean,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String)">
+        <member name="M:Core.TypeCast.ConverterCollectionLookup.Get(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Reflection.TypeInfo,System.Reflection.TypeInfo,System.Reflection.TypeInfo,System.Reflection.TypeInfo,System.Nullable{System.Boolean},System.Boolean,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.Boolean)">
             <summary>
             Gets the <see cref="T:Core.TypeCast.Base.Converter"/> for a given arbitrary conversion source-type <paramref name="typeFrom"/> and an arbitrary conversion target-type <paramref name="typeTo"/>
             </summary>
@@ -1236,6 +1298,7 @@
             <param name="typeToIsGenericType">Whether <paramref name="typeTo"/> is generic, in cases of unboxing to a sub-type, as may happen with <see cref="T:System.Nullable`1"/></param>
             <param name="functionName">A search-string to be contained in the <see cref="P:Core.TypeCast.Base.Converter.Function"/> or<see cref="P:Core.TypeCast.Base.Converter.FunctionDefault"/> to filter through</param>
             <param name="attributeName">A search-string to be contained in the <see cref="P:Core.TypeCast.ConverterAttribute.Name"/> to filter through</param>
+            <param name="assignable">Whether to check via <see cref="M:System.Reflection.TypeInfo.IsAssignableFrom(System.Reflection.TypeInfo)"/> for supported interfaces or base-classes.r</param>
             <returns>A converter instance if the query yielded a result, or `null` if no suitable <see cref="T:Core.TypeCast.Base.Converter"/> could be found.</returns>
             <remarks>note that invocation of <see cref="M:Core.TypeCast.ConverterCollectionLookup.Get(System.Linq.IQueryable{Core.TypeCast.Base.Converter},Core.TypeCast.IConverter)"/> may instantiate and thus initializes any required converters referenced in <see cref="!:loadOnDemandConverters"/>
             </remarks>
@@ -1301,7 +1364,7 @@
         <!-- Badly formed XML comment ignored for member "M:Core.TypeCast.ObjectExtension.Transform``1(``0,System.Type,System.Object,System.String,System.Boolean)" -->
         <!-- Badly formed XML comment ignored for member "M:Core.TypeCast.ObjectExtension.Transform``1(System.Object,System.Object,System.Type,System.Type,System.String,System.Boolean,System.Boolean)" -->
         <!-- Badly formed XML comment ignored for member "M:Core.TypeCast.ObjectExtension.Transform(System.Object,System.Object,System.Type,System.Type,System.String,System.Boolean,System.Boolean)" -->
-        <!-- Badly formed XML comment ignored for member "M:Core.TypeCast.ObjectExtension.Transform(System.Object,Core.TypeCast.Base.Converter@,System.Object,System.Type,System.Type,System.String,System.Boolean,System.Boolean)" -->
+        <!-- Badly formed XML comment ignored for member "M:Core.TypeCast.ObjectExtension.Transform``1(``0,Core.TypeCast.Base.Converter@,System.Object,System.Type,System.Type,System.String,System.Boolean,System.Boolean)" -->
         <member name="M:Core.TypeCast.ObjectExtension.Transform``2(``0,System.Func{``0,``1},System.Enum,System.Boolean)">
             <summary>
             `Transform`is similar to <see cref="!:ConvertTo&lt;TIn, TOut&gt;(TIn, object)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
@@ -1719,28 +1782,58 @@
             A set of <see cref="T:System.Linq.IQueryable`1"/> extension methods for filtering <see cref="T:Core.TypeCast.ConverterCollection"/> items using <see cref="N:System.Linq"/>
             </summary>
         </member>
-        <member name="M:Core.TypeCast.ConverterCollectionFilters.WithFrom(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Reflection.TypeInfo)">
+        <member name="M:Core.TypeCast.ConverterCollectionFilters.WithFrom(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Reflection.TypeInfo,System.Boolean)">
             <summary>
             Filters items in <see cref="T:Core.TypeCast.ConverterCollection"/> which have <see cref="P:Core.TypeCast.Base.Converter.From"/> set equal to <paramref name="typeFrom"/>
             </summary>
             <param name="query">The own <see cref="T:System.Linq.IQueryable`1"/> instance which invokes the static extension methods in <see cref="T:Core.TypeCast.ConverterCollectionFilters"/></param>
             <param name="typeFrom">The <see cref="P:Core.TypeCast.Base.Converter.From"/> Type to look for</param>
+            <param name="assignable">Whether to check via <see cref="M:System.Reflection.TypeInfo.IsAssignableFrom(System.Reflection.TypeInfo)"/> for supported interfaces or base-classes.r</param>
             <returns>Returns a new filtered query as <see cref="T:System.Linq.IQueryable`1"/> </returns>
         </member>
-        <member name="M:Core.TypeCast.ConverterCollectionFilters.WithTo(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Reflection.TypeInfo)">
+        <member name="M:Core.TypeCast.ConverterCollectionFilters.WithFrom(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Type,System.Boolean)">
+            <summary>
+            Filters items in <see cref="T:Core.TypeCast.ConverterCollection"/> which have <see cref="P:Core.TypeCast.Base.Converter.From"/> set equal to <paramref name="typeFrom"/>
+            </summary>
+            <param name="query">The own <see cref="T:System.Linq.IQueryable`1"/> instance which invokes the static extension methods in <see cref="T:Core.TypeCast.ConverterCollectionFilters"/></param>
+            <param name="typeFrom">The <see cref="P:Core.TypeCast.Base.Converter.From"/> Type to look for</param>
+            <param name="assignable">Whether to check via <see cref="M:System.Reflection.TypeInfo.IsAssignableFrom(System.Reflection.TypeInfo)"/> for supported interfaces or base-classes.r</param>
+            <returns>Returns a new filtered query as <see cref="T:System.Linq.IQueryable`1"/> </returns>
+        </member>
+        <member name="M:Core.TypeCast.ConverterCollectionFilters.WithTo(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Reflection.TypeInfo,System.Boolean)">
             <summary>
             Filters items in <see cref="T:Core.TypeCast.ConverterCollection"/> which have <see cref="P:Core.TypeCast.Base.Converter.To"/> set equal to <paramref name="typeTo"/>
             </summary>
             <param name="query">The own <see cref="T:System.Linq.IQueryable`1"/> instance which invokes the static extension methods in <see cref="T:Core.TypeCast.ConverterCollectionFilters"/></param>
             <param name="typeTo">The <see cref="P:Core.TypeCast.Base.Converter.To"/> Type to look for</param>
+            <param name="assignable">Whether to check via <see cref="M:System.Reflection.TypeInfo.IsAssignableFrom(System.Reflection.TypeInfo)"/> for supported interfaces or base-classes.r</param>
             <returns>Returns a new filtered query as <see cref="T:System.Linq.IQueryable`1"/> </returns>
         </member>
-        <member name="M:Core.TypeCast.ConverterCollectionFilters.WithBaseType(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Reflection.TypeInfo)">
+        <member name="M:Core.TypeCast.ConverterCollectionFilters.WithTo(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Type,System.Boolean)">
+            <summary>
+            Filters items in <see cref="T:Core.TypeCast.ConverterCollection"/> which have <see cref="P:Core.TypeCast.Base.Converter.To"/> set equal to <paramref name="typeTo"/>
+            </summary>
+            <param name="query">The own <see cref="T:System.Linq.IQueryable`1"/> instance which invokes the static extension methods in <see cref="T:Core.TypeCast.ConverterCollectionFilters"/></param>
+            <param name="typeTo">The <see cref="P:Core.TypeCast.Base.Converter.To"/> Type to look for</param>
+            <param name="assignable">Whether to check via <see cref="M:System.Reflection.TypeInfo.IsAssignableFrom(System.Reflection.TypeInfo)"/> for supported interfaces or base-classes.r</param>
+            <returns>Returns a new filtered query as <see cref="T:System.Linq.IQueryable`1"/> </returns>
+        </member>
+        <member name="M:Core.TypeCast.ConverterCollectionFilters.WithBaseType(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Reflection.TypeInfo,System.Boolean)">
             <summary>
             Filters items in <see cref="T:Core.TypeCast.ConverterCollection"/> which have <see cref="P:Core.TypeCast.Base.Converter.BaseType"/> set equal to <paramref name="typeBase"/>
             </summary>
             <param name="query">The own <see cref="T:System.Linq.IQueryable`1"/> instance which invokes the static extension methods in <see cref="T:Core.TypeCast.ConverterCollectionFilters"/></param>
             <param name="typeBase">The <see cref="P:Core.TypeCast.Base.Converter.BaseType"/> Type to look for</param>
+            <param name="assignable">Whether to check via <see cref="M:System.Reflection.TypeInfo.IsAssignableFrom(System.Reflection.TypeInfo)"/> for supported interfaces or base-classes.r</param>
+            <returns>Returns a new filtered query as <see cref="T:System.Linq.IQueryable`1"/> </returns>
+        </member>
+        <member name="M:Core.TypeCast.ConverterCollectionFilters.WithBaseType(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Type,System.Boolean)">
+            <summary>
+            Filters items in <see cref="T:Core.TypeCast.ConverterCollection"/> which have <see cref="P:Core.TypeCast.Base.Converter.BaseType"/> set equal to <paramref name="typeBase"/>
+            </summary>
+            <param name="query">The own <see cref="T:System.Linq.IQueryable`1"/> instance which invokes the static extension methods in <see cref="T:Core.TypeCast.ConverterCollectionFilters"/></param>
+            <param name="typeBase">The <see cref="P:Core.TypeCast.Base.Converter.BaseType"/> Type to look for</param>
+            <param name="assignable">Whether to check via <see cref="M:System.Reflection.TypeInfo.IsAssignableFrom(System.Reflection.TypeInfo)"/> for supported interfaces or base-classes.r</param>
             <returns>Returns a new filtered query as <see cref="T:System.Linq.IQueryable`1"/> </returns>
         </member>
         <member name="M:Core.TypeCast.ConverterCollectionFilters.WithArgument(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Reflection.TypeInfo,System.Boolean)">
@@ -1750,8 +1843,31 @@
             </summary>
             <param name="query">The own <see cref="T:System.Linq.IQueryable`1"/> instance which invokes the static extension methods in <see cref="T:Core.TypeCast.ConverterCollectionFilters"/></param>
             <param name="typeArgument">The <see cref="P:Core.TypeCast.Base.Converter.Argument"/> Type to look for</param>
-            <param name="assignableFrom">Whether to check via <see cref="M:System.Reflection.TypeInfo.IsAssignableFrom(System.Reflection.TypeInfo)"/> for supported interfaces or base-classes.r</param>
+            <param name="assignable">Whether to check via <see cref="M:System.Reflection.TypeInfo.IsAssignableFrom(System.Reflection.TypeInfo)"/> for supported interfaces or base-classes.r</param>
             <returns>Returns a new filtered query as <see cref="T:System.Linq.IQueryable`1"/> </returns>
+        </member>
+        <member name="M:Core.TypeCast.ConverterCollectionFilters.WithArgument(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Type,System.Boolean)">
+            <summary>
+            Filters items in <see cref="T:Core.TypeCast.ConverterCollection"/> which have <see cref="P:Core.TypeCast.Base.Converter.Argument"/> set equal to <paramref name="typeArgument"/>, or
+            if that query yields no results, checks via <see cref="M:System.Reflection.TypeInfo.IsAssignableFrom(System.Reflection.TypeInfo)"/> for supported interfaces or base-classes.
+            </summary>
+            <param name="query">The own <see cref="T:System.Linq.IQueryable`1"/> instance which invokes the static extension methods in <see cref="T:Core.TypeCast.ConverterCollectionFilters"/></param>
+            <param name="typeArgument">The <see cref="P:Core.TypeCast.Base.Converter.Argument"/> Type to look for</param>
+            <param name="assignable">Whether to check via <see cref="M:System.Reflection.TypeInfo.IsAssignableFrom(System.Reflection.TypeInfo)"/> for supported interfaces or base-classes.r</param>
+            <returns>Returns a new filtered query as <see cref="T:System.Linq.IQueryable`1"/> </returns>
+        </member>
+        <member name="M:Core.TypeCast.ConverterCollectionFilters.WithAssignable(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Linq.Expressions.Expression{System.Func{Core.TypeCast.Base.Converter,System.Boolean}},System.Linq.Expressions.Expression{System.Func{Core.TypeCast.Base.Converter,System.Boolean}},System.Reflection.TypeInfo,System.Boolean)">
+            <summary>
+            Extends a type-based query lookup to assignable types such as interfaces or sub-types, with the exclusion of `object`
+            </summary>
+            <param name="query">The current query which will be returned should the testQuery fail to yield any result.</param>
+            <param name="testQuery">The test query to check for possible results</param>
+            <param name="type">The assignable / inheritable type</param>
+            <param name="predicate">A function to test each element for a condition; the second parameter of the function represents the index of the element in the source sequence.</param>
+            <param name="predicateAssignable">A function to test each element for an alternative condition if the <paramref name="predicate"/> result comes up empty; 
+            the second parameter of the function represents the index of the element in the source sequence.</param>
+            <param name="assignable">Whether to check via <see cref="M:System.Reflection.TypeInfo.IsAssignableFrom(System.Reflection.TypeInfo)"/> for supported interfaces or base-classes.</param>
+            <returns></returns>
         </member>
         <member name="M:Core.TypeCast.ConverterCollectionFilters.WithStandard(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Nullable{System.Boolean})">
             <summary>
@@ -1806,7 +1922,7 @@
             <param name="hasDefaultFunction">The Boolean <see cref="P:Core.TypeCast.Base.Converter.HasDefaultFunction"/> Property to look for</param>
             <returns>Returns a new filtered query as <see cref="T:System.Linq.IQueryable`1"/> </returns>
         </member>
-        <member name="M:Core.TypeCast.ConverterCollectionFilters.ApplyAllFilters(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Reflection.TypeInfo,System.Reflection.TypeInfo,System.Reflection.TypeInfo,System.Reflection.TypeInfo,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String)">
+        <member name="M:Core.TypeCast.ConverterCollectionFilters.ApplyAllFilters(System.Linq.IQueryable{Core.TypeCast.Base.Converter},System.Reflection.TypeInfo,System.Reflection.TypeInfo,System.Reflection.TypeInfo,System.Reflection.TypeInfo,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
             <summary>Applies all filters in <see cref="T:Core.TypeCast.ConverterCollectionFilters"/> to an <see cref="T:System.Linq.IQueryable`1"/> instance</summary>
             <param name="query">The own <see cref="T:System.Linq.IQueryable`1"/> instance which invokes the static extension methods in <see cref="T:Core.TypeCast.ConverterCollectionFilters"/></param>
             <param name="typeFrom">The <see cref="P:Core.TypeCast.Base.Converter.From"/> Type to look for</param>
@@ -1819,6 +1935,10 @@
             <param name="typeToIsGenericType">The Boolean <see cref="!:Converter.To.IsGenericType"/> Type-property to look for</param>
             <param name="functionName">A search-string to be contained in the <see cref="P:Core.TypeCast.Base.Converter.Function"/> or<see cref="P:Core.TypeCast.Base.Converter.FunctionDefault"/> to filter through</param>
             <param name="attributeName">A search-string to be contained in the <see cref="P:Core.TypeCast.ConverterAttribute.Name"/> to filter through</param>
+            <param name="assignableFrom">Whether to check via <see cref="M:System.Reflection.TypeInfo.IsAssignableFrom(System.Reflection.TypeInfo)"/> for supported interfaces or base-classes.r</param>
+            <param name="assignableTo">Whether to check via <see cref="M:System.Reflection.TypeInfo.IsAssignableFrom(System.Reflection.TypeInfo)"/> for supported interfaces or base-classes.r</param>
+            <param name="assignableArgument">Whether to check via <see cref="M:System.Reflection.TypeInfo.IsAssignableFrom(System.Reflection.TypeInfo)"/> for supported interfaces or base-classes.r</param>
+            <param name="assignableBaseType">Whether to check via <see cref="M:System.Reflection.TypeInfo.IsAssignableFrom(System.Reflection.TypeInfo)"/> for supported interfaces or base-classes.r</param>
             <returns>Returns a new filtered query as <see cref="T:System.Linq.IQueryable`1"/> </returns>
             <seealso cref="!:ConverterCollection.Get(TypeInfo, TypeInfo, TypeInfo, bool?, bool, bool?, bool?, bool?)"/>
         </member>
@@ -1863,7 +1983,7 @@
             </example>
             Reference: <seealso cref="P:Core.TypeCast.Base.Converter.Function"/>, <seealso cref="P:Core.TypeCast.Base.Converter.FunctionDefault"/>
         </member>
-        <member name="M:Core.TypeCast.ConverterMethodAttribute.#ctor(System.Boolean,System.Boolean,System.String)">
+        <member name="M:Core.TypeCast.ConverterMethodAttribute.#ctor(System.Boolean,System.Boolean,System.String,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Core.TypeCast.ConverterMethodAttribute"/> class, to declare a custom <see cref="T:Core.TypeCast.Base.Converter"/> function
             </summary>
@@ -1939,6 +2059,12 @@
             </example>
             <remarks>The namespace is used for filtering and grouping of <see cref="N:Core.TypeCast.Converters"/></remarks>
         </member>
+        <member name="P:Core.TypeCast.ConverterMethodAttribute.PassInstance">
+            <summary>
+            Gets a value indicating whether the method should be wrapped and passed an instance of its containing class as the first argument (`true`). 
+            Default is <see cref="!:false"/>, which does not wrap the attributed method.
+            </summary>
+        </member>
         <member name="M:Core.TypeCast.ConverterMethodAttribute.ToString">
             <summary>
             A string representation of the current attribute.
@@ -1962,7 +2088,7 @@
             If to use the function-default wrapper.
             </summary>
         </member>
-        <member name="M:Core.TypeCast.ConverterCollectionSettings.#ctor(System.Globalization.NumberFormatInfo,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Int32)">
+        <member name="M:Core.TypeCast.ConverterCollectionSettings.#ctor(System.Globalization.NumberFormatInfo,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Int32)">
             <summary>
             Initializes a new instance of the <see cref="T:Core.TypeCast.ConverterCollectionSettings"/> class.
             </summary>
@@ -1973,7 +2099,8 @@
             <param name="numberFormat">
             The number format used for the conversion functions within the <see cref="T:Core.TypeCast.ConverterCollection"/> instance.
             </param>
-            <param name="converterMissingException">  Whether to throw a converter missing exception.  </param>
+            <param name="converterMissingException">Whether to throw a converter missing exception.  </param>
+            <param name="converterClassExistsException">Whether to throw a converter class exists exception.  </param>
             <param name="allowGenericTypes">Whether to allow generic types as source or target types of converters</param>
             <param name="converterDefaultWrapperOrException">
             Whether to use a default-value wrapper if one is required or throw a default-function missing exception.
@@ -1989,6 +2116,18 @@
             Gets or sets whether to throw an <see cref="T:Core.TypeCast.ConverterException"/> if generic types are passed as the source our target <see cref="T:System.Type"/>.
             </summary>
         </member>
+        <member name="P:Core.TypeCast.ConverterCollectionSettings.AllowExplicitObject">
+            <summary>
+            Gets or sets whether to throw an <see cref="T:Core.TypeCast.ConverterException"/> if the conversion Source or target type is set explicitly to <see cref="T:System.Type"/> `object`.
+            </summary>
+        </member>
+        <member name="P:Core.TypeCast.ConverterCollectionSettings.AllowDynamicType">
+            <summary>
+            Gets or sets whether to allow invoking dynamic implicit casting as a cast Fallback in <see cref="M:Core.TypeCast.ObjectExtension.InvokeConvert``2(``0,``1@,System.Object,System.Boolean,Core.TypeCast.Base.Converter,Core.TypeCast.IConvertContext,System.String)"/>.
+            </summary>
+            The implementation is based on C# 4+'s core feature using a <see cref="!:dynamic"/> Type using internal CLR reflection logic, but may alternatively be invoked via explicit reflection as well.
+            <remarks>See http://stackoverflow.com/a/2090228/901946 </remarks>
+        </member>
         <member name="P:Core.TypeCast.ConverterCollectionSettings.BoundedCapacity">
             <summary>
             Gets or sets the bounded capacity of <see cref="!:BlockingCollection&lt;Converter&gt;"/> instance in <see cref="T:Core.TypeCast.ConverterCollection"/>, 
@@ -2003,6 +2142,11 @@
         <member name="P:Core.TypeCast.ConverterCollectionSettings.ConverterMissingException">
             <summary>
             Gets or sets a value indicating whether to throw a default-function is missing exception.
+            </summary>
+        </member>
+        <member name="P:Core.TypeCast.ConverterCollectionSettings.ConverterClassExistsException">
+            <summary>
+            Gets or sets a value indicating whether to throw a converter class exists exception.
             </summary>
         </member>
         <member name="P:Core.TypeCast.ConverterCollectionSettings.DefaultValueAnyType">
@@ -2617,6 +2761,11 @@
             Indicates that the argument types of a given delegate do not match the return type and / or types of the provided parameters.
             </summary>
         </member>
+        <member name="F:Core.TypeCast.ConverterCause.BadInputFormat">
+            <summary>
+            Indicates that the input argument was badly formatted.
+            </summary>
+        </member>
         <member name="F:Core.TypeCast.ConverterCause.ConverterFunctionDefaultNull">
             <para>Flag Combinations</para>
             <para></para>
@@ -2920,6 +3069,27 @@
             </summary>
             <remarks>Use for filtering.</remarks>
         </member>
+        <member name="T:Core.Extensions.TypeMatch">
+            <summary>
+            An enumerating of values containing a rough 2bit classification of relationship between two types
+            </summary>
+            <remarks>The enumeration relates to the type change classification of Cast, Convert and Transform</remarks>
+        </member>
+        <member name="F:Core.Extensions.TypeMatch.None">
+            <summary>
+            Unknown or no relationship between the types
+            </summary>
+        </member>
+        <member name="F:Core.Extensions.TypeMatch.Same">
+            <summary>
+            Identical or same relationship between the types
+            </summary>
+        </member>
+        <member name="F:Core.Extensions.TypeMatch.Similar">
+            <summary>
+            Similar or same base relationship between the types
+            </summary>
+        </member>
         <member name="T:Core.Extensions.TypeInfoExtension">
             <summary>
             The  <see cref="T:System.Reflection.TypeInfo"/> extension.
@@ -2991,26 +3161,15 @@
             If set to <see cref="!:null"/>,  the result <see cref="F:Core.Extensions.TypeMatch.None"/> means that the types do not share a relationship.</param>
             <returns>Returns the nature of the compared types as an <see cref="T:Core.Extensions.TypeMatch"/> <see cref="T:System.Enum"/> value.</returns>
         </member>
-        <member name="T:Core.Extensions.TypeMatch">
+        <member name="M:Core.Extensions.TypeInfoExtension.IsSuperOrSubType(System.Reflection.TypeInfo,System.Reflection.TypeInfo)">
             <summary>
-            An enumerating of values containing a rough 2bit classification of relationship between two types
+            Returns <see cref="!:true"/> if a <see cref="T:System.Type"/> <paramref name="self"/> is assignable by <see cref="T:System.Type"/> <paramref name="typeBase"/> or vice versa, 
+            else <see cref="!:false"/> is returned.
             </summary>
-            <remarks>The enumeration relates to the type change classification of Cast, Convert and Transform</remarks>
-        </member>
-        <member name="F:Core.Extensions.TypeMatch.None">
-            <summary>
-            Unknown or no relationship between the types
-            </summary>
-        </member>
-        <member name="F:Core.Extensions.TypeMatch.Same">
-            <summary>
-            Identical or same relationship between the types
-            </summary>
-        </member>
-        <member name="F:Core.Extensions.TypeMatch.Similar">
-            <summary>
-            Similar or same base relationship between the types
-            </summary>
+            <param name="self">The current instance holding the boxed value to convert from</param>
+            <param name="typeBase">The <see cref="T:System.Type"/> to check whether it is a sub or super-<see cref="T:System.Type"/> of <paramref name="self"/></param>
+            <returns>Returns <see cref="!:true"/> if a <see cref="T:System.Type"/> <paramref name="self"/> is assignable by <see cref="T:System.Type"/> <paramref name="typeBase"/> or vice versa, 
+            else <see cref="!:false"/></returns>
         </member>
     </members>
 </doc>
