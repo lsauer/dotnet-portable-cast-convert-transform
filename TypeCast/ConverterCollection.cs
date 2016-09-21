@@ -946,6 +946,7 @@ namespace Core.TypeCast
             return customConverter;
         }
 
+
         /// <summary>
         /// Looks for a <see cref="ConverterAttribute"/> from the passed <see cref="Type"/> <paramref name="type"/> to discover and add converters into the collection
         /// </summary>
@@ -984,17 +985,30 @@ namespace Core.TypeCast
             }
 
             var converterCustom = this.CreateConverterClassInstance(type.AsType());
-            // discover attributed methods
-            foreach(var declaredMethod in type.DeclaredMethods)
+            if(converterCustom != null)
             {
-                var customAttribute = declaredMethod.GetCustomAttribute<ConverterMethodAttribute>() as ConverterMethodAttribute;
-                if(customAttribute != null)
+                // discover attributed methods
+                foreach(var declaredMethod in type.DeclaredMethods)
                 {
-                    this.Add(methodInfo: declaredMethod, baseType: type.AsType(), baseInstance: converterCustom);
+                    var customAttribute = declaredMethod.GetCustomAttribute<ConverterMethodAttribute>() as ConverterMethodAttribute;
+                    if(customAttribute != null)
+                    {
+                        // create a wrapper taking the own class-instance as first argument for methods that are attributed by `ConverterMethod` 
+                        // and do not have any arguments or `PassInstance` set to `true`
+                        if(declaredMethod.GetParameters().Length == 0 || customAttribute.PassInstance == true)
+                        {
+                            Converter converter = this.Factory.CreateWrapper(type, declaredMethod);
+                            this.Add(converter: converter, baseType: type.AsType());
+                        }
+                        else
+                        {
+                            this.Add(methodInfo: declaredMethod, baseType: type.AsType(), baseInstance: converterCustom);
+                        }
+                    }
                 }
-            }
 
-            this.SetAssemblyInitialized(type);
+                this.SetAssemblyInitialized(type);
+            }
             return converterCustom != null;
         }
 
