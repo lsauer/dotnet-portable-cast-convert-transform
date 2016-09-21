@@ -237,7 +237,7 @@ namespace Core.TypeCast
                 }
                 else if(this.DefaultValueAnyType == true)
                 {
-                    return this.ConverterAnyFunc.Invoke((TIn)value, (TArg)defaultValue);
+                    return this.ConverterAnyFunc.Invoke((TIn)value, (TArg)(defaultValue ?? default(TArg)));
                 }
                 return this.ConverterDefaultFunc.Invoke((TIn)value, (TOut)defaultValue);
             }
