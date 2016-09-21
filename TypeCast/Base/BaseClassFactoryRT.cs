@@ -48,7 +48,11 @@ namespace Core.TypeCast.Base
         {
             if(collection?.ConverterClassInitialized.ContainsKey(converterClass.GetTypeInfo()) == true)
             {
-                throw new ConverterCollectionException(ConverterCollectionCause.ConverterClassExists);
+                if(collection?.Settings.ConverterClassExistsException == true)
+                {
+                    throw new ConverterCollectionException(ConverterCollectionCause.ConverterClassExists);
+                }
+                return null;
             }
 
             object customConverter;
