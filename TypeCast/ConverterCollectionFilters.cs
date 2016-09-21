@@ -14,6 +14,7 @@ namespace Core.TypeCast
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
@@ -41,8 +42,7 @@ namespace Core.TypeCast
         {
             if(typeFrom != null)
             {
-                var tmpquery = query.Where(c => c.From == typeFrom);
-                query = WithAssignable(query, tmpquery, typeFrom, assignable);
+                query = WithAssignable(query, c => c.From == typeFrom, c => c.From.IsSuperOrSubType(typeFrom), typeFrom, assignable);
             }
             return query;
         }
@@ -72,8 +72,7 @@ namespace Core.TypeCast
         {
             if(typeTo != null)
             {
-                var tmpquery = query.Where(c => c.To == typeTo);
-                query = WithAssignable(query, tmpquery, typeTo, assignable);
+                query = WithAssignable(query, c => c.To == typeTo, c => c.To.IsSuperOrSubType(typeTo), typeTo, assignable);
             }
             return query;
         }
@@ -101,10 +100,9 @@ namespace Core.TypeCast
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IQueryable<Converter> WithBaseType(this IQueryable<Converter> query, TypeInfo typeBase, bool assignable = false)
         {
-            if(typeBase != null)
+            if(typeBase != null && typeBase.AsType() != typeof(object))
             {
-                var tmpquery = query.Where(c => c.BaseType == typeBase);
-                query = WithAssignable(query, tmpquery, typeBase, assignable);
+                query = WithAssignable(query, c => c.BaseType == typeBase, c => c.BaseType.IsSuperOrSubType(typeBase), typeBase, assignable);
             }
             return query;
         }
@@ -135,8 +133,7 @@ namespace Core.TypeCast
         {
             if(typeArgument != null && typeArgument.AsType() != typeof(object))
             {
-                var tmpquery = query.Where(c => c.Argument == typeArgument);
-                query = WithAssignable(query, tmpquery, typeArgument, assignable);
+                query = WithAssignable(query, c => c.Argument == typeArgument, c => /*c.Argument.AsType() != typeof(object) && */c.Argument.IsAssignableFrom(typeArgument), typeArgument, assignable);
             }
             return query;
         }
@@ -147,19 +144,23 @@ namespace Core.TypeCast
         /// <param name="query">The current query which will be returned should the testQuery fail to yield any result.</param>
         /// <param name="testQuery">The test query to check for possible results</param>
         /// <param name="type">The assignable / inheritable type</param>
-        /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
+        /// <param name="predicate">A function to test each element for a condition; the second parameter of the function represents the index of the element in the source sequence.</param>
+        /// <param name="predicateAssignable">A function to test each element for an alternative condition if the <paramref name="predicate"/> result comes up empty; 
+        /// the second parameter of the function represents the index of the element in the source sequence.</param>
+        /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IQueryable<Converter> WithAssignable(IQueryable<Converter> query, IQueryable<Converter> testQuery, TypeInfo type, bool assignable)
+        private static IQueryable<Converter> WithAssignable(IQueryable<Converter> query, Expression<Func<Converter, bool>> predicate, Expression<Func<Converter, bool>> predicateAssignable, TypeInfo type, bool assignable)
         {
-            if(type.AsType() == typeof(object) || testQuery.Any() || assignable == false)
+            var testQuery = query.Where(predicate);
+            if((type.AsType() == typeof(object) || testQuery.Any()) && assignable == false)
             {
                 query = testQuery;
             }
             else
             {
                 // check for interfaces, sub-types ...
-                query = query.Where(c => c.Argument.IsAssignableFrom(type));
+                query = query.Where(predicateAssignable);
             }
             return query;
         }
@@ -302,6 +303,10 @@ namespace Core.TypeCast
         /// <param name="typeToIsGenericType">The Boolean <see cref="Converter.To.IsGenericType"/> Type-property to look for</param>
         /// <param name="functionName">A search-string to be contained in the <see cref="Converter.Function"/> or<see cref="Converter.FunctionDefault"/> to filter through</param>
         /// <param name="attributeName">A search-string to be contained in the <see cref="ConverterAttribute.Name"/> to filter through</param>
+        /// <param name="assignableFrom">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
+        /// <param name="assignableTo">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
+        /// <param name="assignableArgument">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
+        /// <param name="assignableBaseType">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
         /// <returns>Returns a new filtered query as <see cref="IQueryable{Converter}"/> </returns>
         /// <seealso cref="ConverterCollection.Get(TypeInfo, TypeInfo, TypeInfo, bool?, bool, bool?, bool?, bool?)"/>
         public static IQueryable<Converter> ApplyAllFilters(
@@ -315,7 +320,11 @@ namespace Core.TypeCast
             bool? typeFromIsGenericType = null,
             bool? typeToIsGenericType = null,
             string functionName = null,
-            string attributeName = null)
+            string attributeName = null,
+            bool assignableFrom = false,
+            bool assignableTo = false,
+            bool assignableArgument = false,
+            bool assignableBaseType = false)
         {
             // all converters are contained in Converter_T3's with the argument set to default: object or TOut with only a Converter.Function
             if(typeBase == null)
@@ -324,10 +333,10 @@ namespace Core.TypeCast
             }
 
             return query
-                        .WithFrom(typeFrom)
-                        .WithTo(typeTo)
-                        .WithArgument(typeArgument)
-                        .WithBaseType(typeBase)
+                        .WithFrom(typeFrom, assignableFrom)
+                        .WithTo(typeTo, assignableTo)
+                        .WithArgument(typeArgument, assignableArgument)
+                        .WithBaseType(typeBase, assignableBaseType)
                         .WithStandard(isStandard)
                         .WithDefaultFunction(hasDefaultFunction)
                         .WithFromIsGenericType(typeFromIsGenericType)

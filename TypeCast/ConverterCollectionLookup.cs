@@ -152,6 +152,7 @@ namespace Core.TypeCast
         /// <param name="typeToIsGenericType">Whether <paramref name="typeTo"/> is generic, in cases of unboxing to a sub-type, as may happen with <see cref="Nullable{T}"/></param>
         /// <param name="functionName">A search-string to be contained in the <see cref="Converter.Function"/> or<see cref="Converter.FunctionDefault"/> to filter through</param>
         /// <param name="attributeName">A search-string to be contained in the <see cref="ConverterAttribute.Name"/> to filter through</param>
+        /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
         /// <returns>A converter instance if the query yielded a result, or `null` if no suitable <see cref="Converter"/> could be found.</returns>
         /// <remarks>note that invocation of <see cref="Get"/> may instantiate and thus initializes any required converters referenced in <see cref="loadOnDemandConverters"/>
         /// </remarks>
@@ -169,13 +170,12 @@ namespace Core.TypeCast
             bool? typeFromIsGenericType = null,
             bool? typeToIsGenericType = null,
             string functionName = null,
-            string attributeName = null)
+            string attributeName = null,
+            bool assignable = false)
         {
-            //typeArgument = typeArgument ?? typeof(object).GetTypeInfo();
-
             query = query.ApplyAllFilters(typeFrom: typeFrom, typeTo: typeTo, typeArgument: typeArgument, typeBase: typeBase, hasDefaultFunction: hasDefaultFunction,
                                             isStandard: isStandard, typeFromIsGenericType: typeFromIsGenericType, typeToIsGenericType: typeToIsGenericType, 
-                                            functionName: functionName, attributeName: attributeName);
+                                            functionName: functionName, attributeName: attributeName, assignableFrom: assignable, assignableTo: assignable, assignableArgument: assignable);
 
             if(loadOnDemand == true && query.Any() == false && (query as ConverterCollection)?.LoadOnDemandConverter(typeTo.AsType()) > 0)
             {

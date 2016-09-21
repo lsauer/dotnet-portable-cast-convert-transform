@@ -67,7 +67,7 @@ namespace Core.TypeCast
                     typeTo = typeTo ?? typeof(TOut);
                 }
                 converter = ConverterCollection.CurrentInstance.Get(typeFrom: typeFrom.GetTypeInfo(), typeTo: typeTo?.GetTypeInfo(),
-                                    typeArgument: typeArgument?.GetTypeInfo(), typeBase: typeBase?.GetTypeInfo(), attributeName: attributeName, loadOnDemand: true);
+                                    typeArgument: typeArgument?.GetTypeInfo(), typeBase: typeBase?.GetTypeInfo(), attributeName: attributeName, loadOnDemand: true, assignable: true);
             }
             else
             {
