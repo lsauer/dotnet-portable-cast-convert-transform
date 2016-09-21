@@ -47,6 +47,7 @@
     <Compile Include="ConverterCollection.AddBuilder.cs" />
     <Compile Include="ConverterCollectionLookup.cs" />
     <Compile Include="DependencyInjectionException.cs" />
+    <Compile Include="Enum\TypeMatch.cs" />
     <Compile Include="Extension\ObjectExtension[Transform].cs" />
     <Compile Include="Extension\ObjectExtension[Cast].cs" />
     <Compile Include="Extension\ObjectExtension[Convert].cs" />
