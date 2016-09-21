@@ -38,7 +38,8 @@ namespace Core.TypeCast
         /// <param name="numberFormat">
         /// The number format used for the conversion functions within the <see cref="ConverterCollection"/> instance.
         /// </param>
-        /// <param name="converterMissingException">  Whether to throw a converter missing exception.  </param>
+        /// <param name="converterMissingException">Whether to throw a converter missing exception.  </param>
+        /// <param name="converterClassExistsException">Whether to throw a converter class exists exception.  </param>
         /// <param name="allowGenericTypes">Whether to allow generic types as source or target types of converters</param>
         /// <param name="converterDefaultWrapperOrException">
         /// Whether to use a default-value wrapper if one is required or throw a default-function missing exception.
@@ -48,7 +49,10 @@ namespace Core.TypeCast
             bool defaultValueAnyType = false,
             bool useFunctionDefaultWrapper = true,
             bool converterMissingException = false,
+            bool converterClassExistsException = false,
             bool allowGenericTypes = true,
+            bool allowExplicitObject = true,
+            bool allowDynamicType = true,
             bool converterDefaultWrapperOrException = true,
             int boundedCapacity = 10000)
         {
@@ -56,7 +60,10 @@ namespace Core.TypeCast
             this.UseFunctionDefaultWrapper = useFunctionDefaultWrapper;
             this.NumberFormat = numberFormat ?? DefaultNumberFormat;
             this.ConverterMissingException = converterMissingException;
+            this.ConverterClassExistsException = converterClassExistsException;
             this.AllowGenericTypes = allowGenericTypes;
+            this.AllowExplicitObject = allowExplicitObject;
+            this.AllowDynamicType = allowDynamicType;
             this.ConverterDefaultWrapperOrException = converterDefaultWrapperOrException;
             this.BoundedCapacity = boundedCapacity;
         }
@@ -70,6 +77,18 @@ namespace Core.TypeCast
         /// Gets or sets whether to throw an <see cref="ConverterException"/> if generic types are passed as the source our target <see cref="Type"/>.
         /// </summary>
         public bool AllowGenericTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether to throw an <see cref="ConverterException"/> if the conversion Source or target type is set explicitly to <see cref="Type"/> `object`.
+        /// </summary>
+        public bool AllowExplicitObject { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether to allow invoking dynamic implicit casting as a cast Fallback in <see cref="ObjectExtension.InvokeConvert{TIn, TOut}(TIn, out TOut, object, bool, Converter, IConvertContext, string)"/>.
+        /// </summary>
+        /// The implementation is based on C# 4+'s core feature using a <see cref="dynamic"/> Type using internal CLR reflection logic, but may alternatively be invoked via explicit reflection as well.
+        /// <remarks>See http://stackoverflow.com/a/2090228/901946 </remarks>
+        public bool AllowDynamicType { get; set; }
 
         /// <summary>
         /// Gets or sets the bounded capacity of <see cref="BlockingCollection{Converter}"/> instance in <see cref="ConverterCollection"/>, 
@@ -98,6 +117,11 @@ namespace Core.TypeCast
         /// Gets or sets a value indicating whether to throw a default-function is missing exception.
         /// </summary>
         public bool ConverterMissingException { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to throw a converter class exists exception.
+        /// </summary>
+        public bool ConverterClassExistsException { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the second argument of <see cref="Converter.FunctionDefault"/> is <see cref="Type"/>-checked to 
