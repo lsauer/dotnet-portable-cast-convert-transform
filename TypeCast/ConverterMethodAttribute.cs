@@ -64,11 +64,12 @@ namespace Core.TypeCast
         /// <param name="dependencyInjection">
         /// Whether the declaring converter class is instantiated via dependency Injection.
         /// </param>
-        public ConverterMethodAttribute(bool isStatic = true, bool loadOnDemand = true, string nameSpace = "")
+        public ConverterMethodAttribute(bool isStatic = true, bool loadOnDemand = true, string nameSpace = "", bool passInstance = false)
         {
             this.LoadOnDemand = loadOnDemand;
             this.NameSpace = nameSpace;
             this.IsStatic = isStatic;
+            this.PassInstance = passInstance;
         }
 
         /// <summary>
@@ -110,7 +111,6 @@ namespace Core.TypeCast
         /// </example>
         public bool LoadOnDemand { get; }
 
-
         /// <summary>
         /// Gets a value indicating whether the method is invoked with `this` set to null (`true`) or with an instance reference (`false`). Default is `true`.
         /// </summary>
@@ -137,6 +137,12 @@ namespace Core.TypeCast
         /// </example>
         /// <remarks>The namespace is used for filtering and grouping of <see cref="Core.TypeCast.Converters"/></remarks>
         public string NameSpace { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the method should be wrapped and passed an instance of its containing class as the first argument (`true`). 
+        /// Default is <see cref="false"/>, which does not wrap the attributed method.
+        /// </summary>
+        public bool PassInstance { get; }
 
         /// <summary>
         /// A string representation of the current attribute.
