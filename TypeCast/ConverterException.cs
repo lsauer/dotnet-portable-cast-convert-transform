@@ -70,7 +70,7 @@ namespace Core.TypeCast
         /// <returns>The string containing the formatted exception message</returns>
         public virtual string GetMessage()
         {
-            return this.Cause.GetType().Name + " '" + this.Cause + "': " + this.Cause.GetDescription() + base.Message;
+            return this.Cause.GetType().Name + " '" + this.Cause + "': " + this.Cause.GetDescription();
         }
 
         /// <summary>
