@@ -50,6 +50,7 @@ namespace Core.TypeCast
             bool useFunctionDefaultWrapper = true,
             bool converterMissingException = false,
             bool converterClassExistsException = false,
+            bool autoInitialize = true,
             bool allowGenericTypes = true,
             bool allowExplicitObject = true,
             bool allowDynamicType = true,
@@ -61,6 +62,7 @@ namespace Core.TypeCast
             this.NumberFormat = numberFormat ?? DefaultNumberFormat;
             this.ConverterMissingException = converterMissingException;
             this.ConverterClassExistsException = converterClassExistsException;
+            this.AutoInitialize = autoInitialize;
             this.AllowGenericTypes = allowGenericTypes;
             this.AllowExplicitObject = allowExplicitObject;
             this.AllowDynamicType = allowDynamicType;
@@ -89,6 +91,11 @@ namespace Core.TypeCast
         /// The implementation is based on C# 4+'s core feature using a <see cref="dynamic"/> Type using internal CLR reflection logic, but may alternatively be invoked via explicit reflection as well.
         /// <remarks>See http://stackoverflow.com/a/2090228/901946 </remarks>
         public bool AllowDynamicType { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether to allow auto-initialization through attribute scanning of the entry-assembly. Auto-discovery may not be available during testing and in special runtime environments.
+        /// </summary>
+        public bool AutoInitialize { get; set; }
 
         /// <summary>
         /// Gets or sets the bounded capacity of <see cref="BlockingCollection{Converter}"/> instance in <see cref="ConverterCollection"/>, 

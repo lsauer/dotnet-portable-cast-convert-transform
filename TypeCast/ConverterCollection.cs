@@ -776,14 +776,18 @@ namespace Core.TypeCast
         public static void AutoInitialize()
         {
             // is the ConverterCollection Initialized?
-            if(AutoInitialized == false)
+            if(AutoInitialized == false && CurrentInstance.Settings.AutoInitialize == true)
             {
                 try
                 {
                     var getEntryAssembly = typeof(Assembly).GetRuntimeMethods().FirstOrDefault(m => m.Name.Equals("GetEntryAssembly"));
-                    var assembly = getEntryAssembly.Invoke(null, null) as Assembly;
-                    CurrentInstance.Initialize(assembly);
-                    CurrentInstance.ApplicationNameSpace = assembly?.GetNamespacesByLevel(0).FirstOrDefault();
+                    if(getEntryAssembly != null)
+                    {
+                        var assembly = getEntryAssembly.Invoke(null, null) as Assembly;
+                        CurrentInstance.Initialize(assembly);
+                        CurrentInstance.ApplicationNameSpace = assembly?.GetNamespacesByLevel(0)?.FirstOrDefault();
+                    }
+                    // set as initialized regardless of success, to run only once
                     AutoInitialized = true;
                 }
                 catch(Exception exc)
