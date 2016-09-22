@@ -866,7 +866,7 @@ namespace Core.TypeCast
         {
             foreach(var assembly in assemblies)
             {
-                if(this.AssemblyInitialized.ContainsKey(assembly) == true)
+                if(assembly == null || this.AssemblyInitialized.ContainsKey(assembly) == true)
                 {
                     continue;
                 }
