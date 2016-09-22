@@ -56,7 +56,7 @@ namespace Core.TypeCast.Converters
         {
             collection.Add<object, int>(o => int.Parse(o != null ? o.ToString() : string.Empty, this.NumberFormat), this.self)
                       .Add<object, uint>(o => uint.Parse(o != null ? o.ToString() : string.Empty, this.NumberFormat), this.self)
-                      .Add<object, char>(o => (char)uint.Parse(o != null ? o.ToString() : string.Empty, this.NumberFormat), this.self)
+                      .Add<object, char>(o => Convert.ToChar(o), this.self)
                       .Add<object, bool>(o => o != null && (int)o != 0 && o.ToString() != "false", this.self)
                       .Add<object, string>(o => o != null ? o.ToString() : string.Empty, this.self)
                       .Add<object, byte>(o => byte.Parse(o != null ? o.ToString() : string.Empty, this.NumberFormat), this.self)
