@@ -158,6 +158,13 @@ namespace Core.TypeCast
         [Description("Indicates that the argument types of a given delegate do not match the return type and / or types of the provided parameters.")]
         DelegateArgumentWrongType = 1 << 20,
 
+
+        /// <summary>
+        /// Indicates that the converter logic raised an `InvalidOperationException`, `OverflowException` or `ArithmeticException` which was caught.
+        /// </summary>
+        [Description("Indicates that the converter logic raised an `InvalidOperationException`, `OverflowException` or `ArithmeticException` which was caught.")]
+        LogicError = 1 << 21,
+
         /// <summary>
         /// Indicates that the input argument was badly formatted.
         /// </summary>

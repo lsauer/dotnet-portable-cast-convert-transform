@@ -68,6 +68,12 @@ namespace Core.TypeCast
                 }
                 converter = ConverterCollection.CurrentInstance.Get(typeFrom: typeFrom.GetTypeInfo(), typeTo: typeTo?.GetTypeInfo(),
                                     typeArgument: typeArgument?.GetTypeInfo(), typeBase: typeBase?.GetTypeInfo(), attributeName: attributeName, loadOnDemand: true, assignable: true);
+                // no specific converter found, lets find a generic fallback converter
+                if(converter == null && unboxObjectType == true && typeof(TIn) == typeof(object))
+                {
+                    converter = ConverterCollection.CurrentInstance.Get(typeFrom: typeof(object).GetTypeInfo(), typeTo: typeTo?.GetTypeInfo(),
+                                        typeArgument: typeArgument?.GetTypeInfo(), typeBase: typeBase?.GetTypeInfo(), attributeName: attributeName, loadOnDemand: true, assignable: true);
+                }
             }
             else
             {
@@ -129,6 +135,13 @@ namespace Core.TypeCast
                         if(throwException == true)
                         {
                             throw new ConverterException(ConverterCause.BadInputFormat, exc);
+                        }
+                    }
+                    else if(exc is System.OverflowException || exc is System.InvalidOperationException || exc is System.ArithmeticException)
+                    {
+                        if(throwException == true)
+                        {
+                            throw new ConverterException(ConverterCause.LogicError, exc);
                         }
                     }
                     else
