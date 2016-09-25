@@ -959,6 +959,7 @@ namespace Core.TypeCast
         /// <remarks>Use the <see cref="CreateConverterClassInstance"/> method to instantiate a custom converter type without regard towards the <see cref="ConverterAttribute"/> properties</remarks>
         private bool AddAllConvertersByAttribute(TypeInfo type)
         {
+            int count = this.Count;
             if(ConstructorAddedClasses?.Contains(type.AsType()) == false)
             {
                 var attribute = type.GetCustomAttribute<ConverterAttribute>();
@@ -988,32 +989,36 @@ namespace Core.TypeCast
                 }
             }
 
-            var converterCustom = this.CreateConverterClassInstance(type.AsType());
-            if(converterCustom != null)
+            // discover attributed methods
+            object converterCustom = null;
+            foreach(var declaredMethod in type.DeclaredMethods)
             {
-                // discover attributed methods
-                foreach(var declaredMethod in type.DeclaredMethods)
+                var customAttribute = declaredMethod.GetCustomAttribute<ConverterMethodAttribute>() as ConverterMethodAttribute;
+                if(customAttribute != null)
                 {
-                    var customAttribute = declaredMethod.GetCustomAttribute<ConverterMethodAttribute>() as ConverterMethodAttribute;
-                    if(customAttribute != null)
+                    // create a wrapper taking the own class-instance as first argument for methods that are attributed by `ConverterMethod` 
+                    // and do not have any arguments or `PassInstance` set to `true`
+                    if(declaredMethod.GetParameters().Length == 0 || customAttribute.PassInstance == true)
                     {
-                        // create a wrapper taking the own class-instance as first argument for methods that are attributed by `ConverterMethod` 
-                        // and do not have any arguments or `PassInstance` set to `true`
-                        if(declaredMethod.GetParameters().Length == 0 || customAttribute.PassInstance == true)
+                        Converter converter = this.Factory.CreateWrapper(type, declaredMethod);
+                        this.Add(converter: converter, baseType: type.AsType());
+                    }
+                    else
+                    {
+                        if(converterCustom == null)
                         {
-                            Converter converter = this.Factory.CreateWrapper(type, declaredMethod);
-                            this.Add(converter: converter, baseType: type.AsType());
+                            converterCustom = this.CreateConverterClassInstance(type.AsType());
                         }
-                        else
+                        if(converterCustom != null)
                         {
                             this.Add(methodInfo: declaredMethod, baseType: type.AsType(), baseInstance: converterCustom);
                         }
                     }
                 }
-
-                this.SetAssemblyInitialized(type);
             }
-            return converterCustom != null;
+
+            this.SetAssemblyInitialized(type);
+            return count != this.Count;
         }
 
         #region Implementation of IEnumerable
