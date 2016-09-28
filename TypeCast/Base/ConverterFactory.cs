@@ -32,6 +32,7 @@ namespace Core.TypeCast.Base
         public override Converter Create<TIn, TOut>(Func<TIn, TOut> method)
         {
             var converter = new Converter<TIn, TOut>(method);
+            converter.MergeFromMethodAttribute(method.GetMethodInfo());
 
             return converter;
         }
@@ -47,6 +48,7 @@ namespace Core.TypeCast.Base
         public override Converter Create<TIn, TOut>(Func<TIn, TOut, TOut> method)
         {
             var converter = new Converter<TIn, TOut>(method);
+            converter.MergeFromMethodAttribute(method.GetMethodInfo());
 
             return converter;
         }
@@ -80,6 +82,8 @@ namespace Core.TypeCast.Base
             var args = new object[] { declaredMethod }; //: new object[] { declaredMethod }.Concat(parameters).ToArray();
 
             var converter = (Converter)makeConverter.Invoke(this, args);
+
+            converter.MergeFromMethodAttribute(declaredMethod);
 
             return converter;
         }

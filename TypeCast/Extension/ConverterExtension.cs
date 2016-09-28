@@ -105,6 +105,8 @@ namespace Core.TypeCast
                 {
                     self.Function = converter.Function;
                 }
+
+                self.Attribute = self.Attribute ?? converter.Attribute;
                 return true;
             }
             return false;
@@ -181,6 +183,32 @@ namespace Core.TypeCast
                 return self.Collection.Items.AsQueryable().WithTo(self.To);
             }
             return null;
+        }
+
+        /// <summary>
+        /// Creates and sets a new <see cref="ConverterAttribute"/> with the information provided by the attributed parent class as well as <see cref="ConverterMethodAttribute"/> 
+        /// </summary>
+        /// <param name="self">the current instance of the <see cref="Core.TypeCast.Base.Converter"/></param>
+        /// <param name="methodInfo">A <see cref="MethodInfo"/> of the converter function to be added, which is attributed by a <see cref="ConverterMethodAttribute"/> </param>
+        /// <remarks>
+        /// Used to set a function-alias or Base-Type delegate for <see cref="ObjectExtension.Transform{TBase, TOut}(object, object, string, bool, bool)"/> lookup
+        /// </remarks>
+        public static void MergeFromMethodAttribute(this Converter self, MethodInfo methodInfo)
+        {
+            var classAttribute = methodInfo.DeclaringType.GetTypeInfo().GetCustomAttribute<ConverterAttribute>();
+            var methodAttribute = methodInfo.GetCustomAttribute<ConverterMethodAttribute>();
+
+            // set function-alias for unique transformation function lookup
+            self.Attribute = new ConverterAttribute(loadOnDemand: classAttribute?.LoadOnDemand ?? false, 
+                name: String.IsNullOrWhiteSpace(classAttribute?.Name) ? methodAttribute?.Name : classAttribute.Name,
+                nameSpace: methodInfo.DeclaringType.Namespace, 
+                dependencyInjection: classAttribute?.DependencInjection ?? false);
+
+            // set base-type delegate type used for unique transformation-lookup
+            if(methodAttribute?.BaseType != null)
+            {
+                self.BaseType = self.BaseType ?? methodAttribute.BaseType.GetTypeInfo();
+            }
         }
     }
 }
