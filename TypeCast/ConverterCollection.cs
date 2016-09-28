@@ -1004,7 +1004,7 @@ namespace Core.TypeCast
                 {
                     // create a wrapper taking the own class-instance as first argument for methods that are attributed by `ConverterMethod` 
                     // and do not have any arguments or `PassInstance` set to `true`
-                    if(declaredMethod.GetParameters().Length == 0 || customAttribute.PassInstance == true)
+                    if((declaredMethod.IsStatic == false && declaredMethod.GetParameters().Length == 0) || customAttribute.PassInstance == true)
                     {
                         Converter converter = this.Factory.CreateWrapper(type, declaredMethod);
                         this.Add(converter: converter, baseType: type.AsType());
