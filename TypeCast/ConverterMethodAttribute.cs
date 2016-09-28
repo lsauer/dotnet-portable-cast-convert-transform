@@ -135,7 +135,7 @@ namespace Core.TypeCast
         ///     ...
         /// ```</code>
         /// </example>
-        /// <remarks>The namespace is used for filtering and grouping of <see cref="Core.TypeCast.Converters"/></remarks>
+        /// <remarks>The name is used for unique function lookup amongst disambiguates based on the input/output types</remarks>
         public string Name { get; }
 
         /// <summary>

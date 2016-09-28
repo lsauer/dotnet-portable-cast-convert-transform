@@ -631,7 +631,7 @@ namespace Core.TypeCast
                 // if there is already a standard converter try to merge them. The condition is that the converter argument type match or is not used
                 if(allowDisambiguates == false && converter.Standard)
                 {
-                    var converterLookup = this.Get(typeFrom: converter.From, typeTo: converter.To, loadOnDemand: false, isStandard: true);
+                    var converterLookup = this.Get(typeFrom: converter.From, typeTo: converter.To, typeArgument: typeof(object).GetTypeInfo(), loadOnDemand: false, isStandard: true);
                     try
                     {
                         if(converterLookup?.MergeStandard(converter) == true)
@@ -749,8 +749,8 @@ namespace Core.TypeCast
         /// <returns>Returns <see cref="bool"/> an integer number > `0` if the Converters of the namespace from <paramref name="typeTo"/> were successfully added, otherwise returns `0`</returns>
         public int LoadOnDemandConverter(Type typeTo)
         {
-            var nameSpace = typeTo.Namespace?.Split('.').Last();
-            if(this.loadOnDemandConverters.ContainsKey(nameSpace))
+            var nameSpace = typeTo?.Namespace.Split('.').Last();
+            if(nameSpace != null && this.loadOnDemandConverters.ContainsKey(nameSpace))
             {
                 var loaded = this.loadOnDemandConverters[nameSpace].Select(this.CreateConverterClassInstance).Count();
                 this.loadOnDemandConverters.Remove(nameSpace);
@@ -960,6 +960,8 @@ namespace Core.TypeCast
         private bool AddAllConvertersByAttribute(TypeInfo type)
         {
             int count = this.Count;
+            object converterCustom = null;
+
             if(ConstructorAddedClasses?.Contains(type.AsType()) == false)
             {
                 var attribute = type.GetCustomAttribute<ConverterAttribute>();
@@ -987,10 +989,14 @@ namespace Core.TypeCast
 
                     return false;
                 }
+
+                if(attribute?.DependencInjection == true)
+                {
+                    converterCustom = this.CreateConverterClassInstance(type.AsType());
+                }
             }
 
             // discover attributed methods
-            object converterCustom = null;
             foreach(var declaredMethod in type.DeclaredMethods)
             {
                 var customAttribute = declaredMethod.GetCustomAttribute<ConverterMethodAttribute>() as ConverterMethodAttribute;
