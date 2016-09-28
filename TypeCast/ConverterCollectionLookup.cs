@@ -116,7 +116,6 @@ namespace Core.TypeCast
         /// <typeparam name="TArg">The Argument <see cref="Type"/> for generic converters using see <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object)"/>. 
         /// <returns>A converter instance if the query yielded a result, or `null` if no suitable <see cref="Converter"/> could be found.</returns>
         /// <returns>A converter instance if the query yielded a result, or `null` if no suitable <see cref="Converter"/> could be found.</returns>
-
         public static Converter Get<TIn, TArg, TOut>(this IQueryable<Converter> query, TIn value = default(TIn), TArg argument = default(TArg), TOut defaultValue = default(TOut), bool? hasDefault = null, bool loadOnDemand = false)
         {
             return query.Get(typeof(TIn).GetTypeInfo(), typeof(TOut).GetTypeInfo(), typeArgument: typeof(TArg).GetTypeInfo(), hasDefaultFunction: hasDefault, loadOnDemand: loadOnDemand);
@@ -153,6 +152,7 @@ namespace Core.TypeCast
         /// <param name="functionName">A search-string to be contained in the <see cref="Converter.Function"/> or<see cref="Converter.FunctionDefault"/> to filter through</param>
         /// <param name="attributeName">A search-string to be contained in the <see cref="ConverterAttribute.Name"/> to filter through</param>
         /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
+        /// <param name="withContext">Whether to include argument types that support a conversion context for the model.</param> 
         /// <returns>A converter instance if the query yielded a result, or `null` if no suitable <see cref="Converter"/> could be found.</returns>
         /// <remarks>note that invocation of <see cref="Get"/> may instantiate and thus initializes any required converters referenced in <see cref="loadOnDemandConverters"/>
         /// </remarks>
@@ -171,13 +171,15 @@ namespace Core.TypeCast
             bool? typeToIsGenericType = null,
             string functionName = null,
             string attributeName = null,
-            bool assignable = false)
+            bool assignable = false, 
+            bool withContext = false)
         {
             query = query.ApplyAllFilters(typeFrom: typeFrom, typeTo: typeTo, typeArgument: typeArgument, typeBase: typeBase, hasDefaultFunction: hasDefaultFunction,
                                             isStandard: isStandard, typeFromIsGenericType: typeFromIsGenericType, typeToIsGenericType: typeToIsGenericType, 
-                                            functionName: functionName, attributeName: attributeName, assignableFrom: assignable, assignableTo: assignable, assignableArgument: assignable);
+                                            functionName: functionName, attributeName: attributeName, assignableFrom: assignable, assignableTo: assignable, 
+                                            assignableArgument: assignable, withContext: withContext);
 
-            if(loadOnDemand == true && query.Any() == false && (query as ConverterCollection)?.LoadOnDemandConverter(typeTo.AsType()) > 0)
+            if(loadOnDemand == true && query.Any() == false && ((query as ConverterCollection) ?? ConverterCollection.CurrentInstance)?.LoadOnDemandConverter(typeTo?.AsType()) > 0)
             {
                 query = query.WithFrom(typeFrom).WithTo(typeTo);
             }
