@@ -22,6 +22,9 @@ namespace Core.TypeCast
     /// <summary>The object extension methods to convert an object of an unrestricted unknown type `TIn` to an unrestricted known type `TOut`.</summary>
     public static partial class ObjectExtension
     {
+        private static Type objectType = typeof(object);
+        private static TypeInfo objectTypeInfo = typeof(object).GetTypeInfo();
+
         /// <summary>A method wrapper to safely lookup the required converter instance for the conversion and intercept possible exceptions.
         /// The method returns <see cref="bool"/> `true` if the <paramref name="result"/> value is already determined, in case of <paramref name="self"/> 
         /// already having <see cref="Type"/> <typeparamref name="TOut"/>
@@ -35,6 +38,7 @@ namespace Core.TypeCast
         /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <see cref="self"/> to</param>
         /// <param name="typeBase">The base-type <see cref="Type"/> to which to convert the <see cref="Type"/> of <see cref="self"/> to</param>
         /// <param name="attributeName">A search-string to be contained in the <see cref="ConverterAttribute.Name"/> to filter through</param>
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
         /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
         /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
         /// <returns>The result state as <see cref="bool" /> indicating if the conversion is already finished (`true`) or still pending (`false`).</returns>
@@ -51,28 +55,35 @@ namespace Core.TypeCast
             Type typeBase = null,
             bool throwException = false,
             bool unboxObjectType = true,
-            string attributeName = null)
+            string attributeName = null,
+            bool withContext = false)
         {
             ConverterCollection.AutoInitialize();
-            if(typeof(TIn) == typeof(object))
+            if(typeof(TIn) == objectType)
             {
                 if(throwException == true && unboxObjectType == false && ConverterCollection.CurrentInstance.Settings.AllowGenericTypes == false)
                 {
                     throw new ConverterException(ConverterCause.ConverterTypeInIsExplicitObject);
                 }
 
-                var typeFrom = unboxObjectType ? self.GetType() : typeof(object);
-                if(typeof(TOut) != typeof(object))
+                var typeFrom = unboxObjectType ? self.GetType() : objectType;
+                if(typeTo == null || typeof(TOut) != objectType)
                 {
                     typeTo = typeTo ?? typeof(TOut);
                 }
-                converter = ConverterCollection.CurrentInstance.Get(typeFrom: typeFrom.GetTypeInfo(), typeTo: typeTo?.GetTypeInfo(),
-                                    typeArgument: typeArgument?.GetTypeInfo(), typeBase: typeBase?.GetTypeInfo(), attributeName: attributeName, loadOnDemand: true, assignable: true);
-                // no specific converter found, lets find a generic fallback converter
-                if(converter == null && unboxObjectType == true && typeof(TIn) == typeof(object))
+                converter = ConverterCollection.CurrentInstance.Get(typeFrom: typeFrom.GetTypeInfo(), typeTo: typeTo?.GetTypeInfo(), typeArgument: typeArgument?.GetTypeInfo(), 
+                                        typeBase: typeBase?.GetTypeInfo(), attributeName: attributeName, loadOnDemand: true, assignable: false, withContext: withContext);
+                // Retry by widening the search to type-inheritance
+                if(converter == null)
                 {
-                    converter = ConverterCollection.CurrentInstance.Get(typeFrom: typeof(object).GetTypeInfo(), typeTo: typeTo?.GetTypeInfo(),
-                                        typeArgument: typeArgument?.GetTypeInfo(), typeBase: typeBase?.GetTypeInfo(), attributeName: attributeName, loadOnDemand: true, assignable: true);
+                    converter = ConverterCollection.CurrentInstance.Get(typeFrom: typeFrom.GetTypeInfo(), typeTo: typeTo?.GetTypeInfo(), typeArgument: typeArgument?.GetTypeInfo(),
+                                        typeBase: typeBase?.GetTypeInfo(), attributeName: attributeName, loadOnDemand: false, assignable: true, withContext: withContext);
+                }
+                // no specific converter found, lets find a generic fallback converter
+                if(converter == null && unboxObjectType == true && typeof(TIn) == objectType)
+                {
+                    converter = ConverterCollection.CurrentInstance.Get(typeFrom: objectTypeInfo, typeTo: typeTo?.GetTypeInfo(), typeArgument: typeArgument?.GetTypeInfo(),
+                                        typeBase: typeBase?.GetTypeInfo(), attributeName: attributeName, loadOnDemand: false, assignable: false, withContext: withContext);
                 }
             }
             else
@@ -156,7 +167,8 @@ namespace Core.TypeCast
             if(ConverterCollection.CurrentInstance.Settings.AllowDynamicType == true)
             {
                 // lets use the internal CLR reflection logic via `dynamic` to invoke a Type's dynamic implicit cast method if available
-                try { 
+                try
+                {
                     dynamic tmp = self;
                     result = (TOut)tmp;
                     return true;

@@ -125,7 +125,7 @@ namespace Core.TypeCast
         {
             Converter converter;
             result = default(TOut);
-            if(GetConverterOrDefault<object, TOut>(self, out converter, out result, typeArgument: model?.GetType(), throwException: throwException, unboxObjectType: true))
+            if(GetConverterOrDefault<object, TOut>(self, out converter, out result, typeArgument: model?.GetType(), throwException: throwException, unboxObjectType: true, withContext: withContext))
             {
                 return true;
             }
@@ -142,7 +142,7 @@ namespace Core.TypeCast
         /// <param name="model">An model-instance, for instance a Data-Transfer-Object/DTO that encapsulates further data parameters for the conversion process
         /// to the target-<see cref="Type"/><typeparamref name="TOut"/></param>
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
-        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within 
         /// <see cref="Type" /> <typeparamref name="TOut"/></param>
         /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
         /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
@@ -162,7 +162,7 @@ namespace Core.TypeCast
         {
             Converter converter;
             result = default(TOut);
-            if(GetConverterOrDefault<TIn, TOut>(self, out converter, out result, typeArgument: typeof(TArg), throwException: throwException, unboxObjectType: false))
+            if(GetConverterOrDefault<TIn, TOut>(self, out converter, out result, typeArgument: typeof(TArg), throwException: throwException, unboxObjectType: false, withContext: withContext))
             {
                 return true;
             }

@@ -35,6 +35,8 @@ namespace Core.TypeCast
         public static TOut CastTo<TOut>(this object self, TOut defaultValue = default(TOut))
         {
             TOut result;
+            //self.TryCast(typeTo: typeTo, out result, defaultValue, throwException: false);
+
             self.TryCast<object, TOut>(out result, defaultValue, throwException: defaultValue?.IsDefaultValue() == true, unboxObjectType: true);
             return result;
         }
@@ -125,6 +127,7 @@ namespace Core.TypeCast
         /// <param name="self">The own instance which invokes the static extension method</param>
         /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <see cref="self"/> to</param>
         /// <param name="defaultValue">A optional default value of the target-<see cref="Type"/><typeparamref name="TOut"/></param>
+        /// <param name="unboxObjectType">Whether to determine the type from the parameters <paramref name="self"/> and <paramref name="result"/> respectively.</param>
         /// <returns>Returns the converted value of <see cref="Type"/> <typeparamref name="TOut" /> </returns>
         /// <example>
         ///     <code>
@@ -145,10 +148,10 @@ namespace Core.TypeCast
         /// <remarks>note: The <see cref="ConverterCollection"/> is lazy instantiated upon the first invocation of the method</remarks>
         /// <seealso cref="TryCast(object, Type, out object, object, bool)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static object CastTo(this object self, Type typeTo, object defaultValue = null)
+        public static object CastTo(this object self, Type typeTo, object defaultValue = null, bool unboxObjectType = true)
         {
             object result;
-            self.TryCast(typeTo, out result, defaultValue, throwException: false);
+            self.TryCast(typeTo, out result, defaultValue, throwException: false, unboxObjectType: unboxObjectType);
             return result;
         }
 
@@ -204,6 +207,7 @@ namespace Core.TypeCast
         /// <param name="result">The variable reference to which the conversion result is assigned.</param>
         /// <param name="defaultValue">An optional default value of the target-<see cref="Type"/><typeparamref name="TOut"/></param>
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
+        /// <param name="unboxObjectType">Whether to determine the type from the parameters <paramref name="self"/> and <paramref name="result"/> respectively.</param>
         /// <param name="contextInstance">An optional context instance, providing current parameters of the conversion process and context.</param>
         /// <typeparam name="TOut"></typeparam>
         /// <returns>The success state as <see cref="bool" /> indicating if the conversion succeeded (`true`) or failed (`false`).</returns>
@@ -217,16 +221,21 @@ namespace Core.TypeCast
         /// <remarks>note: The <see cref="ConverterCollection"/> is lazy instantiated upon the first invocation of the method</remarks>
         /// <seealso cref="GetConverterOrDefault{TIn, TOut}(TIn, out Converter, out TOut, Type, bool, bool)"/>
         /// <seealso cref="InvokeConvert{TIn, TOut}(TIn, out TOut, object, bool, Converter)"/>
-        public static bool TryCast(this object self, Type typeTo, out object result, object defaultValue, bool throwException = false, IConvertContext contextInstance = null)
+        public static bool TryCast(this object self, Type typeTo, out object result, object defaultValue, bool throwException = false, bool unboxObjectType = true, IConvertContext contextInstance = null)
         {
-            var typeFrom = self.GetType();
-            if(typeFrom == typeTo)
+            Type typeFrom = null;
+            Type typeArgument = null;
+            if(unboxObjectType == true)
             {
-                result = (object)self;
-                return true;
-            }
+                typeFrom = self.GetType();
+                if(typeFrom == typeTo)
+                {
+                    result = (object)self;
+                    return true;
+                }
 
-            var typeArgument = defaultValue == null ? null : defaultValue.GetType();
+                typeArgument = defaultValue == null ? null : defaultValue.GetType();
+            }
 
             Converter converter;
             if(GetConverterOrDefault(self, out converter, out result, typeArgument: typeArgument, typeTo: typeTo, throwException: throwException, unboxObjectType: true))

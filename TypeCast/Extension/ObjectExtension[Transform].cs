@@ -29,10 +29,9 @@ namespace Core.TypeCast
         /// <param name="self">The current instance holding the boxed value to convert from</param>
         /// <param name="functionAlias">Applies an optional search string to the filter lookup, as Transform functions are allowed to be ambivalent 
         /// i.e. have same argument and return types</param>
-        /// <param name="strictTypeCheck">Whether the input and output arguments are of the same type, otherwise an exception is thrown, when set to true.</param>
         /// <returns>Returns the transformed value of the <see cref="Type"/> as <typeparamref name="TOut" /> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TOut Transform<TOut>(this TOut self, Enum functionAlias, bool strictTypeCheck = true)
+        public static TOut Transform<TOut>(this TOut self, Enum functionAlias)
         {
             return Transform<TOut>(self: self, model: null, functionAlias: functionAlias.ToString());
         }
@@ -89,7 +88,7 @@ namespace Core.TypeCast
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TOut Transform<TOut>(this object self, object model, Enum functionAlias, bool withContext = false)
         {
-            return (TOut)Transform(self: self, model: null, typeBase: null, typeTo: typeof(TOut), functionAlias: functionAlias.ToString(), throwException: false);
+            return (TOut)Transform(self: self, model: null, typeBase: null, typeTo: typeof(TOut), functionAlias: functionAlias.ToString(), throwException: false, withContext: withContext);
         }
 
         /// <summary>
@@ -226,12 +225,12 @@ namespace Core.TypeCast
             object result = null;
             // transform should be used for similar or same types as the input type, as such if no typeTo is supplied let's use the delegate's return-type
             typeTo = typeTo ?? typeBase?.GetTypeInfo().GetReturnParameterType();
-            if(typeof(TIn) != typeof(object) && typeBase?.GetTypeInfo().IsInvokableWithParameters(typeTo, self.GetType(), model?.GetType()) == false)
+            if(typeof(TIn) != objectType && typeBase?.GetTypeInfo().IsInvokableWithParameters(typeTo, self.GetType(), model?.GetType()) == false)
             {
                 throw new ConverterException(ConverterCause.DelegateArgumentWrongType);
             }
             GetConverterOrDefault<TIn, object>(self, out converter, out result, typeArgument: model?.GetType(), typeTo: functionAlias != null ? null : typeTo, typeBase: typeBase,
-                throwException: throwException, unboxObjectType: typeof(TIn) != typeof(object), attributeName: functionAlias);
+                throwException: throwException, unboxObjectType: typeof(TIn) != objectType, attributeName: functionAlias);
 
             InvokeConvert(self, out result, model, throwException: throwException, converter: converter, contextInstance: (withContext ? new ConvertContext(model) : null));
             return result;
