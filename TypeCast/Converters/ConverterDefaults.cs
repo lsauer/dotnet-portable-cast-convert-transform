@@ -18,7 +18,8 @@ namespace Core.TypeCast.Converters
     /// <remarks>
     /// The reverse, converting from common <see cref="System"/> Types to <see cref="object"/> is not sensible as a simple boxing operation suffices.
     /// </remarks>
-    [Converter(loadOnDemand: false, nameSpace: nameof(System), dependencyInjection: false)]
+    [System.Runtime.InteropServices.ComVisible(false)]
+    [Converter(loadOnDemand: true, nameSpace: nameof(System), dependencyInjection: true)]
     public class ConverterDefaults : ConverterCollectionDependency
     {
         /// <summary>
