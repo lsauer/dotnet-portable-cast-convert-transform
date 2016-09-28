@@ -42,8 +42,11 @@ namespace Core.TypeCast.Base
             this.To = to?.GetTypeInfo();
             this.Argument = argument?.GetTypeInfo();
             this.BaseType = baseType?.GetTypeInfo();
-            this.Attribute = attribute;
-            this.NameSpace = attribute?.NameSpace;
+            if(attribute != null)
+            {
+                this.Attribute = attribute;
+                this.NameSpace = attribute.NameSpace;
+            }
         }
 
         /// <summary>The <seealso cref="Type" /> of the argument passed to <see cref="Converter.FunctionDefault" />
