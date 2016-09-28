@@ -67,14 +67,6 @@ namespace Core.TypeCast.Base
         {
             get
             {
-                if(this.attribute == null && this.BaseType != null)
-                {
-                    this.attribute = this.BaseType.GetCustomAttribute<ConverterAttribute>();
-                    if(this.attribute != null)
-                    {
-                        this.attribute.BaseType = this.BaseType;
-                    }
-                }
                 return this.attribute;
             }
             set
