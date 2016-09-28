@@ -56,7 +56,7 @@ namespace Core.TypeCast.Base
 
             Converter converter;
 
-            var methodAttribute = methodInfo.GetCustomAttribute(typeof(ConverterMethodAttribute)) as ConverterMethodAttribute;
+            var methodAttribute = methodInfo.GetCustomAttribute<ConverterMethodAttribute>();
 
             // create either a Converter_T2 or Converter_T3 container
             if(parameterInfos.Length == 2 || isInstanceMethod == true)
