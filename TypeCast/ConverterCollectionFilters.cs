@@ -29,6 +29,8 @@ namespace Core.TypeCast
     /// </summary>
     public static class ConverterCollectionFilters
     {
+        private static TypeInfo objectTypeInfo = typeof(object).GetTypeInfo();
+        private static TypeInfo convertContexTypeInfo = typeof(IConvertContext).GetTypeInfo();
 
         /// <summary>
         /// Filters items in <see cref="ConverterCollection"/> which have <see cref="Converter.From"/> set equal to <paramref name="typeFrom"/>
@@ -127,14 +129,21 @@ namespace Core.TypeCast
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
         /// <param name="typeArgument">The <see cref="Converter.Argument"/> Type to look for</param>
         /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
+        /// <param name="withContext">Whether to include argument types that support a conversion context for the model.</param> 
         /// <returns>Returns a new filtered query as <see cref="IQueryable{Converter}"/> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IQueryable<Converter> WithArgument(this IQueryable<Converter> query, TypeInfo typeArgument, bool assignable = false)
+        public static IQueryable<Converter> WithArgument(this IQueryable<Converter> query, TypeInfo typeArgument, bool assignable = false, bool withContext = false)
         {
-            if(typeArgument != null && (assignable == false || typeArgument.AsType() != typeof(object)))
+            // extend converters taking a context to converters with object argument
+            if(withContext == true)
             {
-                query = WithAssignable(query, c => c.Argument == typeArgument, c => /*c.Argument.AsType() != typeof(object) && */c.Argument.IsAssignableFrom(typeArgument), typeArgument, assignable);
+                query = query.Where(c => c.Argument == objectTypeInfo || c.Argument.IsSuperOrSubType(convertContexTypeInfo));
             }
+            else if(typeArgument != null && (assignable == false || typeArgument != objectTypeInfo))
+            {
+                query = WithAssignable(query, c => c.Argument == typeArgument, c => c.Argument.IsSuperOrSubType(typeArgument), typeArgument, assignable);
+            }
+            
             return query;
         }
 
@@ -145,11 +154,12 @@ namespace Core.TypeCast
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
         /// <param name="typeArgument">The <see cref="Converter.Argument"/> Type to look for</param>
         /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
+        /// <param name="withContext">Whether to include argument types that support a conversion context for the model.</param> 
         /// <returns>Returns a new filtered query as <see cref="IQueryable{Converter}"/> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IQueryable<Converter> WithArgument(this IQueryable<Converter> query, Type typeArgument, bool assignable = true)
+        public static IQueryable<Converter> WithArgument(this IQueryable<Converter> query, Type typeArgument, bool assignable = true, bool withContext = false)
         {
-            return WithArgument(query, typeArgument?.GetTypeInfo(), assignable);
+            return WithArgument(query, typeArgument?.GetTypeInfo(), assignable, withContext);
         }
 
         /// <summary>
@@ -167,7 +177,7 @@ namespace Core.TypeCast
         private static IQueryable<Converter> WithAssignable(IQueryable<Converter> query, Expression<Func<Converter, bool>> predicate, Expression<Func<Converter, bool>> predicateAssignable, TypeInfo type, bool assignable)
         {
             var testQuery = query.Where(predicate);
-            if((type.AsType() == typeof(object) || testQuery.Any()) && assignable == false)
+            if((type == objectTypeInfo || testQuery.Any()) && assignable == false)
             {
                 query = testQuery;
             }
@@ -307,6 +317,7 @@ namespace Core.TypeCast
         /// <param name="assignableTo">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
         /// <param name="assignableArgument">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
         /// <param name="assignableBaseType">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
+        /// <param name="withContext">Whether to include argument types that support a conversion context for the model.</param> 
         /// <returns>Returns a new filtered query as <see cref="IQueryable{Converter}"/> </returns>
         /// <seealso cref="ConverterCollection.Get(TypeInfo, TypeInfo, TypeInfo, bool?, bool, bool?, bool?, bool?)"/>
         public static IQueryable<Converter> ApplyAllFilters(
@@ -324,18 +335,13 @@ namespace Core.TypeCast
             bool assignableFrom = false,
             bool assignableTo = false,
             bool assignableArgument = false,
-            bool assignableBaseType = false)
+            bool assignableBaseType = false,
+            bool withContext = false)
         {
-            // all converters are contained in Converter_T3's with the argument set to default: object or TOut with only a Converter.Function
-            if(typeBase == null)
-            {
-                typeArgument = typeArgument ?? typeof(object).GetTypeInfo();
-            }
-
-            return query
+            var queryFiltered = query
                         .WithFrom(typeFrom, assignableFrom)
                         .WithTo(typeTo, assignableTo)
-                        .WithArgument(typeArgument, assignableArgument)
+                        .WithArgument(typeArgument, assignableArgument, withContext)
                         .WithBaseType(typeBase, assignableBaseType)
                         .WithStandard(isStandard)
                         .WithDefaultFunction(hasDefaultFunction)
@@ -343,6 +349,15 @@ namespace Core.TypeCast
                         .WithToIsGenericType(typeToIsGenericType)
                         .WithFunctionName(functionName)
                         .WithConverterAttributeName(attributeName);
+
+            // All converters are contained in Converter_T3's with the argument set as default to: `object` or to `TOut` with a generic Converter.Function
+            if(typeBase == null && queryFiltered.Count() > 1)
+            {
+                typeArgument = typeArgument ?? objectTypeInfo;
+
+                queryFiltered = queryFiltered.WithArgument(typeArgument, assignableArgument);
+            }
+            return queryFiltered;
         }
 
     }
