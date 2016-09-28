@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{612F3863-DCF4-419B-84A2-54FB2E11B6FF}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Example11</RootNamespace>
+    <AssemblyName>Example11</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Core.Extensions, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CSharp.Portable-Singleton.2.0.0.4\lib\Core.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Core.Singleton, Version=2.0.6074.9804, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CSharp.Portable-Singleton.2.0.0.4\lib\Core.Singleton.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Converters\Base\LetterComparer.cs" />
+    <Compile Include="Converters\Base\MonomerCollection.cs" />
+    <Compile Include="Interface\IMonomer.cs" />
+    <Compile Include="Interface\ICompound.cs" />
+    <Compile Include="Interface\IRepository.cs" />
+    <Compile Include="Converters\Compound\Nucleotide.cs" />
+    <Compile Include="Converters\Compound\AminoAcids.cs" />
+    <Compile Include="Converters\Base\CompoundCollection.cs" />
+    <Compile Include="Converters\Compound\AminoAcid.cs" />
+    <Compile Include="Converters\Compound\DeoxyribonucleicAcids.cs" />
+    <Compile Include="Converters\Compound\RibonucleicAcids.cs" />
+    <Compile Include="Converters\Compound\Nucleotides.cs" />
+    <Compile Include="Converters\Base\SequenceBase.cs" />
+    <Compile Include="Converters\Base\Letter.cs" />
+    <Compile Include="Converters\Extensions\ArrayExtension.cs" />
+    <Compile Include="Converters\Extensions\MonomerExtension.cs" />
+    <Compile Include="Converters\Extensions\DNAExtension.cs" />
+    <Compile Include="Converters\Extensions\LongExtension.cs" />
+    <Compile Include="Converters\Base\Alphabet.cs" />
+    <Compile Include="Converters\Base\Monomer.cs" />
+    <Compile Include="Enum\MetricPrefix.cs" />
+    <Compile Include="Interface\IPolymer.cs" />
+    <Compile Include="Interface\IPolyNucleotide.cs" />
+    <Compile Include="Interface\IUnitValue.cs" />
+    <Compile Include="Converters\Polymer\ORF.cs" />
+    <Compile Include="Converters\Polymer\DNA.cs" />
+    <Compile Include="Converters\Polymer\Polymer.cs" />
+    <Compile Include="Converters\Polymer\cRNA.cs" />
+    <Compile Include="Converters\Base\Codon.cs" />
+    <Compile Include="Converters\Polymer\BioPolymer.cs" />
+    <Compile Include="Converters\Polymer\PolyNucleotide.cs" />
+    <Compile Include="Converters\Polymer\RNA.cs" />
+    <Compile Include="Converters\Polymer\cDNA.cs" />
+    <Compile Include="Converters\Base\MeltingTemperature.cs" />
+    <Compile Include="Converters\Base\MolecularWeight.cs" />
+    <Compile Include="Converters\Polymer\Protein.cs" />
+    <Compile Include="Enum\PhysicalUnit.cs" />
+    <Compile Include="Enum\PolymerType.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\TypeCast\Core.TypeCast.csproj">
+      <Project>{c79492bc-d45c-469a-af8f-0952141b2369}</Project>
+      <Name>Core.TypeCast</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
