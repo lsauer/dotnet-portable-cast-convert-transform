@@ -11,6 +11,7 @@ namespace Core.TypeCast
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
     using Base;
 
     /// <summary>
@@ -26,7 +27,7 @@ namespace Core.TypeCast
     /// <example> **Example:**  Declaring an arbitrary class method to be loaded and encapsulated into a converter instance
     /// <code>
     /// ```cs
-    ///     [Converter(loadOnDemand: false, nameSpace: nameof(Program.BioCode.DNA))]
+    ///     [Converter(loadOnDemand: false, name: nameof(Program.BioCore.ToDNA))]
     ///     public class StringToDNA {
     ///         ... 
     ///         // Constructor with dependency injection
@@ -60,14 +61,14 @@ namespace Core.TypeCast
         /// </summary>
         /// <param name="loadOnDemand">Set to `true` to allow joint initialization by the lazy instancing of the <see cref="ConverterCollection"/> <see cref="Core.Singleton"/>  </param>
         /// <param name="isStatic"> Set to `true` to invoke the method with `this` reference set to null, otherwise with an instance reference passed. Default is `true`. </param>
-        /// <param name="nameSpace"> The namespace as a string, ideally set via the <see cref="nameof"/> operator to group converters and enable lazy-loading upon first use.  </param>
+        /// <param name="name"> An alias as a string, ideally set via the <see cref="nameof"/> operator to identify among ambiguous converters.</param>
         /// <param name="dependencyInjection">
         /// Whether the declaring converter class is instantiated via dependency Injection.
         /// </param>
-        public ConverterMethodAttribute(bool isStatic = true, bool loadOnDemand = true, string nameSpace = "", bool passInstance = false)
+        public ConverterMethodAttribute(bool isStatic = true, bool loadOnDemand = true, string name = "", bool passInstance = false)
         {
             this.LoadOnDemand = loadOnDemand;
-            this.NameSpace = nameSpace;
+            this.Name = name;
             this.IsStatic = isStatic;
             this.PassInstance = passInstance;
         }
@@ -76,15 +77,14 @@ namespace Core.TypeCast
         /// Gets or sets the base type.
         /// </summary>
         /// <seealso cref="Converter.BaseType"/>
-        public TypeInfo BaseType { get; set; }
-
+        public Type BaseType { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="Converter{TIn, TOut}"/> Converter is supposed to be loaded in the <see cref="ConverterCollection"/> upon first use.
         /// </summary>
         /// <example> **Example:**  A Converter `StringToDNA ` is allowed to be initialized by the <see cref="ConverterMethodAttribute"/> 
         /// <code>```cs
-        ///     [Converter(loadOnDemand: false, nameSpace: nameof(Program.BioCode.DNA))]
+        ///     [Converter(loadOnDemand: false, name: nameof(Program.BioCode.ToDNA))]
         ///     internal class StringToDNA {
         ///         ... 
         ///         // Constructor with dependency injection
@@ -99,7 +99,7 @@ namespace Core.TypeCast
         ///             ... 
         ///         }
         ///         // method loaded automatically, through attribution
-        ///         [Converter(loadOnDemand: true, nameSpace: nameof(Program.NameSpace))]
+        ///         [Converter(loadOnDemand: true, name: nameof(Program.ConvertDNA))]
         ///         public StringToDNA(IConverterCollection collection, bool storeRNA = false)
         ///         { 
         ///             ... 
@@ -117,12 +117,12 @@ namespace Core.TypeCast
         public bool IsStatic { get; }
 
         /// <summary>
-        /// Gets the <see cref="Type.Namespace"/> or an empty string if no <see cref="NameSpace"/> is set.
+        /// Gets the <see cref="Type.Name"/> or an empty string if no <see cref="Name"/> is set.
         /// </summary>
-        /// <example> **Example:**  A Converter `StringToDNA` is added to the collection namespace of the main `Program` class
+        /// <example> **Example:**  A Converter `StringToDNA` is assigned an alias for function lookup through <see cref="ObjectExtension.Transform{TBase, TOut}(object, object, string, bool, bool)"/>
         /// <code>
         /// ```cs
-        ///     [Converter(nameSpace: nameof(Program.NameSpace))]
+        ///     [Converter(name: nameof(StringToDNA))]
         ///     internal class StringToDNA
         ///     {   
         ///         ...
@@ -136,7 +136,7 @@ namespace Core.TypeCast
         /// ```</code>
         /// </example>
         /// <remarks>The namespace is used for filtering and grouping of <see cref="Core.TypeCast.Converters"/></remarks>
-        public string NameSpace { get; }
+        public string Name { get; }
 
         /// <summary>
         /// Gets a value indicating whether the method should be wrapped and passed an instance of its containing class as the first argument (`true`). 
@@ -152,7 +152,7 @@ namespace Core.TypeCast
         /// </returns>
         public override string ToString()
         {
-            return $"[Sta:{this.IsStatic},LoD:{this.LoadOnDemand},BaTy:{this.BaseType},NaSp:{this.NameSpace}]";
+            return $"[Sta:{this.IsStatic},LoD:{this.LoadOnDemand},BaTy:{this.BaseType},Name:{this.Name}]";
         }
 
     }
