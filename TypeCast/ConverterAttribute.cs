@@ -52,8 +52,8 @@ namespace Core.TypeCast
         {
             this.Id = Guid.NewGuid();
             this.LoadOnDemand = loadOnDemand;
-            this.NameSpace = nameSpace;
-            this.Name = name;
+            this.NameSpace = nameSpace ?? string.Empty;
+            this.Name = name ?? string.Empty;
             this.DependencInjection = dependencyInjection;
         }
 
