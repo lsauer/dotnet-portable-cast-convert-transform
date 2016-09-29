@@ -9,7 +9,7 @@
 :------------ | :------------- 
 **website** | <a href="https://github.com/lsauer/dotnet-portable-cast-convert-transform" target="_blank">https://github.com/lsauer/dotnet-portable-cast-convert-transform</a>
 **license** | <a href="http://lsauer.mit-license.org/" target="_blank">MIT license</a>   
-**package** | `PM> Install-Package Core.TypeCast`  
+**package** | `PM> Install-Package Core.Cast-Transform-Convert`  
 **description** | An easy to use, portable library for changing between unrestricted, arbitrary data types
 **documentation** |  <a href="https://dotnet-cast-convert-transform.firebaseapp.com/">complete reference v3.1.0.2</a>
 **supported** | <ul><li><a href="https://msdn.microsoft.com/en-us/library/gg597391(v=vs.110).aspx" target="_blank">Portable Class Library (PLC)</a></li> <li><a href="https://en.wikipedia.org/wiki/.NET_Framework#.NET_Core" target="_blank">.NET Core</a></li> <li>.NET Framework 4.5</li> <li>Windows Phone 8.1</li>  <li>Windows 8, 10</li> <li><a href="https://developer.xamarin.com/guides/android/" target="_blank">Xamarin.Android</a></li> <li><a href="https://developer.xamarin.com/guides/ios/" target="_blank">Xamarin.iOS</a></li>  <li>Xamarin.iOS Classic</li><li>XBOX 360 XNA (req. adaptations)</li></ul>   
@@ -43,7 +43,7 @@
 
 Full Version | NuGet | NuGet Install
 ------------ | :-------------: | :-------------:
-Core.TypeCast | <a href="https://www.nuget.org/packages/Core.TypeCast/" target="_blank"><img src="https://img.shields.io/nuget/v/Core.TypeCast.svg?maxAge=2592000"/></a> | ```PM> Install-Package Core.TypeCast```
+Core.TypeCast | <a href="https://www.nuget.org/packages/Core.TypeCast/" target="_blank"><img src="https://img.shields.io/nuget/v/Core.TypeCast.svg?maxAge=2592000"/></a> | ```PM> Install-Package Core.Cast-Transform-Convert```
 
 Social:  [![Twitter](https://img.shields.io/twitter/url/https/github.com/lsauer/csharp-singleton.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D) <a href="https://twitter.com/sauerlo/" target="_blank"><img src="https://googledrive.com/host/0ByqWUM5YoR35NGZiSEs4SXduTGM/gh_twitter_like.png" alt="Twitter Follow" height="18" /></a>
 <a href="https://www.facebook.com/lorenz.lo.sauer/" target="_blank"><img src="https://googledrive.com/host/0ByqWUM5YoR35NGZiSEs4SXduTGM/gh_facebook_like.png" alt="Facebook Like" height="18" /></a>
@@ -51,7 +51,7 @@ Social:  [![Twitter](https://img.shields.io/twitter/url/https/github.com/lsauer/
 
 ### Install and Requirements
 In order to use this library, your application needs .NET Framework 4.5 or higher. Install via two ways:
-* Via Nuget: ```Install-Package Core.TypeCast```
+* Via Nuget: ```Install-Package Core.Cast-Transform-Convert```
 * Via Github: ```git clone https://github.com/lsauer/dotnet-portable-cast-convert-transform.git```
 
 
@@ -75,7 +75,7 @@ which is also included in the <a href="https://www.nuget.org/packages/Core.TypeC
 
 ### Getting started in 4 steps
 
-1. *Install* with the <a href="http://goo.gl/iekUWH" target="_blank">NuGet Package manager</a>: `PM> Install-Package Core.TypeCast`.  
+1. *Install* with the <a href="http://goo.gl/iekUWH" target="_blank">NuGet Package manager</a>: `PM> Install-Package Core.Cast-Transform-Convert`.  
 2. *Add the namespace* to your top-listed using directives: `using Core.TypeCast;`.
 3. *Create a class* with one or more methods: `class MyConverter { ... int MyConverter(string argument) ... }`
 4. *Attribute* any class with `[ConverterAttribute]`: _`public class MyConverter { ... }`_.    
@@ -408,7 +408,7 @@ and support full access to `IQueryable` and `IEnumerable`, in addition to being 
 
 Following is an inheritance-graph of the aforementioned relations:
 
-<img src="https://googledrive.com/host/0ByqWUM5YoR35QUxZY3hrTDZTWGs/ConverterCollection_inherit_graph.png" >    
+<img src="https://dotnet-cast-convert-transform.firebaseapp.com/inherit_graph_8.png" >    
 
 
 ### Using ConverterCollection
@@ -1159,7 +1159,7 @@ Detailed descriptions are provided in full in the <a href="https://dotnet-cast-c
 
 ### Exceptions
 
-<img src="https://googledrive.com/host/0ByqWUM5YoR35QUxZY3hrTDZTWGs/Exceptions_inherit_graph.png">    
+<img src="https://dotnet-cast-convert-transform.firebaseapp.com/inherit_graph_15.png">    
 
 
 ### Attributes
@@ -1167,7 +1167,7 @@ Detailed descriptions are provided in full in the <a href="https://dotnet-cast-c
 The library uses two custom attributes. `ConverterAttribute` ascribable to a `class` and 
 `ConverterMethodAttribute` ascribable to a `delegate`. The attributes must be nested in just this order.
 
-<img src="https://googledrive.com/host/0ByqWUM5YoR35QUxZY3hrTDZTWGs/Attributes_inherit_graps.png">    
+<img src="https://dotnet-cast-convert-transform.firebaseapp.com/inherit_graph_7.png">    
 
 
 
@@ -1176,7 +1176,7 @@ The library uses two custom attributes. `ConverterAttribute` ascribable to a `cl
 Underlying the converters are a strongly typed container, declaring three types. `TIn`, `TOut`, `TArg`, with `TArg` 
 being optionally used and set to `object` as a default value.
 
-<img src="https://googledrive.com/host/0ByqWUM5YoR35QUxZY3hrTDZTWGs/ConverterDefaults_inherit_graph.png" >    
+<img src="https://dotnet-cast-convert-transform.firebaseapp.com/inherit_graph_14.png" >    
 
 
 ### Performance criticality
