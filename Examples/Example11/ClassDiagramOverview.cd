@@ -1,0 +1,319 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BioCore.Converters.CompoundCollection&lt;TCompound&gt;" Collapsed="true">
+    <Position X="11" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEIABAAAAAAEABBQAAAAAAQAAAAAACAUAAAAAAAUAAA=</HashCode>
+      <FileName>Converters\Base\CompoundCollection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BioCore.Converters.LetterComparer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converters\Base\LetterComparer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BioCore.Converters.Monomer" Collapsed="true">
+    <Position X="10.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACIAAAACAAAIAAAACAAAQAQCAEAEAgAAAgAAAAAgA=</HashCode>
+      <FileName>Converters\Base\Monomer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BioCore.Converters.MonomerCollection&lt;TMonomer&gt;" Collapsed="true">
+    <Position X="11" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAgAAAAAABACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converters\Base\MonomerCollection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BioCore.Converters.SequenceBase" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAJAAgAAAAIQAAIAACICEAQgAAAEAAiA=</HashCode>
+      <FileName>Converters\Base\SequenceBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BioCore.Converters.AminoAcid" Collapsed="true">
+    <Position X="9.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converters\Compound\AminoAcid.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BioCore.Converters.AminoAcids" Collapsed="true">
+    <Position X="13.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAQAAAAAQAAA=</HashCode>
+      <FileName>Converters\Compound\AminoAcids.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BioCore.Converters.DeoxyribonucleicAcids" Collapsed="true">
+    <Position X="11" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converters\Compound\DeoxyribonucleicAcids.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BioCore.Converters.Nucleotide" Collapsed="true">
+    <Position X="11.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converters\Compound\Nucleotide.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BioCore.Converters.Nucleotides" Collapsed="true">
+    <Position X="9.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAAACAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Converters\Compound\Nucleotides.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BioCore.Converters.RibonucleicAcids" Collapsed="true">
+    <Position X="8.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converters\Compound\RibonucleicAcids.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BioCore.Converters.ArrayExtension" Collapsed="true">
+    <Position X="15.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAABAAAAAAAgAAAAAAAAEAAAAAAIAAA=</HashCode>
+      <FileName>Converters\Extensions\ArrayExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BioCore.Converters.DNAExtension" Collapsed="true">
+    <Position X="17.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAIAAAAAAACAiAAA=</HashCode>
+      <FileName>Converters\Extensions\DNAExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BioCore.Converters.MonomerExtension" Collapsed="true">
+    <Position X="19.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converters\Extensions\MonomerExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BioCore.Converters.BioPolymer" Collapsed="true">
+    <Position X="4" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converters\Polymer\BioPolymer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BioCore.Converters.cDNA" Collapsed="true">
+    <Position X="3" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Converters\Polymer\cDNA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BioCore.Converters.cRNA" Collapsed="true">
+    <Position X="5.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converters\Polymer\cRNA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BioCore.Converters.DNA" Collapsed="true">
+    <Position X="1.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAgAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converters\Polymer\DNA.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BioCore.Converters.ORF" Collapsed="true">
+    <Position X="0.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAEAAAEAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Converters\Polymer\ORF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BioCore.Converters.Polymer" Collapsed="true">
+    <Position X="4" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAIAAACAAQAAEAQAAAAAAAAA=</HashCode>
+      <FileName>Converters\Polymer\Polymer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BioCore.Converters.PolyNucleotide" Collapsed="true">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQYAAAAAACAAAAAAAAAQgAAEAIAAAAAAAAAAIAAEAAA=</HashCode>
+      <FileName>Converters\Polymer\PolyNucleotide.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BioCore.Converters.Protein" Collapsed="true">
+    <Position X="7.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAEAAAABAACEAIAEAAAAAAAAAAAAAAgAAAAABAA=</HashCode>
+      <FileName>Converters\Polymer\Protein.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BioCore.Converters.RNA" Collapsed="true">
+    <Position X="5.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAgAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converters\Polymer\RNA.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Core.Extensions.LongExtension" Collapsed="true">
+    <Position X="15.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converters\Extensions\LongExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core.Extensions.MetrixPrefixExtension" Collapsed="true">
+    <Position X="17.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enum\MetricPrefix.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Example11.Program" Collapsed="true">
+    <Position X="15.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="BioCore.Converters.Alphabet" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAQAAAAAAJAAgAAAAAQAABAAAKAEAAAgAAAAAiA=</HashCode>
+      <FileName>Converters\Base\Alphabet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="BioCore.Converters.Codon" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAACABAAAAIAAAAACAAAUAACAAIAAgAAAAQgA=</HashCode>
+      <FileName>Converters\Base\Codon.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="BioCore.Converters.Letter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAgAAAAAAIAAgQAAAASAAAAAAKAAAAAAAAAAAiA=</HashCode>
+      <FileName>Converters\Base\Letter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="BioCore.Converters.MeltingTemperature" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEIAAABAAAAAAAACEAAAAgAAAAAAA=</HashCode>
+      <FileName>Converters\Base\MeltingTemperature.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="BioCore.Converters.MolecularWeight" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAEIAAABAAAAAAAACAAAAAgAAAAAAA=</HashCode>
+      <FileName>Converters\Base\MolecularWeight.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Interface Name="BioCore.Converters.ICompound" Collapsed="true">
+    <Position X="15.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\ICompound.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BioCore.Converters.IMonomer" Collapsed="true">
+    <Position X="17.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAIAAAAAAAAQAQCAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Interface\IMonomer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BioCore.Converters.IPolymer" Collapsed="true">
+    <Position X="0.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IPolymer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BioCore.Converters.IPolyNucleotide" Collapsed="true">
+    <Position X="0.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Interface\IPolyNucleotide.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BioCore.Converters.IRepository&lt;TItem&gt;" Collapsed="true">
+    <Position X="19.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAABAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BioCore.Converters.IUnitValue" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IUnitValue.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BioCore.Converters.IValue" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Interface\IUnitValue.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BioCore.Converters.IValue&lt;TPhysical&gt;" Collapsed="true">
+    <Position X="15.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Interface\IUnitValue.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BioCore.Converters.IUnit" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IUnitValue.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Core.Extensions.MetricPrefix" Collapsed="true">
+    <Position X="15.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAkAAAAAAAAAAAAAAAAAAAAAAAAAAC00kAgCwJEIBE=</HashCode>
+      <FileName>Enum\MetricPrefix.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BioCore.PhysicalUnit" Collapsed="true">
+    <Position X="17.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAICAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAABA=</HashCode>
+      <FileName>Enum\PhysicalUnit.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BioCore.PolymerType" Collapsed="true">
+    <Position X="19.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAEAAAAAAAAAAAgAEAQAAAAAAAAACIgBA=</HashCode>
+      <FileName>Enum\PolymerType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
