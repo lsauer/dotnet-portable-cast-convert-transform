@@ -9,10 +9,7 @@
 namespace Core.Extension
 {
     using System;
-    using System.Drawing;
     using System.Reflection;
-    using Core.TypeCast;
-    using Core.TypeCast.Base;
 
     public static class TypeExtension
     {

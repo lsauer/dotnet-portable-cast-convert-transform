@@ -10,9 +10,6 @@ namespace Example10
 {
     using System;
     using System.Diagnostics;
-    using System.Drawing;
-    using System.Drawing.Imaging;
-    using System.Globalization;
     using System.Reflection;
     using System.IO;
     using System.Linq;

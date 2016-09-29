@@ -9,7 +9,6 @@
 namespace Core.TypeCast.Test
 {
     using System;
-    using System.Drawing;
 
     using Core.TypeCast;
     using Core.TypeCast.Base;

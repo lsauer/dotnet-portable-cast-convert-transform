@@ -10,8 +10,6 @@ namespace Example11
 {
     using System;
     using System.Diagnostics;
-    using System.Drawing;
-    using System.Drawing.Imaging;
     using System.Globalization;
     using System.Reflection;
     using System.IO;
@@ -56,13 +54,6 @@ namespace Example11
                                              = true
                                  }
             };
-
-            ConverterCollection.CurrentInstance
-                               .Add<string, Point>(s => string.IsNullOrWhiteSpace(s)
-                                    ? default(Point)
-                                    : new Point(int.Parse(s.Split(',').First()), int.Parse(s.Split(',').Last()))
-                                )
-                               .Add<Point, string>(p => p.X + "," + p.Y);
 
             cc.Settings.NumberFormat = new NumberFormatInfo { NumberGroupSeparator = ",", NumberDecimalDigits = 3 };
 

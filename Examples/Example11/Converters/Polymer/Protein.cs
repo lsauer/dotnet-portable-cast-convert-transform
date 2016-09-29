@@ -12,7 +12,6 @@ namespace BioCore.Converters
     using System.Linq;
     using System.Collections.Generic;
     using System.Reflection;
-    using System.Drawing;
 
     using Core.Extensions;
     using Core.TypeCast;
