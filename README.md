@@ -1,5 +1,5 @@
 
-<img src="https://googledrive.com/host/0ByqWUM5YoR35QUxZY3hrTDZTWGs/type-converter-big.png" align="right" height="84" />
+<img src="https://lsauer.github.io/res/github/project/dotnet-portable-type-cast/type-converter-big.png" align="right" height="84" />
 
 ## Portable TypeCast -  <small>Cast, Convert & Transform without compromises.</small>    
 ##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Intuitive, easy-to-use, portable, tested, documented, serializable, thread-safe, strongly typed,...
@@ -9,8 +9,8 @@
 :------------ | :------------- 
 **website** | <a href="https://github.com/lsauer/dotnet-portable-cast-convert-transform" target="_blank">https://github.com/lsauer/dotnet-portable-cast-convert-transform</a>
 **license** | <a href="http://lsauer.mit-license.org/" target="_blank">MIT license</a>   
-**package** | `PM> Install-Package Core.Cast-Transform-Convert`  
-**description** | An easy to use, portable library for changing between unrestricted, arbitrary data types
+**current** |  [![Build Status](https://travis-ci.org/lsauer/dotnet-portable-cast-convert-transform.svg?branch=master)](https://travis-ci.org/lsauer/dotnet-portable-cast-convert-transform) [![Build status](https://ci.appveyor.com/api/projects/status/pjambnikbik9m4nl?svg=true)](https://ci.appveyor.com/project/lsauer/dotnet-portable-cast-convert-transform/) [![Coverage Status](https://img.shields.io/coveralls/bfontaine/badges2svg.svg)](https://ci.appveyor.com/project/lsauer/dotnet-portable-cast-convert-transform/build/tests)
+**package** | <a href="https://www.nuget.org/packages/Core.Cast-Transform-Convert/" target="_blank"><img src="https://img.shields.io/nuget/v/Core.Cast-Transform-Convert.svg?maxAge=6000"/></a>  `PM> Install-Package Core.Cast-Transform-Convert` **description** | An easy to use, portable library for changing between unrestricted, arbitrary data types
 **documentation** |  <a href="https://dotnet-cast-convert-transform.firebaseapp.com/">complete reference v3.1.0.2</a>
 **supported** | <ul><li><a href="https://msdn.microsoft.com/en-us/library/gg597391(v=vs.110).aspx" target="_blank">Portable Class Library (PLC)</a></li> <li><a href="https://en.wikipedia.org/wiki/.NET_Framework#.NET_Core" target="_blank">.NET Core</a></li> <li>.NET Framework 4.5</li> <li>Windows Phone 8.1</li>  <li>Windows 8, 10</li> <li><a href="https://developer.xamarin.com/guides/android/" target="_blank">Xamarin.Android</a></li> <li><a href="https://developer.xamarin.com/guides/ios/" target="_blank">Xamarin.iOS</a></li>  <li>Xamarin.iOS Classic</li><li>XBOX 360 XNA (req. adaptations)</li></ul>   
 
@@ -41,12 +41,12 @@
 
 ### Download
 
-Full Version | NuGet | NuGet Install
------------- | :-------------: | :-------------:
-Core.TypeCast | <a href="https://www.nuget.org/packages/Core.TypeCast/" target="_blank"><img src="https://img.shields.io/nuget/v/Core.TypeCast.svg?maxAge=2592000"/></a> | ```PM> Install-Package Core.Cast-Transform-Convert```
+Full Version | NuGet | Build | NuGet Install
+------------ | :-------------: | :-------------: | :-------------:
+Core.Cast-Transform-Convert | <a href="https://www.nuget.org/packages/Core.Cast-Transform-Convert/" target="_blank"><img src="https://img.shields.io/nuget/v/Core.Cast-Transform-Convert.svg?maxAge=6000"/></a> | [![Build Status](https://travis-ci.org/lsauer/dotnet-portable-cast-convert-transform.svg?branch=master)](https://travis-ci.org/lsauer/dotnet-portable-cast-convert-transform) [![Build status](https://ci.appveyor.com/api/projects/status/pjambnikbik9m4nl?svg=true)](https://ci.appveyor.com/project/lsauer/dotnet-portable-cast-convert-transform/) [![Coverage Status](https://img.shields.io/coveralls/bfontaine/badges2svg.svg)](https://ci.appveyor.com/project/lsauer/dotnet-portable-cast-convert-transform/build/tests) | ```PM> Install-Package Core.Cast-Transform-Convert```
 
-Social:  [![Twitter](https://img.shields.io/twitter/url/https/github.com/lsauer/csharp-singleton.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D) <a href="https://twitter.com/sauerlo/" target="_blank"><img src="https://googledrive.com/host/0ByqWUM5YoR35NGZiSEs4SXduTGM/gh_twitter_like.png" alt="Twitter Follow" height="18" /></a>
-<a href="https://www.facebook.com/lorenz.lo.sauer/" target="_blank"><img src="https://googledrive.com/host/0ByqWUM5YoR35NGZiSEs4SXduTGM/gh_facebook_like.png" alt="Facebook Like" height="18" /></a>
+Social:  [![Twitter](https://img.shields.io/twitter/url/https/github.com/lsauer/csharp-singleton.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D) <a href="https://twitter.com/sauerlo/" target="_blank"><img src="https://lsauer.github.io/res/github/icons/gh_twitter_like.png" alt="Twitter Follow" height="18" /></a>
+<a href="https://www.facebook.com/lorenz.lo.sauer/" target="_blank"><img src="https://lsauer.github.io/res/github/icons/gh_facebook_like.png" alt="Facebook Like" height="18" /></a>  
 
 
 ### Install and Requirements
