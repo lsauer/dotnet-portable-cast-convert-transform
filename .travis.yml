@@ -1,0 +1,11 @@
+language: csharp
+solution: ".NET Portable TypeCast.sln"
+install:
+  - nuget restore ".NET Portable TypeCast.sln"
+  - nuget install xunit.runner.console -Version 2.1.0 -OutputDirectory packages
+script:
+  - xbuild /p:Configuration=Release ".NET Portable TypeCast.sln"
+  - mono ./packages/xunit.runner.console.2.1.0/tools/xunit.console.exe ./TypeCast.Tests/bin/Release/Core.TypeCast.dll
+mono:
+  - latest
+  - 4.4.2
