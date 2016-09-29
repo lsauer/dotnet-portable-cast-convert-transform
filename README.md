@@ -358,6 +358,40 @@ Which would then be used in productive code as follows:
     imagePng.Save(fileName);
 ```
 
+**Another example**, excerpted from *Example 11*:
+
+```cs
+    public delegate string ConsensusSequence(Protein protein);
+
+    [Converter]
+    public class PolyNucleotideSequence : SequenceBase
+    {
+        ...
+        [ConverterMethod(passInstance: true, BaseType = typeof(DNA.ConsensusSequence))]
+        public string ToConsensus()
+        {
+            var list = this.ToCodonCandidates();
+            ....
+            return list.ToString().ToUpperInvariant();
+        }
+        ...
+```
+
+In the example above, the argument-less method needs to wrapped in order to take an instance of the class as first argument and invoked the method through an instance.
+This is archived explicitly by declaring the argument `passInstance = true`. Moreover the method is *aliased* to a delegate  
+`DNA.ConsensusSequencce` to be invoked through Transform as follows
+
+```cs 
+        var orfs = dnaSeq.FindORFs(minLength: 15, maxLength: 150);
+        var seq = orfs.FirstOrDefault().CastTo<Protein>().Transform<ConsensusSequence, string>();
+```
+
+Or alternatively invoking Transform weakly-typed:
+```cs 
+
+        var orfs = dnaSeq.FindORFs(minLength: 15, maxLength: 150);
+        var seq = orfs.FirstOrDefault().CastTo<Protein>().Transform<ConsensusSequence>();
+```
 
 ## Using the library
 
@@ -981,6 +1015,7 @@ with the full benefit of strong typed IDE introspection, as follows:
     var matrixTransposedEx2_ = matrix2x2.Transform<float>( Transform.Matrix2x2Determinant);
 ```
 
+A real-case scenario of using Transform is provided in *Example11*.
 
 #### TryTransform
 

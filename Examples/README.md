@@ -30,7 +30,7 @@
    * Demonstrate using `ConvertContext` as an opt-in feature provided by the library
 
 **10. Example**   
-   * DDemonstrate using `Transform` and `TryTransform` in the context of matrix operations
+   * Demonstrate using `Transform` and `TryTransform` in the context of matrix operations
 
 **11. Example**   
    * Demonstrate library usage in a Bioinformatic context by converting between strongly typed Polynucleotides sequences
