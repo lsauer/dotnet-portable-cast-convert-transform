@@ -322,13 +322,16 @@ namespace Core.TypeCast
         /// <param name="functionAlias">Applies an optional search string to the filter lookup, as Transform functions are allowed to be ambivalent 
         /// i.e. have same argument and return types</param>
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
+        /// <param name="strictTypeCheck">Whether the input and output arguments are of the same type, otherwise an exception is thrown, when set to true.</param>
         /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
         /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
         /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
         /// <returns>The success state as <see cref="bool" /> indicating if the transformation succeeded (`true`) or failed (`false`).</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool TryTransform<TIn, TOut>(this TIn self, out TOut result, object model = null, Type typeBase = null, string functionAlias = null, bool throwException = false, bool withContext = false)
+        public static bool TryTransform<TIn, TOut>(this TIn self, out TOut result, object model = null, Type typeBase = null, string functionAlias = null, bool throwException = false, bool strictTypeCheck = false, bool withContext = false)
         {
+            CheckTransformTypes<TOut>(self, strictTypeCheck: strictTypeCheck);
+
             Converter converter = null;
             result = (TOut)Transform(self: self, converter: out converter, model: model, typeBase: typeBase, typeTo: typeof(TOut), functionAlias: functionAlias, throwException: throwException, withContext: withContext);
             return converter != null;
@@ -346,13 +349,16 @@ namespace Core.TypeCast
         /// <param name="functionAlias">Applies an optional search string to the filter lookup, as Transform functions are allowed to be ambivalent 
         /// i.e. have same argument and return types</param>
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
+        /// <param name="strictTypeCheck">Whether the input and output arguments are of the same type, otherwise an exception is thrown, when set to true.</param>
         /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
         /// <typeparam name="TBase">The declaring <see cref="Type"/> of the converter-functions to add as a group.</typeparam>
         /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
         /// <returns>The success state as <see cref="bool" /> indicating if the transformation succeeded (`true`) or failed (`false`).</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryTransform<TBase, TOut>(this object self, out TOut result, object model = null, string functionAlias = null, bool throwException = false, bool withContext = false)
+        public static bool TryTransform<TBase, TOut>(this object self, out TOut result, object model = null, string functionAlias = null, bool throwException = false, bool strictTypeCheck = false, bool withContext = false)
         {
+            CheckTransformTypes<TOut>(self, strictTypeCheck: strictTypeCheck);
             Converter converter = null;
             result = (TOut)Transform(self: self, converter: out converter, model: model, typeBase: typeof(TBase), typeTo: typeof(TOut), functionAlias: functionAlias, throwException: throwException, withContext: withContext);
             return converter != null;
@@ -370,14 +376,17 @@ namespace Core.TypeCast
         /// <param name="functionAlias">Applies an optional search string to the filter lookup, as Transform functions are allowed to be ambivalent 
         /// i.e. have same argument and return types</param>
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
+        /// <param name="strictTypeCheck">Whether the input and output arguments are of the same type, otherwise an exception is thrown, when set to true.</param>
         /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
         /// <typeparam name="TBase">The declaring <see cref="Type"/> of the converter-functions to add as a group.</typeparam>
         /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
         /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
         /// <returns>The success state as <see cref="bool" /> indicating if the transformation succeeded (`true`) or failed (`false`).</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool TryTransform<TBase, TIn, TOut>(this TIn self, out TOut result, object model = null, string functionAlias = null, bool throwException = false, bool withContext = false)
+        public static bool TryTransform<TBase, TIn, TOut>(this TIn self, out TOut result, object model = null, string functionAlias = null, bool throwException = false, bool strictTypeCheck = false, bool withContext = false)
         {
+            CheckTransformTypes<TOut>(self, strictTypeCheck: strictTypeCheck);
+
             Converter converter = null;
             result = (TOut)Transform<TIn>(self: self, converter: out converter, model: model, typeBase: typeof(TBase), typeTo: typeof(TOut), functionAlias: functionAlias, throwException: throwException, withContext: withContext);
             return converter != null;
