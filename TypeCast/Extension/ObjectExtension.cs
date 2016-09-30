@@ -59,7 +59,7 @@ namespace Core.TypeCast
             bool withContext = false)
         {
             ConverterCollection.AutoInitialize();
-            if(typeof(TIn) == objectType)
+            if(typeof(TIn) == objectType || typeof(TOut) == objectType)
             {
                 if(throwException == true && unboxObjectType == false && ConverterCollection.CurrentInstance.Settings.AllowGenericTypes == false)
                 {
