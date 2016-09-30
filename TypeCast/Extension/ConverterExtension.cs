@@ -143,17 +143,9 @@ namespace Core.TypeCast
         /// <param name="baseType">The declaring-type (<see cref="Type.DeclaringType"/> of the underlying converter-function.</param>
         public static void SetBaseType(this Converter self, Type baseType)
         {
-            if(self.BaseType == null && baseType != null)
+            if(self.BaseType == null)
             {
                 self.BaseType = baseType.GetTypeInfo();
-            }
-            else if(self.BaseType == null && baseType == null && self.HasFunction)
-            {
-                self.BaseType = ((self.Function ?? self.FunctionDefault) as Delegate)?
-                                    .Target
-                                    .GetType()
-                                    .DeclaringType
-                                    .GetTypeInfo();
             }
         }
 

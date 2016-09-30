@@ -646,10 +646,15 @@ namespace Core.TypeCast
                     }
                 }
                 // update the base-type and thus the attribute access of the converter
-                converter.SetBaseType(baseType);
+                if(baseType != null)
+                {
+                    converter.SetBaseType(baseType);
+                }
 
-                this.Items.TryAdd(converter, 100, cancellationToken);
-                OnPropertyChanged(converter);
+                if(this.Items.TryAdd(converter, -1, cancellationToken) == true)
+                {
+                    OnPropertyChanged(converter);
+                }
             }
             catch(ConverterCollectionException)
             {
