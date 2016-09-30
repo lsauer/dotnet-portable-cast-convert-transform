@@ -4,8 +4,20 @@ install:
   - nuget restore ".NET Portable TypeCast.sln"
   - nuget install nunit.consolerunner -Version 3.4.1 -OutputDirectory packages
 script:
+  - mono --version
   - xbuild /p:Configuration=Release ".NET Portable TypeCast.sln"
   - mono ./packages/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./TypeCast.Tests/bin/Release/Tests.dll
 mono:
   - latest
   - 4.4.2
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+      mono: latest
+    - os: osx
+      osx_image: xcode7.2
+      mono: latest
+  allow_failures:
+    - os: osx
