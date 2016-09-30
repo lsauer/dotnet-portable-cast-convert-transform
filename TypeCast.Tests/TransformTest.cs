@@ -34,7 +34,7 @@ namespace Core.TypeCast.Test
     [TestFixture]
     public class TransformTests
     {
-        private static void Add_Five_Matrix_Transformers()
+        private void Add_Five_Matrix_Transformers()
         {
             ConverterCollection.CurrentInstance
                 .Add<float[], float[,], Transpose1xN>((a) =>
@@ -72,6 +72,7 @@ namespace Core.TypeCast.Test
             ConverterCollection.CurrentInstance
                 .Add((float[,] a) =>
                 {
+                    var nf = ConverterCollection.CurrentInstance.Settings.NumberFormat;
                     var ret = new StringBuilder(Environment.NewLine + "[");
                     int rowLength = a.GetLength(0);
                     int colLength = a.GetLength(1);
@@ -80,7 +81,7 @@ namespace Core.TypeCast.Test
                     {
                         for(int j = 0; j < colLength; j++)
                         {
-                            ret.Append(string.Format(" {0} ", a[i, j]));
+                            ret.Append(string.Format(nf, " {0} ", a[i, j]));
                         }
                         ret.Append(colLength > 1 ? Environment.NewLine : null);
                     }
@@ -111,7 +112,7 @@ namespace Core.TypeCast.Test
 
             var matrixTransposed = (float[,])matrix.Transform<Transpose4x4>();
 
-            Assert.AreEqual(matrixTransposed.CastTo<string>(), "\r\n[ -1,5  0,5 \r\n 1  0 \r\n]");
+            Assert.AreEqual(matrixTransposed.CastTo<string>(), "\r\n[ -1.5  0.5 \r\n 1  0 \r\n]".Replace("\r\n", Environment.NewLine));
 
             Assert.AreEqual(matrixTransposed, new float[,] { { -1.5f, 0.5f }, { 1f, 0f } });
         }
@@ -124,7 +125,7 @@ namespace Core.TypeCast.Test
             Add_Five_Matrix_Transformers();
             var vector = new[] { 1f, 2f, 3f, 4f };
             var matrixTransposed1xEx1 = (float[,])vector.Transform<Transpose1xN>();
-            Assert.AreEqual(matrixTransposed1xEx1.CastTo<string>(), "\r\n[ 1  2  3  4 ]");
+            Assert.AreEqual(matrixTransposed1xEx1.CastTo<string>(), "\r\n[ 1  2  3  4 ]".Replace("\r\n", Environment.NewLine));
 
             Assert.AreEqual(matrixTransposed1xEx1, new float[,] { { 1f }, { 2f }, { 3f }, { 4f } });
         }
@@ -139,7 +140,7 @@ namespace Core.TypeCast.Test
 
             var matrixTransposed1xEx2 = vector.Transform<Transpose1xN, float[,]>();
 
-            Assert.AreEqual(matrixTransposed1xEx2.CastTo<string>(), "\r\n[ 1  2  3  4 ]");
+            Assert.AreEqual(matrixTransposed1xEx2.CastTo<string>(), "\r\n[ 1  2  3  4 ]".Replace("\r\n", Environment.NewLine));
 
             Assert.AreEqual(matrixTransposed1xEx2, new float[,] { { 1f }, { 2f }, { 3f }, { 4f } });
         }
@@ -154,7 +155,7 @@ namespace Core.TypeCast.Test
 
             var matrixTransposed = matrix.Transform<Transpose2x2>();
 
-            Assert.AreEqual(matrixTransposed.CastTo<string>(), "\r\n[ -1,5  0,5 \r\n 1  0 \r\n]");
+            Assert.AreEqual(matrixTransposed.CastTo<string>(), "\r\n[ -1.5  0.5 \r\n 1  0 \r\n]".Replace("\r\n", Environment.NewLine));
 
             Assert.AreEqual(matrixTransposed, new float[,] { { -1.5f, 0.5f }, { 1f, 0f } });
         }
@@ -204,7 +205,7 @@ namespace Core.TypeCast.Test
             var matrix = new float[,] { { 0, 1 }, { 2, 3 } };
 
             var matrixTransposedEx4 = matrix.Transform(typeof(Transpose2x2));
-            Assert.AreEqual(matrixTransposedEx4.CastTo<string>(), "\r\n[ -1,5  0,5 \r\n 1  0 \r\n]");
+            Assert.AreEqual(matrixTransposedEx4.CastTo<string>(), "\r\n[ -1.5  0.5 \r\n 1  0 \r\n]".Replace("\r\n", Environment.NewLine));
         }
 
         [Test(Description = "Initialize the tests")]
@@ -218,7 +219,7 @@ namespace Core.TypeCast.Test
             var matrixTransposedEx5 = matrix.Transform<Transpose2x2>().CastTo<float[,]>();
             Assert.AreEqual(matrixTransposedEx5, new float[,] { { -1.5f, 0.5f }, { 1f, 0f } });
 
-            Assert.AreEqual(matrixTransposedEx5.CastTo<string>(), "\r\n[ -1,5  0,5 \r\n 1  0 \r\n]");
+            Assert.AreEqual(matrixTransposedEx5.CastTo<string>(), "\r\n[ -1.5  0.5 \r\n 1  0 \r\n]".Replace("\r\n", Environment.NewLine));
         }
 
         [Test(Description = "Initialize the tests")]
@@ -281,7 +282,7 @@ namespace Core.TypeCast.Test
 
             Assert.AreEqual(matrixTransposedEx9, new float[,] { { 0f }, { 2f } });
 
-            Assert.AreEqual(matrixTransposedEx9.CastTo<string>(), "\r\n[ 0  2 ]");
+            Assert.AreEqual(matrixTransposedEx9.CastTo<string>(), "\r\n[ 0  2 ]".Replace("\r\n", Environment.NewLine));
         }
 
         [Test(Description = "Initialize the tests")]
@@ -298,7 +299,7 @@ namespace Core.TypeCast.Test
 
             Assert.AreEqual(matrixTransposedEx10, new float[,] { { 0f }, { 2f } });
 
-            Assert.AreEqual(matrixTransposedEx10.CastTo<string>(), "\r\n[ 0  2 ]");
+            Assert.AreEqual(matrixTransposedEx10.CastTo<string>(), "\r\n[ 0  2 ]".Replace("\r\n", Environment.NewLine));
         }
 
         [Test(Description = "Initialize the tests")]

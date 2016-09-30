@@ -18,13 +18,11 @@ namespace Core.TypeCast.Test
     [TestFixture]
     public class ConvertToTests
     {
-
         [Test(Description = "Initialize the tests")]
         public void CastTo_Int_MinValue_Okay()
         {
             var s = int.MinValue.ToString(CultureInfo.InvariantCulture);
             Assert.IsTrue(s.CastTo<int>() == int.MinValue);
-
         }
 
         [Test(Description = "Initialize the tests")]
