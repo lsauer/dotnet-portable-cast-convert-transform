@@ -275,7 +275,7 @@ namespace Core.TypeCast
             if(String.IsNullOrWhiteSpace(addWithAttributeName) == false)
             {
                 // set an alias for later filtering of transform functions
-                converter.Attribute = new ConverterAttribute(loadOnDemand: false, name: addWithAttributeName, nameSpace: baseType.Namespace);
+                converter.Attribute = new ConverterAttribute(loadOnDemand: false, name: addWithAttributeName, nameSpace: baseType?.Namespace);
                 ConverterCollection.CurrentInstance.Add(converter, allowDisambiguates: true);
             }
 
