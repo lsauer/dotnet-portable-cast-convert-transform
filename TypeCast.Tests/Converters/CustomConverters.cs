@@ -6,15 +6,32 @@
 // <version>   3.1.0.2                                                                  </version>
 // <author>    Lorenz Lo Sauer; people credited in the sources                          </author>
 // <project>   https://github.com/lsauer/dotnet-portable-type-cast                      </project>
-namespace Core.TypeCast.Test
+namespace Example1.Converters
 {
     using Core.TypeCast;
 
     /// <summary>
-    /// This class demonstrates loading converters through the `Initialize` interface via explicit instancing of the `ConverterCollection`
+    /// This class demonstrates how to implement custom converters converting from `object` as well as `string` to `decimal`
     /// </summary>
+    [Converter(loadOnDemand: false, nameSpace: nameof(System))]
     public class CustomConverter
+        : IConverter, 
+          IConverter<object, decimal>, 
+          IConverter<string, decimal>
     {
+        /// <summary>
+        /// Unboxes an input object to a decimal value. Won't be registered since the converter is already included in the library
+        /// </summary>
+        /// <param name="value">The boxed input value</param>
+        /// <param name="defaultValue">A default output decimal value if the conversion failed</param>
+        /// <returns>Returns the converted decimal value</returns>
+        [ConverterMethod]
+        public decimal Convert(object value, decimal defaultValue = 0M)
+        {
+            return this.Convert(value != null ? value.ToString() : string.Empty, defaultValue);
+        }
+
+
         /// <summary>
         /// Parses an input string to a decimal value
         /// </summary>
@@ -22,7 +39,7 @@ namespace Core.TypeCast.Test
         /// <param name="defaultValue">A default output decimal value if the conversion failed</param>
         /// <returns>Returns the converted decimal value</returns>
         [ConverterMethod]
-        public decimal StringToDecimal(string value, decimal defaultValue = 0M)
+        public decimal Convert(string value, decimal defaultValue = 0M)
         {
             if (value != null)
             {
@@ -33,14 +50,28 @@ namespace Core.TypeCast.Test
                     return n;
                 }
             }
+
             return defaultValue;
         }
-        
+
         /// <summary>
-        /// A dummy non-converting method, which will not be added since it is not attributed by `ConverterMethodAttribute`
+        /// A simple static converter method example
         /// </summary>
-        /// <param name="status"></param>
-        public static void NonConverterMethod(bool status)
+        /// <param name="number"></param>
+        /// <returns></returns>
+        [ConverterMethod]
+        public static int Weight(int number)
+        {
+            return 100 + number;
+        }
+
+        /// <summary>
+        /// stump to satisfy declaring support for IConverter
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public virtual object Convert(object value, object defaultValue = null)
         {
             throw new System.NotImplementedException();
         }
