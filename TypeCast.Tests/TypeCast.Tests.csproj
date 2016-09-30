@@ -71,6 +71,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="TransformTest.cs" />
     <Compile Include="TypeExtension.cs" />
     <Compile Include="ConverterDefaultTest.cs" />
     <Compile Include="Converters\BoolToString.cs" />
