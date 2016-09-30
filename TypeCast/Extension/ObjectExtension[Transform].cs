@@ -156,7 +156,7 @@ namespace Core.TypeCast
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TOut Transform<TOut>(this TOut self, Type typeBase, object model = null, string functionAlias = null, bool withContext = false)
         {
-            return (TOut)Transform(self: self, model: model, typeBase: null, typeTo: typeof(TOut), functionAlias: functionAlias, throwException: false, withContext: withContext);
+            return (TOut)Transform(self: self, model: model, typeBase: typeBase, typeTo: typeof(TOut), functionAlias: functionAlias, throwException: false, withContext: withContext);
         }
 
         /// <summary>
