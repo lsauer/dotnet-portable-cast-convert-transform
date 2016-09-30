@@ -333,7 +333,18 @@ namespace Core.TypeCast
             CheckTransformTypes<TOut>(self, strictTypeCheck: strictTypeCheck);
 
             Converter converter = null;
-            result = (TOut)Transform(self: self, converter: out converter, model: model, typeBase: typeBase, typeTo: typeof(TOut), functionAlias: functionAlias, throwException: throwException, withContext: withContext);
+            try
+            {
+                result = (TOut)Transform(self: self, converter: out converter, model: model, typeBase: typeBase, typeTo: typeof(TOut), functionAlias: functionAlias, throwException: throwException, withContext: withContext);
+            }
+            catch(InvalidCastException exc)
+            {
+                if(throwException == true)
+                {
+                    throw new ConverterException(ConverterCause.DelegateArgumentWrongType, exc);
+                }
+                result = default(TOut);
+            }
             return converter != null;
         }
 
@@ -355,13 +366,24 @@ namespace Core.TypeCast
         /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
         /// <returns>The success state as <see cref="bool" /> indicating if the transformation succeeded (`true`) or failed (`false`).</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool TryTransform<TBase, TOut>(this object self, out TOut result, object model = null, string functionAlias = null, bool throwException = false, bool withContext = false)
         public static bool TryTransform<TBase, TOut>(this object self, out TOut result, object model = null, string functionAlias = null, bool throwException = false, bool strictTypeCheck = false, bool withContext = false)
         {
             CheckTransformTypes<TOut>(self, strictTypeCheck: strictTypeCheck);
             Converter converter = null;
-            result = (TOut)Transform(self: self, converter: out converter, model: model, typeBase: typeof(TBase), typeTo: typeof(TOut), functionAlias: functionAlias, throwException: throwException, withContext: withContext);
+            try
+            {
+                result = (TOut)Transform(self: self, converter: out converter, model: model, typeBase: typeof(TBase), typeTo: typeof(TOut), functionAlias: functionAlias, throwException: throwException, withContext: withContext);
+            }
+            catch(InvalidCastException exc)
+            {
+                if(throwException == true)
+                {
+                    throw new ConverterException(ConverterCause.BadInputFormat, exc);
+                }
+                result = default(TOut);
+            }
             return converter != null;
+
         }
 
         /// <summary>
@@ -388,7 +410,18 @@ namespace Core.TypeCast
             CheckTransformTypes<TOut>(self, strictTypeCheck: strictTypeCheck);
 
             Converter converter = null;
-            result = (TOut)Transform<TIn>(self: self, converter: out converter, model: model, typeBase: typeof(TBase), typeTo: typeof(TOut), functionAlias: functionAlias, throwException: throwException, withContext: withContext);
+            try
+            {
+                result = (TOut)Transform<TIn>(self: self, converter: out converter, model: model, typeBase: typeof(TBase), typeTo: typeof(TOut), functionAlias: functionAlias, throwException: throwException, withContext: withContext);
+            }
+            catch(InvalidCastException exc)
+            {
+                if(throwException == true)
+                {
+                    throw new ConverterException(ConverterCause.DelegateArgumentWrongType, exc);
+                }
+                result = default(TOut);
+            }
             return converter != null;
         }
 
