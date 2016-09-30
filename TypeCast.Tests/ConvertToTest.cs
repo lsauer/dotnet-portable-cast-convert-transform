@@ -14,6 +14,7 @@ namespace Core.TypeCast.Test
     using NUnit.Framework;
     using Core.TypeCast;
 
+    [Category(nameof(Core.TypeCast))]
     [TestFixture]
     public class ConvertToTests
     {

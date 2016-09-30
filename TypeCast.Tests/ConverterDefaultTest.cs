@@ -16,6 +16,7 @@ namespace Core.TypeCast.Test
 
     using Core.Extension;
 
+    [Category(nameof(Core.TypeCast))]
     [TestFixture]
     public class ConverterDefaultTest
     {

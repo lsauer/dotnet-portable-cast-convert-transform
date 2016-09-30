@@ -30,6 +30,7 @@ namespace Core.TypeCast.Test
         MatrixMulDiagonal,
     }
 
+    [Category(nameof(Core.TypeCast))]
     [TestFixture]
     public class TransformTests
     {
