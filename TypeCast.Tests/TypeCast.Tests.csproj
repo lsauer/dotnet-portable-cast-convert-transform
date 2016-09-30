@@ -74,6 +74,7 @@
     <Compile Include="TypeExtension.cs" />
     <Compile Include="ConverterDefaultTest.cs" />
     <Compile Include="Converters\BoolToString.cs" />
+    <Compile Include="Converters\TransformAttributed.cs" />
     <Compile Include="Converters\CustomConverters.cs" />
     <Compile Include="Converters\ConverterStringToDecimal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
