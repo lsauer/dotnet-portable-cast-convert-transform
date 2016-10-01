@@ -1,35 +1,46 @@
 version: 5.0.0.{build}-beta 
+
 branches: 
   only: 
   - master 
+
 image: Visual Studio 2015 
+
 configuration: Release 
+
 assembly_info: 
   patch: true 
   file: '**\AssemblyInfo.*' 
   assembly_version: '{version}' 
   assembly_file_version: '{version}' 
   assembly_informational_version: '{version}' 
+
 install: 
 - cmd: 
+
 nuget: 
   account_feed: true 
   project_feed: true 
   disable_publish_on_pr: true 
+
 before_build: 
 - cmd: nuget restore ".NET Portable TypeCast.sln"
+
 build: 
   project: ".NET Portable TypeCast.sln"
   publish_nuget: true 
   publish_nuget_symbols: true 
   include_nuget_references: true 
   verbosity: normal 
+
 after_build: 
 - cmd: >- 
     7z a DotNetCastConvertTransform.zip %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\Release\*.*
 
     appveyor PushArtifact DotNetCastConvertTransform.zip 
+
 deploy: off 
+
 notifications: 
 - provider: Email 
   to: 
@@ -39,6 +50,17 @@ notifications:
   on_build_status_changed: false
   
 skip_commits:
-
   # Regex for matching commit message
   message: /Update.*\.(md)/
+
+  files:
+    - bin/Release/**/*
+    - bin/Debug/**/*
+
+only_commits:
+  files:
+    - Examples/*
+    - '**/*.cs'
+    - '**/*.csproj'
+    - '**/*.config'
+    - '**/*.sln'
