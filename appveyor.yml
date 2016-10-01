@@ -17,6 +17,8 @@ matrix:
 branches: 
   only: 
   - master 
+  - production
+  - experimental
 
 image: Visual Studio 2015 
 
