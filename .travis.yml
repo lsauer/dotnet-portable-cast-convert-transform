@@ -21,3 +21,5 @@ matrix:
       mono: latest
   allow_failures:
     - os: osx
+  fast_finish: true
+  
