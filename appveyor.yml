@@ -22,10 +22,6 @@ branches:
 
 image: Visual Studio 2015 
 
-configuration:
-  - Release
-  - Debug
-
 assembly_info: 
   patch: true 
   file: '**\AssemblyInfo.*' 
