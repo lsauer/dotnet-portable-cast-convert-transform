@@ -10,7 +10,8 @@
 **website** | <a href="https://github.com/lsauer/dotnet-portable-cast-convert-transform" target="_blank">https://github.com/lsauer/dotnet-portable-cast-convert-transform</a>
 **license** | <a href="http://lsauer.mit-license.org/" target="_blank">MIT license</a>   
 **current** |  [![Build Status](https://travis-ci.org/lsauer/dotnet-portable-cast-convert-transform.svg?branch=master)](https://travis-ci.org/lsauer/dotnet-portable-cast-convert-transform) [![Build status](https://ci.appveyor.com/api/projects/status/pjambnikbik9m4nl?svg=true)](https://ci.appveyor.com/project/lsauer/dotnet-portable-cast-convert-transform/) [![Coverage Status](https://img.shields.io/coveralls/bfontaine/badges2svg.svg)](https://ci.appveyor.com/project/lsauer/dotnet-portable-cast-convert-transform/build/tests)
-**package** | <a href="https://www.nuget.org/packages/Core.Cast-Transform-Convert/" target="_blank"><img src="https://img.shields.io/nuget/v/Core.Cast-Transform-Convert.svg?maxAge=6000"/></a>  `PM> Install-Package Core.Cast-Transform-Convert` **description** | An easy to use, portable library for changing between unrestricted, arbitrary data types
+**package** | <a href="https://www.nuget.org/packages/Core.Cast-Transform-Convert/" target="_blank"><img src="https://img.shields.io/nuget/v/Core.Cast-Transform-Convert.svg?maxAge=6000"/></a>  `PM> Install-Package Core.Cast-Transform-Convert` 
+**description** | An easy to use, portable library for changing between unrestricted, arbitrary data types   
 **documentation** |  <a href="https://dotnet-cast-convert-transform.firebaseapp.com/">complete reference v3.1.0.2</a>
 **supported** | <ul><li><a href="https://msdn.microsoft.com/en-us/library/gg597391(v=vs.110).aspx" target="_blank">Portable Class Library (PLC)</a></li> <li><a href="https://en.wikipedia.org/wiki/.NET_Framework#.NET_Core" target="_blank">.NET Core</a></li> <li>.NET Framework 4.5</li> <li>Windows Phone 8.1</li>  <li>Windows 8, 10</li> <li><a href="https://developer.xamarin.com/guides/android/" target="_blank">Xamarin.Android</a></li> <li><a href="https://developer.xamarin.com/guides/ios/" target="_blank">Xamarin.iOS</a></li>  <li>Xamarin.iOS Classic</li><li>XBOX 360 XNA (req. adaptations)</li></ul>   
 
@@ -75,12 +76,56 @@ which is also included in the <a href="https://www.nuget.org/packages/Core.TypeC
 
 ### Getting started in 4 steps
 
-1. *Install* with the <a href="http://goo.gl/iekUWH" target="_blank">NuGet Package manager</a>: `PM> Install-Package Core.Cast-Transform-Convert`.  
-2. *Add the namespace* to your top-listed using directives: `using Core.TypeCast;`.
-3. *Create a class* with one or more methods: `class MyConverter { ... int MyConverter(string argument) ... }`
-4. *Attribute* any class with `[ConverterAttribute]`: _`public class MyConverter { ... }`_.    
-    Subsequently, attribute the converting methods using `[ConverterMethodAttribute]`: _`public int MyConverter(string attribute){ ... }`__
-5. **Done!** 
+#### &nbsp;&nbsp; 1. *Install* with the <a href="http://goo.gl/iekUWH" target="_blank">NuGet Package manager</a>: 
+    
+```sh
+        PM> Install-Package Core.Cast-Transform-Convert
+```  
+
+#### &nbsp;&nbsp; 2. *Add the namespace* to your top-listed using directives: 
+
+```cs
+        using Core.TypeCast;
+```
+
+#### &nbsp;&nbsp; 3. *Create a class* with one or more methods: 
+
+```cs
+        using Core.TypeCast;
+
+        class MyConverter 
+        {
+            ...
+        }
+```
+
+#### &nbsp;&nbsp; 4. *Attribute* any class: 
+
+```cs
+        using Core.TypeCast;
+
+        [Converter]
+        class MyConverter 
+        {
+            ... 
+        }
+```    
+######  &nbsp;&nbsp;&nbsp; Subsequently, attribute the methods:
+
+```cs
+        using Core.TypeCast;
+
+        [Converter]
+        class MyConverter 
+        {
+            [ConverterMethod]
+            public int MyIntConverterMethod(string argument) 
+            { 
+                ... ... ... 
+            } 
+        }
+```
+#### &nbsp;&nbsp; 5. **Done!** 
 
 Now, invoke conversions in your code anywhere as follows: 
 ```cs
