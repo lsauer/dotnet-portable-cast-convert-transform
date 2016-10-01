@@ -1,4 +1,18 @@
-version: 5.0.0.{build}-beta 
+version: 3.1.0.{build}-beta 
+
+platform:
+  - x64
+  - Any CPU
+
+configuration:
+  - Release
+  - Debug
+
+matrix:
+  fast_finish: true
+
+  allow_failures:
+    - configuration: Debug    
 
 branches: 
   only: 
@@ -6,7 +20,9 @@ branches:
 
 image: Visual Studio 2015 
 
-configuration: Release 
+configuration:
+  - Release
+  - Debug
 
 assembly_info: 
   patch: true 
