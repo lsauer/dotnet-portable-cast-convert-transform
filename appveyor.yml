@@ -6,13 +6,13 @@ platform:
 
 configuration:
   - Release
-  - Debug
+  #- Debug
 
 matrix:
   fast_finish: true
 
   allow_failures:
-    - configuration: Debug    
+    - configuration: Release    
 
 branches: 
   only: 
