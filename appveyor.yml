@@ -57,7 +57,7 @@ before_build:
   - cmd:  git checkout experimental
   #- cmd: git fetch origin master:master
   #- cmd: git pull
-  - cmd: 'git log --graph --all --date=relative --pretty=format:"%x09 %ad %d %s (%aN)"'
+  - cmd: 'git log --graph --all --date=relative'
   - cmd: nuget restore ".NET Portable TypeCast.sln"
 
 build: 
@@ -74,8 +74,8 @@ after_build:
 
 after_test:
   - cmd: copy README.md %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\README.md
-  - cmd: 'git log --graph --all --date=relative --pretty=format:"%x09 %ad %d %s (%aN)" > CHANGELOG'
-  - cmd: copy .\CHANGELOG %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\CHANGELOG
+  - cmd: git log --graph --all --date=relative > CHANGELOG
+  - cmd: copy .\CHANGELOG %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\
   - cmd: copy TypeCast\bin\x64\Release\*.* %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\
   - ps:   .\NuGet\pack.ps1 "TypeCast" "Core.TypeCast" "Core.Cast-Transform-Convert"
   - cmd: copy .\*.nupkg %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\
@@ -85,7 +85,11 @@ after_test:
 deploy: 
   # Deploy to GitHub Releases
   - provider: GitHub
-    artifact: /.*\.nupkg/           # upload all NuGet packages to release assets
+    release: TypeCast-v$(APPVEYOR_BUILD_VERSION)
+    description: 'TypeCast uncompromising Conversions'
+    auth_token:
+      secure: hDtElcG5tKay8VLXhoC7Y5AVHZtLoEpXc0bc2lVCHwkoQYwe+dgO+pecWheMlZsa
+    artifact: /.*\.nupkg/            # upload all NuGet packages to release assets
     draft: false
     prerelease: false
     on:
