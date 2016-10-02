@@ -35,24 +35,47 @@ namespace Core.TypeCast.Test
 
         #region Overrides of ConverterCollectionDependency<string, bool>
 
+        /// <summary>
+        /// A test method converting a <see cref="bool"/> to a <see cref="decimal"/> value
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns>A string representation of the input boolean value</returns>
         [ConverterMethod]
         public string Bool2String(bool str)
         {
             return str.ToString();
         }
 
+        /// <summary>
+        /// A test method converting a <see cref="bool"/> to a <see cref="decimal"/> value, with a <see cref="IConvertContext"/>
+        /// </summary>
+        /// <param name="str">The  input value of type bool</param>
+        /// <param name="context"></param>
+        /// <returns>A parsed <see cref="decimal"/> value, without exception handling</returns>
         [ConverterMethod]
         public decimal Bool2StringWithContext(bool str, IConvertContext context)
         {
             return decimal.Parse(context.Value.ToString());
         }
 
+        /// <summary>
+        /// A test method converting a bool to a string value
+        /// </summary>
+        /// <param name="str">The  input value of type bool</param>
+        /// <param name="defval">A default value of the same or different type as the input value</param>
+        /// <returns>A dummy string value stump</returns>
         [ConverterMethod]
         public string Bool2StringWithGeneric(bool str, object defval)
         {
             return str.ToString() + ", Default: " + defval;
         }
 
+        /// <summary>
+        /// converts a <see cref="string"/> to a bool value,as part of the <see cref="IConverter{TIn, TOut}"/> support for testing purposes
+        /// </summary>
+        /// <param name="value">The input value of <see cref="Type"/> <see cref="string"/></param>
+        /// <param name="defaultValue">A default value of the same type as the input</param>
+        /// <returns>A <see cref="bool"/> value</returns>
         public override bool Convert(string value, bool defaultValue = default(bool))
         {
             throw new NotImplementedException();
