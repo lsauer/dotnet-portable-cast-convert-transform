@@ -77,9 +77,6 @@ after_build:
   - cmd: echo "After Build Environmental variables..."
   - ps: 'ls env:'
 
-after_test:
-  - bash <(curl -s https://codecov.io/bash)
-
 artifacts: 
   - path: deploy\*.zip
     name: TypeCastRelease
@@ -94,6 +91,7 @@ after_test:
   - cmd: mkdir deploy
   - cmd: 7z a deploy\DotNetCastConvertTransform.zip %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\*.*
   - cmd: appveyor PushArtifact deploy\DotNetCastConvertTransform.zip 
+  - bash <(curl -s https://codecov.io/bash)
   
 on_success:
   - git config --global credential.helper store
