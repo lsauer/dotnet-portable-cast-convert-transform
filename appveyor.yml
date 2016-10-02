@@ -74,7 +74,8 @@ after_build:
 
 after_test:
   - cmd: copy README.md %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\README.md
-  - cmd: 'git log --graph --all --date=relative --pretty=format:"%x09 %ad %d %s (%aN)" > %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\CHANGELOG'
+  - cmd: 'git log --graph --all --date=relative --pretty=format:"%x09 %ad %d %s (%aN)" > CHANGELOG'
+  - cmd: copy .\CHANGELOG %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\CHANGELOG
   - cmd: copy TypeCast\bin\x64\Release\*.* %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\
   - ps:   .\NuGet\pack.ps1 "TypeCast" "Core.TypeCast" "Core.Cast-Transform-Convert"
   - cmd: copy .\*.nupkg %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\
