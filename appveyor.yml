@@ -85,11 +85,11 @@ after_test:
 deploy: 
   # Deploy to GitHub Releases
   - provider: GitHub
-    release: TypeCast-v$(APPVEYOR_BUILD_VERSION)
+    #release: TypeCast-v$(APPVEYOR_BUILD_VERSION)
     description: 'TypeCast uncompromising Conversions'
     auth_token:
       secure: hDtElcG5tKay8VLXhoC7Y5AVHZtLoEpXc0bc2lVCHwkoQYwe+dgO+pecWheMlZsa
-    artifact: /.*\.nupkg/            # upload all NuGet packages to release assets
+    artifact: DotNetCastConvertTransform.zip            # upload artifact package to release assets
     draft: false
     prerelease: false
     on:
