@@ -53,7 +53,7 @@ before_package:
   
 before_build: 
   - cmd: echo "Before Build Environmental variables..."
-  - ps: ls env: 
+  - ps: 'ls env:'
   - cmd:  git checkout experimental
   #- cmd: git fetch origin master:master
   #- cmd: git pull
@@ -70,7 +70,7 @@ build:
 
 after_build:
   - cmd: echo "After Build Environmental variables..."
-  - ps: 'ls env: '
+  - ps: 'ls env:'
 
 after_test:
   - cmd: copy README.md %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\README.md
