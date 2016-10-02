@@ -20,3 +20,5 @@ $content = $content -replace '\$version\$',$versionStr
 $content | Out-File $root\NuGet\$nugetid.compiled.nuspec
 
 & $root\NuGet\NuGet.exe pack $root\NuGet\$nugetid.compiled.nuspec
+
+$env:NuGetPackageName = "$nugetid.$versionStr.nupkg"

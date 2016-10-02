@@ -72,15 +72,20 @@ after_build:
   - cmd: echo "After Build Environmental variables..."
   - ps: 'ls env:'
 
+artifacts: 
+  - path: deploy\*.zip
+    name: TypeCastRelease
+    
 after_test:
   - cmd: copy README.md %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\README.md
-  - cmd: git log --graph --all --date=relative > CHANGELOG
-  - cmd: copy .\CHANGELOG %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\
+  - cmd: "git log --graph --all --date=relative > .\CHANGELOG.txt"
+  - cmd: copy .\CHANGELOG.txt %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\CHANGELOG.txt
   - cmd: copy TypeCast\bin\x64\Release\*.* %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\
   - ps:   .\NuGet\pack.ps1 "TypeCast" "Core.TypeCast" "Core.Cast-Transform-Convert"
   - cmd: copy .\*.nupkg %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\
-  - cmd: 7z a DotNetCastConvertTransform.zip %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\*.*
-  - cmd: appveyor PushArtifact DotNetCastConvertTransform.zip 
+  - cmd: mkdir deploy
+  - cmd: 7z a deploy\DotNetCastConvertTransform.zip %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\*.*
+  - cmd: appveyor PushArtifact deploy\DotNetCastConvertTransform.zip 
   
 deploy: 
   # Deploy to GitHub Releases
@@ -89,7 +94,7 @@ deploy:
     description: 'TypeCast uncompromising Conversions'
     auth_token:
       secure: hDtElcG5tKay8VLXhoC7Y5AVHZtLoEpXc0bc2lVCHwkoQYwe+dgO+pecWheMlZsa
-    artifact: DotNetCastConvertTransform.zip            # upload artifact package to release assets
+    artifact: TypeCastRelease            # upload artifact package to release assets
     draft: false
     prerelease: false
     on:
@@ -103,7 +108,7 @@ deploy:
       secure: jGbn/mXu3fLPmAuMgXcRMVAY7GAt3d5AKn5Aa+6ac5sNZdoW64RHv3LeUK1nz/Zg
     skip_symbols: false
     #symbol_server: https://your.symbol.server/feed
-    artifact: /.*\.nupkg/
+    artifact: "Core.Cast-Transform-Convert.{version}.nupkg"
     
 notifications: 
   - provider: Email 
