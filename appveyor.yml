@@ -40,8 +40,14 @@ assembly_info:
   assembly_file_version: '{version}' 
   assembly_informational_version: '{version}' 
 
+
+environment:
+  access_token:
+    secure: hDtElcG5tKay8VLXhoC7Y5AVHZtLoEpXc0bc2lVCHwkoQYwe+dgO+pecWheMlZsa
+
 install: 
-- cmd: 
+  - cmd: echo "Install started..."
+  - cmd:  git checkout experimental
 
 nuget: 
   account_feed: true 
@@ -54,7 +60,6 @@ before_package:
 before_build: 
   - cmd: echo "Before Build Environmental variables..."
   - ps: 'ls env:'
-  - cmd:  git checkout experimental
   #- cmd: git fetch origin master:master
   #- cmd: git pull
   - cmd: 'git log --graph --all --date=relative'
@@ -72,6 +77,9 @@ after_build:
   - cmd: echo "After Build Environmental variables..."
   - ps: 'ls env:'
 
+after_test:
+  - bash <(curl -s https://codecov.io/bash)
+
 artifacts: 
   - path: deploy\*.zip
     name: TypeCastRelease
@@ -87,6 +95,14 @@ after_test:
   - cmd: 7z a deploy\DotNetCastConvertTransform.zip %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\*.*
   - cmd: appveyor PushArtifact deploy\DotNetCastConvertTransform.zip 
   
+on_success:
+  - git config --global credential.helper store
+  - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
+  - git config --global user.email "lorenz.lo.sauer@gmail.com"
+  - git config --global user.name "Lo Sauer"
+  - git tag "{version}"
+  - git push origin --tags
+  
 deploy: 
   # Deploy to GitHub Releases
   - provider: GitHub
@@ -99,7 +115,7 @@ deploy:
     prerelease: false
     on:
       branch: experimental           # release from master branch only
-      appveyor_repo_tag: false       # deploy on tag push only
+      appveyor_repo_tag: true       # deploy on tag push only
 
   # Deploying to NuGet feed
   - provider: NuGet
