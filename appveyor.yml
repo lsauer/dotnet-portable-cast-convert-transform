@@ -53,8 +53,9 @@ before_package:
   
   
 before_build: 
-  - cmd: git fetch origin master:master
-  - cmd: git pull
+  - cmd:  git checkout experimental
+  #- cmd: git fetch origin master:master
+  #- cmd: git pull
   - cmd: git log --graph --all --color --date=relative --pretty=format:"%Cred%x09%h %Creset%ad%Cgreen%d %Creset %s %C(bold)(%an)%Creset"
   - cmd: nuget restore ".NET Portable TypeCast.sln"
 
