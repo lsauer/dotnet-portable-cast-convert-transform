@@ -95,6 +95,7 @@ after_test:
   
 on_success:
   - git config --global credential.helper store
+  - git config --global push.default matching
   - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
   - git config --global user.email "lorenz.lo.sauer@gmail.com"
   - git config --global user.name "Lo Sauer"
@@ -122,7 +123,7 @@ deploy:
       secure: jGbn/mXu3fLPmAuMgXcRMVAY7GAt3d5AKn5Aa+6ac5sNZdoW64RHv3LeUK1nz/Zg
     skip_symbols: false
     #symbol_server: https://your.symbol.server/feed
-    artifact: "Core.Cast-Transform-Convert.{version}.nupkg"
+    artifact: /.*\.nupkg/
     
 notifications: 
   - provider: Email 
