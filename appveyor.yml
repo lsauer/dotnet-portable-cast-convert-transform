@@ -56,7 +56,7 @@ before_build:
   - cmd:  git checkout experimental
   #- cmd: git fetch origin master:master
   #- cmd: git pull
-  - cmd: git log --graph --all --color --date=relative --pretty=format:"%Cred%x09%h %Creset%ad%Cgreen%d %Creset %s %C(bold)(%an)%Creset"
+  - cmd: git log --graph --all --date=relative --pretty=format:"%x09 %ad %d %s (%aN)"
   - cmd: nuget restore ".NET Portable TypeCast.sln"
 
 build: 
@@ -65,14 +65,13 @@ build:
   publish_nuget: true 
   publish_nuget_symbols: true 
   include_nuget_references: true 
-  verbosity: detailed 
+  verbosity: normal 
 
 after_build:
   - cmd: copy README.md %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\README.md
   - cmd: git log --graph --all --date=relative --pretty=format:"%x09 %ad %d %s (%aN)" > CHANGELOG
-  - cmd: >- 
-          7z a DotNetCastConvertTransform.zip %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\*.*
-          appveyor PushArtifact DotNetCastConvertTransform.zip 
+  - cmd: 7z a DotNetCastConvertTransform.zip %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\*.*
+  - cmd: appveyor PushArtifact DotNetCastConvertTransform.zip 
 
 after_test:
   - ps:   .\NuGet\pack.ps1 "TypeCast" "Core.TypeCast" "Core.Cast-Transform-Convert"
