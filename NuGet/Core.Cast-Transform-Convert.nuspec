@@ -84,7 +84,7 @@ Provided below is an abbreviated example of what code may look like in your proj
         </dependencies>
     </metadata>
     <files>
-        <file src="..\CHANGELOG" target="content\CHANGELOG" />
+        <file src="..\CHANGELOG.txt" target="content\CHANGELOG" />
         <file src="..\LICENSE" target="content\LICENSE" />
         <file src="..\README.md" target="content\README.md" />
         <file src="..\TypeCast\bin\Release\Core.TypeCast.dll" target="lib\portable-windows8+net45" />
