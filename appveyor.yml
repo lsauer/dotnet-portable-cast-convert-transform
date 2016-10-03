@@ -82,7 +82,8 @@ artifacts:
   - path: deploy\*.zip
     name: TypeCastRelease
   # find all release NuGet packages recursively
-  - path: **\Core.Cast-Transform-Convert*.nupkg    name: NuGetPackage
+  - path: '**\Core.Cast-Transform-Convert*.nupkg'    
+    name: NuGetPackage
     
 after_test:
   - cmd: copy README.md %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\README.md
