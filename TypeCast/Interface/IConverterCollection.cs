@@ -15,6 +15,9 @@ namespace Core.TypeCast
 
     using Core.TypeCast.Base;
 
+    /// <summary>
+    /// The <see cref="ConverterCollection"/> interface provides safe chaining and access to item adder methods as well as settings
+    /// </summary>
     public interface IConverterCollection
     {
         /// <summary>
@@ -55,6 +58,7 @@ namespace Core.TypeCast
         /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></typeparam>
         /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparam>
         /// <param name="converterAction">A function delegate <see cref="Func{TIn, TOut}"/> to use as the <see cref="Converter.Function"/></param>
+        /// <param name="baseType">The <see cref="Type"/> of the declaring and attributed custom converter class, if one exists</param>
         /// <param name="cancellationToken">Optional token to propagate notification that operations should be canceled. From <see cref="System.Threading.Tasks"/>.</param>
         /// <returns>Returns a <see cref="IConverterCollection"/> for safe, constricted function chaining.</returns>
         /// <exception cref="ConverterException"> Throws a <see cref="ConverterCause.ConverterCollectionAddFailed"/> with a wrapped <see cref="Exception.InnerException"/>

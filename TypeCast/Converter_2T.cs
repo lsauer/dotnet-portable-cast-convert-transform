@@ -42,7 +42,6 @@ namespace Core.TypeCast
         ///  wherein <typeparamref name="TIn"/> is the source / from <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/>, and 
         /// <typeparamref name="TOut"/> is the target / to <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/>
         /// </param>
-        /// <param name="argument">The <seealso cref="Type"/> of the argument passed to <see cref="Converter.FunctionDefault"/></param>
         /// <exception cref="ConverterException">Throws a <see cref="ConverterException"/> caused by <see cref="ConverterCause.ConverterArgumentNull"/>
         /// </exception>
         public Converter(Func<TIn, TOut, TOut> converterDefault)
@@ -68,10 +67,6 @@ namespace Core.TypeCast
         /// <summary>
         /// Initializes a new instance of the <see cref="Converter{TIn, TOut}"/> class.
         /// </summary>
-        /// <param name="converterDefault"> The converter default function which takes a default-value parameter as the second argument  <seealso cref="Converter.FunctionDefault"/>
-        ///  wherein <typeparamref name="TIn"/> is the source / from <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/>, and 
-        /// <typeparamref name="TOut"/> is the target / to <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/>
-        /// </param>
         /// <param name="converterInfo">A <see cref="MethodInfo"/> instance for the conversion function</param>
         /// <param name="argument">The <seealso cref="Type"/> of the argument passed to <see cref="Converter.FunctionDefault"/></param>
         /// <exception cref="ConverterException">Throws a <see cref="ConverterException"/> caused by <see cref="ConverterCause.ConverterArgumentNull"/>

@@ -103,7 +103,7 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Gets the <see cref="Converter"/> for a given arbitrary conversion source-type <paramref name="typeFrom"/> and an arbitrary conversion target-type <paramref name="typeTo"/>
+        /// Gets the <see cref="Converter"/> for a given arbitrary conversion source-type <typeparamref name="TIn"/> and an arbitrary conversion target-type <typeparamref name="TOut"/>
         /// </summary>
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
         /// <param name="value">The Source- / From- object from which to <see cref="Converter.Convert(object,object)"/></param>

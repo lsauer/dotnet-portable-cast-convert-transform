@@ -41,3 +41,5 @@ using System.Runtime.InteropServices;
 // Project-level suppressions either have no target or are given 
 // a specific target and scoped to a namespace, type, member, etc.
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CC0057:Unused parameters", Justification = "<Pending>", Scope = "member", Target = "~M:Core.TypeCast.ConverterCollectionLookup.Get``3(System.Linq.IQueryable{Core.TypeCast.Base.Converter},``0,``1,``2,System.Nullable{System.Boolean},System.Boolean)~Core.TypeCast.Base.Converter")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CC0057:Unused parameters", Justification = "<Pending>", Scope = "member", Target = "~M:Core.TypeCast.ObjectExtension.CanConvertTo``2(System.Object,``0,``1)~System.Boolean")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CC0057:Unused parameters", Justification = "<Pending>", Scope = "member", Target = "~M:Core.TypeCast.ObjectExtension.CanConvertTo``2(``0,System.Type,``1)~System.Boolean")]

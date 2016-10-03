@@ -42,6 +42,7 @@ namespace Core.TypeCast
         /// <summary>
         /// Creates a new instance of <see cref="ConverterParameters"/>
         /// </summary>
+        /// <param name="parameterOut">The return type which is equal to the type to which the function converts to.</param>
         /// <param name="parameters">A sequential list of function parameters in order of In, Out, Argument</param>
         /// <example>
         /// <code>

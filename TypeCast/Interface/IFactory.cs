@@ -22,10 +22,10 @@ namespace Core.TypeCast
     public interface IFactory<out TInstance, in TIn1, in TIn2> where TInstance : class
     {
         /// <summary>
-        /// 
+        /// Creates new <typeparamref name="TInstance"/> instances dependent on the parameter type <typeparamref name="TIn1"/> and optionally <see cref="Type"/> <typeparamref name="TIn2"/>
         /// </summary>
-        /// <param name="method"></param>
-        /// <returns></returns>
+        /// <param name="parameter">The 1. parameter of <see cref="Type"/> <typeparamref name="TIn1"/> defining instance creation.</param>
+        /// <returns>Returns a new instance of <typeparamref name="TInstance"/> upon success</returns>
         TInstance Create(TIn1 parameter);
 
         /// <summary>

@@ -57,6 +57,13 @@ namespace Core.TypeCast
             this.DependencInjection = dependencyInjection;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConverterAttribute"/> class, to declare a custom <see cref="Converter"/>
+        /// </summary>
+        /// <param name="loadOnDemand"> Set to `true` to allow joint initialization by the lazy instancing of the <see cref="ConverterCollection"/> <see cref="Core.Singleton"/>  </param>
+        /// <param name="nameSpace"> The namespace as a string, ideally set via the <see langword="nameof"/> operator to group converters and enable lazy-loading upon first use.  </param>
+        /// <param name="name"> A custom enumerator for the converter, to uniquely identify among Transform function disambiguates (i.e. converters with identical In/Out parameter types) </param>
+        /// <param name="dependencyInjection">Whether the declaring converter class is instantiated via dependency Injection.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ConverterAttribute(string nameSpace, Enum name, bool loadOnDemand = false, bool dependencyInjection = false)
             : this(loadOnDemand: loadOnDemand, nameSpace: nameSpace, name: name.ToString(), dependencyInjection: dependencyInjection)
@@ -122,6 +129,12 @@ namespace Core.TypeCast
         /// <remarks>Use for filtering.</remarks>
         public string Name { get; set; }
 
+        /// <summary>
+        /// A string representation of the current attribute.
+        /// </summary>
+        /// <returns>
+        /// Returns a <see cref="string"/> representation of the fields in <see cref="ConverterMethodAttribute"/>.
+        /// </returns>
         public override string ToString()
         {
             return $"[LoD:{this.LoadOnDemand},Base:{this.BaseType?.Name},DepInj:{this.DependencInjection},NamSp:{this.NameSpace},Name:{this.Name}]";

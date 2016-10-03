@@ -66,7 +66,7 @@ namespace Core.TypeCast
         /// <summary>
         /// Initializes a new instance of the <see cref="Converter{TIn, TOut, TArg}"/> class.
         /// </summary>
-        /// <param name="converterAny"> The convert function which takes a model parameter as the second argument  <seealso cref="Converter.ConverterDefaultAnyTypeFunc"/>
+        /// <param name="converterAny"> The convert function which takes a model parameter as the second argument  <seealso cref="Converter{TIn, TOut, TArg}.ConverterAnyFunc"/>
         ///  wherein <typeparamref name="TIn"/> is the source / from <see cref="Type"/>from which to <see cref="Convert(object,object)"/>, <typeparamref name="TArg"/> is the argument type, 
         ///  ideally a converter-model (see the code-examples) and <typeparamref name="TOut"/> is the target / to <see cref="Type"/> to which to <see cref="Convert(object,object)"/>
         /// </param>
@@ -88,35 +88,32 @@ namespace Core.TypeCast
         /// <summary>
         /// Initializes a new instance of the <see cref="Converter{TIn, TOut, TArg}"/> class.
         /// </summary>
-        /// <param name="converterDefaultAnyType"> The convert function which takes a model parameter as the second argument  <seealso cref="Converter.ConverterDefaultAnyTypeFunc"/>
-        ///  wherein <typeparamref name="TIn"/> is the source / from <see cref="Type"/>from which to <see cref="Convert(object,object)"/>, <typeparamref name="TArg"/> is the argument type, 
-        ///  ideally a converter-model (see the code-examples) and <typeparamref name="TOut"/> is the target / to <see cref="Type"/> to which to <see cref="Convert(object,object)"/>
-        /// </param>
+        /// <param name="methodInfo">A <see cref="MethodInfo"/> instance describing a method to create a delegate from and add to the converter</param>
         /// <param name="argument">The optional <seealso cref="Type"/> of the argument passed to <see cref="Converter.FunctionDefault"/>.</param>
         /// <exception cref="ConverterException">Throws a <see cref="ConverterException"/> caused by <see cref="ConverterCause.ConverterArgumentNull"/>
         /// </exception>
-        public Converter(MethodInfo converterInfo, Type argument = null)
+        public Converter(MethodInfo methodInfo, Type argument = null)
             : base(typeof(TIn), typeof(TOut), argument ?? typeof(TArg))
         {
-            var parameterCount = converterInfo.GetParameters().Length;
+            var parameterCount = methodInfo.GetParameters().Length;
 
-            if(converterInfo == null || parameterCount == 0)
+            if(methodInfo == null || parameterCount == 0)
             {
                 throw new ConverterException(ConverterCause.ConverterArgumentNull);
             }
 
             if(parameterCount == 1)
             {
-                this.FunctionInfo = converterInfo;
-                this.ConverterFunc = (Func<TIn, TOut>)converterInfo.CreateDelegate(typeof(Func<TIn, TOut>), null);
+                this.FunctionInfo = methodInfo;
+                this.ConverterFunc = (Func<TIn, TOut>)methodInfo.CreateDelegate(typeof(Func<TIn, TOut>), null);
                 ;
 
             }
             else if(parameterCount == 2)
             {
-                this.FunctionDefaultInfo = converterInfo;
+                this.FunctionDefaultInfo = methodInfo;
                 this.DefaultValueAnyType = true;
-                this.ConverterAnyFunc = (Func<TIn, TArg, TOut>)converterInfo.CreateDelegate(typeof(Func<TIn, TArg, TOut>), null);
+                this.ConverterAnyFunc = (Func<TIn, TArg, TOut>)methodInfo.CreateDelegate(typeof(Func<TIn, TArg, TOut>), null);
             }
             else
             {

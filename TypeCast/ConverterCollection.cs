@@ -188,7 +188,7 @@ namespace Core.TypeCast
         public string ApplicationNameSpace { get; set; }
 
         /// <summary>
-        /// Stores a list of classes that were passed into the constructor as a <see cref="params"/> list of types and have been added to <see cref="Items"/>
+        /// Stores a list of classes that were passed into the constructor as a <see crlangword="params"/> list of types and have been added to <see cref="Items"/>
         /// </summary>
         public List<Type> ConstructorAddedClasses { get; }
 

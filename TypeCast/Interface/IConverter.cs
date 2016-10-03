@@ -31,7 +31,7 @@ namespace Core.TypeCast
     public interface IConverter
     {
         /// <summary>
-        /// The convert method for converting a boxed <see cref="value"/> to another boxed value-<see cref="object"/>.
+        /// The convert method for converting a boxed <paramref name="value"/> to another boxed value-<see cref="object"/>.
         /// </summary>
         /// <param name="value">The boxed value of the underlying source-<see cref="System.Type"/> which is to be converted to a boxed value of the target-<see cref="System.Type"/>.</param>
         /// <param name="defaultValue"> The default value which may be used by the <see cref="Convert(object, object)"/>function if the conversion fails or is `null`</param>
@@ -48,7 +48,7 @@ namespace Core.TypeCast
     /// <remarks>It is not necessary for a custom converter implementation to support the generic <see cref="IConverter{TIn,TOut}"/> interface, but is highly 
     /// recommended for readability future-proofing, and automatic attribute assignment through <see cref="System.Reflection"/>
     /// </remarks>
-    /// <seealso cref="ConverterCollection.GetConverterAttributeFromIConverter(System.Reflection.TypeInfo,Core.TypeCast.ConverterAttribute,bool)"/>
+    /// <seealso cref="ConverterCollection.ConverterAttributeFromIConverter(System.Reflection.TypeInfo, ConverterAttribute, bool)"/>
     public interface IConverter<in TIn, TOut>
     {
         /// <summary>

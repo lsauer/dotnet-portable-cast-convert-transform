@@ -166,13 +166,12 @@ namespace Core.TypeCast
         /// Extends a type-based query lookup to assignable types such as interfaces or sub-types, with the exclusion of `object`
         /// </summary>
         /// <param name="query">The current query which will be returned should the testQuery fail to yield any result.</param>
-        /// <param name="testQuery">The test query to check for possible results</param>
         /// <param name="type">The assignable / inheritable type</param>
         /// <param name="predicate">A function to test each element for a condition; the second parameter of the function represents the index of the element in the source sequence.</param>
         /// <param name="predicateAssignable">A function to test each element for an alternative condition if the <paramref name="predicate"/> result comes up empty; 
         /// the second parameter of the function represents the index of the element in the source sequence.</param>
         /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.</param>
-        /// <returns></returns>
+        /// <returns>Returns <paramref name="query"/> if the <paramref name="predicate"/> comes up empty, else the <paramref name="predicate"/> query is returned.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static IQueryable<Converter> WithAssignable(IQueryable<Converter> query, Expression<Func<Converter, bool>> predicate, Expression<Func<Converter, bool>> predicateAssignable, TypeInfo type, bool assignable)
         {

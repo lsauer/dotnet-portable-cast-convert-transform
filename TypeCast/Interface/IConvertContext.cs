@@ -10,6 +10,7 @@ namespace Core.TypeCast
 {
     using System;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
     using Base;
 
     /// <summary>
@@ -38,7 +39,7 @@ namespace Core.TypeCast
         object Value { get; }
 
         /// <summary>
-        /// The <see cref="Converter"/> instance for the corresponding types <typeparamref name="TIn"/> and <typeparamref name="TOut"/>
+        /// The <see cref="Converter"/> instance for the corresponding types <see cref="From"/> and <see cref="To"/>
         /// </summary>
         Converter Converter { get; }
 
