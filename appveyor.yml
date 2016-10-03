@@ -44,7 +44,7 @@ assembly_info:
 environment:
   access_token:
     secure: MILj/WXEknAZr6e4pF1bGol5qz4AWQONB1G+mAcKx2x0NPOseKNe23oLNffH7pcH
-  nuget_id: "Core.Cast-Transform-Convert"
+  #nuget_id: "Core.Cast-Transform-Convert"
 
 install: 
   - cmd: echo "Install started..."
@@ -82,8 +82,7 @@ artifacts:
   - path: deploy\*.zip
     name: TypeCastRelease
   # find all release NuGet packages recursively
-  - path: >-
-          **\%nuget_id%*.nupkg    name: NuGetPackage
+  - path: **\Core.Cast-Transform-Convert*.nupkg    name: NuGetPackage
     
 after_test:
   - cmd: copy README.md %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\README.md
@@ -91,8 +90,7 @@ after_test:
   - cmd: copy .\CHANGELOG.txt %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\CHANGELOG.txt
   - cmd: copy TypeCast\bin\x64\Release\*.* %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\
   - cmd: mkdir deploy
-  - ps:  >-
-         .\NuGet\pack.ps1 "TypeCast" "Core.TypeCast" "%nuget_id%"
+  - ps: .\NuGet\pack.ps1 "TypeCast" "Core.TypeCast" "Core.Cast-Transform-Convert"
   - cmd: copy .\*.nupkg %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\
   #- cmd: copy .\*.nupkg deploy\
   - cmd: 7z a deploy\DotNetCastConvertTransform.zip %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\*.*
