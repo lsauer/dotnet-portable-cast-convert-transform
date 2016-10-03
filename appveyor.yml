@@ -82,7 +82,7 @@ artifacts:
   - path: deploy\*.zip
     name: TypeCastRelease
   # find all release NuGet packages recursively
-  - path: '%APPVEYOR_BUILD_FOLDER%\TypeCast\bin\**\Core.Cast-Transform-Convert*.nupkg'    
+  - path: deploy\Core.Cast-Transform-Convert*.nupkg
     name: NuGetPackage
     
 after_test:
@@ -93,7 +93,7 @@ after_test:
   - cmd: mkdir deploy
   - ps: .\NuGet\pack.ps1 "TypeCast" "Core.TypeCast" "Core.Cast-Transform-Convert"
   - cmd: copy .\*.nupkg %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\
-  #- cmd: copy .\*.nupkg deploy\
+  - cmd: copy .\*.nupkg deploy\
   - cmd: 7z a deploy\DotNetCastConvertTransform.zip %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\*.*
   - cmd: appveyor PushArtifact deploy\DotNetCastConvertTransform.zip 
   #- cmd: appveyor PushArtifact NuGetPackage
