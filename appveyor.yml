@@ -82,7 +82,7 @@ artifacts:
   - path: deploy\*.zip
     name: TypeCastRelease
   # find all release NuGet packages recursively
-  - path: '**\Core.Cast-Transform-Convert*.nupkg'    
+  - path: '%APPVEYOR_BUILD_FOLDER%\TypeCast\bin\**\Core.Cast-Transform-Convert*.nupkg'    
     name: NuGetPackage
     
 after_test:
@@ -100,11 +100,11 @@ after_test:
   #- bash <(curl -s https://codecov.io/bash)
   
 on_success:
-  - git config --global credential.helper store
-  - git config --global push.default matching
+  #- git config --global credential.helper store
+  #- git config --global push.default matching
   - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
-  - git config --global user.email "lorenz.lo.sauer@gmail.com"
-  - git config --global user.name "Lo Sauer"
+  #- git config --global user.email "lorenz.lo.sauer@gmail.com"
+  #- git config --global user.name "Lo Sauer"
   - git tag "{version}"
   - git push origin --tags
   
