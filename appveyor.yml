@@ -140,7 +140,7 @@ deploy:
 notifications: 
   - provider: Email 
     to: 
-      secure: KnlsT2MzjEmZquxK6VTN5bFcbTEhcEL5GY+zJY/Qo1o=
+      - lorenz.lo.sauer@gmail.com
     on_build_success: false 
     on_build_failure: true 
     on_build_status_changed: false
