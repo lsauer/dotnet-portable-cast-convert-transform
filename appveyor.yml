@@ -9,7 +9,7 @@ configuration:
   #- Debug
 
 # Start builds on tags only (GitHub and BitBucket)
-skip_non_tags: false
+skip_non_tags: true
 
 matrix:
   fast_finish: true
@@ -89,9 +89,9 @@ after_test:
   - cmd: copy README.md %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\README.md
   - cmd: 'git log --graph --all --date=relative > .\CHANGELOG.txt'
   - cmd: copy .\CHANGELOG.txt %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\CHANGELOG.txt
-
   - ps: if($env:Platform -eq "x64") { copy TypeCast\bin\x64\**\*.* $env:APPVEYOR_BUILD_FOLDER\TypeCast\bin\ }
   - ps: if($env:Platform -eq "x86") { copy TypeCast\bin\x86\**\*.* $env:APPVEYOR_BUILD_FOLDER\TypeCast\bin\ }
+  - ps: if($env:Platform -eq "Any CPU") { copy TypeCast\bin\**\*.* $env:APPVEYOR_BUILD_FOLDER\TypeCast\bin\ }
   #- cmd: IF "%Platform%" == "Any CPU" IF (copy TypeCast\bin\**\*.* %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\)
   - cmd: mkdir deploy
   - ps: .\NuGet\pack.ps1 "TypeCast" "Core.TypeCast" "Core.Cast-Transform-Convert"
@@ -103,6 +103,7 @@ after_test:
   #- bash <(curl -s https://codecov.io/bash)
   
 #on_success:
+#  - cmd: nuget push <your-package.nupkg> -ApiKey <your-api-key> -Source <feed-url>
 #  - git config --global credential.helper store
 #  - git config --global push.default matching
 #  - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
