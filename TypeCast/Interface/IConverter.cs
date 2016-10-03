@@ -15,7 +15,7 @@ namespace Core.TypeCast
     /// <code>
     /// ```cs
     ///    [Converter]
-    ///    public class CustomConverters : IConverter, IConverter<object, decimal>, IConverter<string, decimal>
+    ///    public class CustomConverters : IConverter, IConverter&lt;object, decimal>, IConverter&lt;string, decimal>
     ///    {
     ///         public decimal Convert(object value, decimal defaultValue)
     ///         {
@@ -25,7 +25,7 @@ namespace Core.TypeCast
     /// ```
     /// </code>
     /// </example>
-    /// <seealso cref="Converter"/>
+    /// <seealso cref="Converter{TIn, TOut, TArg}"/>
     /// <remarks>It is not required, but recommended for a custom converter to support the common <see cref="IConverter"/> interface 
     /// - depending on the converter design guidelines followed, as laid out in the project documentation </remarks>
     public interface IConverter
@@ -43,8 +43,8 @@ namespace Core.TypeCast
     /// <summary>
     /// This interface defines strictly the conversion and methods between two specified types. 
     /// </summary>
-    /// <typeparam name="TIn">The Source- / From- <see cref="System.Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-    /// <typeparam name="TOut">The Target / To- <see cref="System.Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
+    /// <typeparam name="TIn">The Source- / From- <see cref="System.Type"/>from which to <see cref="Converter{TIn, TOut, TArg}.Convert(object,object)"/></typeparam>
+    /// <typeparam name="TOut">The Target / To- <see cref="System.Type"/> to which to <see cref="Converter{TIn, TOut, TArg}.Convert(object,object)"/></typeparam>
     /// <remarks>It is not necessary for a custom converter implementation to support the generic <see cref="IConverter{TIn,TOut}"/> interface, but is highly 
     /// recommended for readability future-proofing, and automatic attribute assignment through <see cref="System.Reflection"/>
     /// </remarks>

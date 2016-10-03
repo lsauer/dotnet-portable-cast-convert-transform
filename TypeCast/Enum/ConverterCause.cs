@@ -68,7 +68,7 @@ namespace Core.TypeCast
         ConverterExists = 1 << 6, 
 
         /// <summary>
-        /// Indicates that the <see cref="Converter{TIn,TOut}.Convert(object,object)"/> method failed near or at the custom convert Function invocation 
+        /// Indicates that the <see cref="Converter.Convert(object,object)"/> method failed near or at the custom convert Function invocation 
         /// </summary>
         [Description("Indicates that the convert method failed near or at the custom convert Function invocation ")]
         ConvertFailed = 1 << 7, 

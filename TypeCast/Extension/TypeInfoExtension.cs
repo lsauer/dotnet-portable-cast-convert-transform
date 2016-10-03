@@ -14,17 +14,19 @@ namespace Core.Extensions
     using System.Reflection;
     using System.Runtime.CompilerServices;
 
+    using Core.TypeCast;
+
     /// <summary>
     /// The  <see cref="TypeInfo"/> extension.
     /// </summary>
     public static partial class TypeInfoExtension
     {
         /// <summary>
-        /// Get a an <seealso cref="IEnumerable{System.Reflection.ConstructorInfo}"/> of all constructors that match the argument <paramref name="parameterType"/>
+        /// Get a an <see cref="IEnumerable{ConstructorInfo}"/> of all constructors that match the argument <paramref name="parameterType"/>
         /// </summary>
         /// <param name="type">The own instance of the <see cref="TypeInfo"/> which invokes the method. </param>
         /// <param name="parameterType">The required parameter type which has to be present in the constructor's parameter-list.</param>
-        /// <returns>The <see cref="IEnumerable{System.Reflection.ConstructorInfo}"/> of <see cref="System.Reflection.ConstructorInfo"/> that match the criteria. </returns>
+        /// <returns>The <see cref="IEnumerable{ConstructorInfo}"/> of <see cref="System.Reflection.ConstructorInfo"/> that match the criteria. </returns>
         /// <remarks>In most cases the criteria should be narrowed to return one potential <see cref="System.Reflection.ConstructorInfo"/>. </remarks>
         public static IEnumerable<ConstructorInfo> GetConstructorsByParameterType(this TypeInfo type, Type parameterType)
         {
@@ -52,10 +54,10 @@ namespace Core.Extensions
         }
 
         /// <summary>
-        /// Yields true if a <see cref="class"/> or <see cref="struct"/> contain a constructor of a <see cref="Type"/> "<paramref name="interfaceType"/>"
+        /// Yields true if a <see langword="class"/> or <see langword="struct"/> contain a constructor of a <see cref="Type"/> "<paramref name="interfaceType"/>"
         /// </summary>
         /// <param name="type">The own instance of the <see cref="TypeInfo"/> which invokes the method. </param>
-        /// <param name="interfaceType">The parameter argument <see cref="Type"/> which should be, but does not strictly has to be, an <see cref="interface"/>.</param>
+        /// <param name="interfaceType">The parameter argument <see cref="Type"/> which should be, but does not strictly has to be, an <see langword="interface"/>.</param>
         /// <returns>Returns true if <paramref name="type"/> has a constructor that can be used for Dependency Injection of <paramref name="interfaceType"/>.</returns>
         /// <remarks>The method-extension can be used to dynamically detect if a constructor is present for Dependency Injection via <paramref name="interfaceType"/>. </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -135,15 +137,15 @@ namespace Core.Extensions
 
         /// <summary>
         /// Compares the nature between two types and returns a <see cref="TypeMatch"/> <see cref="Enum"/> value.
-        /// If the parameter <paramref name="checkIsSame"/> is set to <see cref="true"/>, a <see cref="TypeMatch"/> value of <see cref="TypeMatch.Same"/> is returned if the Types match else <see cref="TypeMatch.None"/> is returned. 
-        /// If the parameter <paramref name="checkIsSame"/> is set to <see cref="false"/>,  the <see cref="Type.Namespace"/> of the input <paramref name="self"/> and output type <typeparamref name="TOut"/> is compared. 
-        /// If the parameter <paramref name="checkIsSame"/> is set to <see cref="null"/> all values of <see cref="TypeMatch"/> are possible as return value.
+        /// If the parameter <paramref name="checkIsSame"/> is set to <see langword="true"/>, a <see cref="TypeMatch"/> value of <see cref="TypeMatch.Same"/> is returned if the Types match else <see cref="TypeMatch.None"/> is returned. 
+        /// If the parameter <paramref name="checkIsSame"/> is set to <see langword="false"/>,  the <see cref="Type.Namespace"/> of the input <paramref name="self"/> and output type <typeparamref name="TOut"/> is compared. 
+        /// If the parameter <paramref name="checkIsSame"/> is set to <see langword="null"/> all values of <see cref="TypeMatch"/> are possible as return value.
         /// </summary>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn, TOut, TArg}.Convert(object, object)" /></typeparam>
         /// <param name="self">The current instance holding the boxed value to convert from</param>
-        /// <param name="checkIsSame"> If the parameter is set to <see cref="true"/>, <see cref="TypeMatch.None"/> means they types do not match. 
-        /// If set to <see cref="false"/>, the result <see cref="TypeMatch.None"/> means the types are not similar. 
-        /// If set to <see cref="null"/>,  the result <see cref="TypeMatch.None"/> means that the types do not share a relationship.</param>
+        /// <param name="checkIsSame"> If the parameter is set to <see langword="true"/>, <see cref="TypeMatch.None"/> means they types do not match. 
+        /// If set to <see langword="false"/>, the result <see cref="TypeMatch.None"/> means the types are not similar. 
+        /// If set to <see langword="null"/>,  the result <see cref="TypeMatch.None"/> means that the types do not share a relationship.</param>
         /// <returns>Returns the nature of the compared types as an <see cref="TypeMatch"/> <see cref="Enum"/> value.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TypeMatch IsSameOrSimilar<TOut>(this TypeInfo self, bool? checkIsSame = null)
@@ -163,13 +165,13 @@ namespace Core.Extensions
 
 
         /// <summary>
-        /// Returns <see cref="true"/> if a <see cref="Type"/> <paramref name="self"/> is assignable by <see cref="Type"/> <paramref name="typeBase"/> or vice versa, 
-        /// else <see cref="false"/> is returned.
+        /// Returns <see langword="true"/> if a <see cref="Type"/> <paramref name="self"/> is assignable by <see cref="Type"/> <paramref name="typeBase"/> or vice versa, 
+        /// else <see langword="false"/> is returned.
         /// </summary>
         /// <param name="self">The current instance holding the boxed value to convert from</param>
         /// <param name="typeBase">The <see cref="Type"/> to check whether it is a sub or super-<see cref="Type"/> of <paramref name="self"/></param>
-        /// <returns>Returns <see cref="true"/> if a <see cref="Type"/> <paramref name="self"/> is assignable by <see cref="Type"/> <paramref name="typeBase"/> or vice versa, 
-        /// else <see cref="false"/></returns>
+        /// <returns>Returns <see langword="true"/> if a <see cref="Type"/> <paramref name="self"/> is assignable by <see cref="Type"/> <paramref name="typeBase"/> or vice versa, 
+        /// else <see langword="false"/></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsSuperOrSubType(this TypeInfo self, TypeInfo typeBase)
         {

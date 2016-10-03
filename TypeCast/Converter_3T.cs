@@ -18,9 +18,9 @@ namespace Core.TypeCast
     /// <summary>
     /// The specific, strictly-typed converter class for type transformations and complex conversions.
     /// </summary>
-    /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-    /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-    /// <typeparam name="TArg">The Argument <see cref="Type"/> for generic converters using see <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object)"/>. 
+    /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></typeparam>
+    /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparam>
+    /// <typeparam name="TArg">The Argument <see cref="Type"/> for generic converters using see <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object, bool)"/>. 
     /// In <see cref="Converter{TIn, TOut}"/> <typeparamref name="TArg"/> is set to <see cref="object"/></typeparam>
     [DataContract]
     public class Converter<TIn, TOut, TArg> : Converter, IConverter<TIn, TOut>
@@ -163,8 +163,8 @@ namespace Core.TypeCast
         /// <summary>
         /// Gets or sets the converter function
         /// </summary>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
+        /// <typeparamref name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></typeparamref>
+        /// <typeparamref name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparamref>
         [DataMember]
         public Func<TIn, TOut> ConverterFunc
         {
@@ -180,8 +180,8 @@ namespace Core.TypeCast
         }
 
         /// <summary> The <see cref="Converter"/> convert function as part of the <see cref="IConverter"/> interface support. </summary>
-        /// <param name="value">The value of <see cref="Type"/> <see cref="TIn"/> to be converted.</param>
-        /// <param name="defaultValue">The optional default value of <see cref="Type"/> <see cref="TOut"/>to be passed if the conversion fails or is `null`.</param>
+        /// <param name="value">The value of <see cref="Type"/> <typeparamref name="TIn"/> to be converted.</param>
+        /// <param name="defaultValue">The optional default value of <see cref="Type"/> <typeparamref name="TOut"/>to be passed if the conversion fails or is `null`.</param>
         /// <returns>The converted value as a boxed <see cref="object"/>.</returns>
         /// <remarks>The actual implementation and use of the second parameter lies solely within the scope of the programmer implementing the converter logic</remarks>
         /// <exception cref="ConverterException"> Throws an exception if the argument or converter function is null, or if the argument types mismatch
@@ -220,8 +220,8 @@ namespace Core.TypeCast
         }
 
         /// <summary> An helper function for the <see cref="Converter.Convert(object, object)"/> function. </summary>
-        /// <param name="value">The value of <see cref="Type"/> <see cref="TIn"/> to be converted.</param>
-        /// <param name="defaultValue">The default value of <see cref="Type"/> <see cref="TOut"/>to be passed if the conversion fails or is `null`.</param>
+        /// <param name="value">The value of <see cref="Type"/> <typeparamref name="TIn"/> to be converted.</param>
+        /// <param name="defaultValue">The default value of <see cref="Type"/> <typeparamref name="TOut"/> to be passed if the conversion fails or is `null`.</param>
         /// <returns>The converted value as a boxed <see cref="object"/>.</returns>
         /// <remarks>The actual implementation and use of the second parameter lies solely within the scope of the programmer implementing the converter logic</remarks>
         /// <exception cref="ConverterException"> Throws an exception if the argument or converter function is null, or if the argument types mismatch
@@ -259,11 +259,11 @@ namespace Core.TypeCast
 
 
         /// <summary> The converter function that needs to be overwritten as part of the <see cref="IConverter"/> interface support. </summary>
-        /// <param name="valueTyped">The value of <see cref="Type"/> <see cref="TIn"/> to be converted.</param>
-        /// <param name="defaultValueTyped">The optional default value of <see cref="Type"/> <see cref="TOut"/>to be passed if the conversion fails or is `null`.</param>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-        /// <returns>The value converted to <see cref="Type"/> of <see cref="TOut"/> </returns>
+        /// <param name="valueTyped">The value of <see cref="Type"/> <typeparamref name="TIn"/> to be converted.</param>
+        /// <param name="defaultValueTyped">The optional default value of <see cref="Type"/> <typeparamref name="TOut"/>to be passed if the conversion fails or is `null`.</param>
+        /// <typeparamref name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></typeparamref>
+        /// <typeparamref name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparamref>
+        /// <returns>The value converted to <see cref="Type"/> of <typeparamref name="TOut"/> </returns>
         /// <exception cref="ConverterException">Throws an exception of <see cref="ConverterCause.ConverterNotImplemented"/> if the parent class
         ///  does not implement `public override TOut ` <see cref="Convert(object,object)"/>
         /// </exception>

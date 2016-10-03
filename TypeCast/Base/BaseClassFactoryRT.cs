@@ -25,7 +25,7 @@ namespace Core.TypeCast.Base
         /// Creates a new instance of <see cref="Type"/> <paramref name="converterClass"/>
         /// </summary>
         /// <param name="converterClass">The class which is attributed by <see cref="ConverterAttribute"/></param>
-        /// <exception cref="ConverterCollectionException">An exception raised by the <see cref="Create"/> method pre-instance creation, if the <see cref="converterClass "/>
+        /// <exception cref="ConverterCollectionException">An exception raised by the <see cref="Create(Type)"/> method pre-instance creation, if the <paramref name="converterClass "/>
         /// was previously instanced by the <see cref="ConverterCollection"/>.</exception>
         /// <exception cref="TargetInvocationException">An exception-wrapper containing an <see cref="Exception.InnerException"/> of an error which occurred during or 
         /// at instance creation.</exception>
@@ -40,7 +40,7 @@ namespace Core.TypeCast.Base
         /// <param name="converterClass">The class which is attributed by <see cref="ConverterAttribute"/></param>
         /// <param name="collection">A n optional <see cref="ConverterCollection"/> instance passed during instance creation for Dependency Injection</param>
         /// <returns>Returns a new instance of <paramref name="converterClass"/> upon success, else null</returns>
-        /// <exception cref="ConverterCollectionException">An exception raised by the <see cref="Create"/> method pre-instance creation, if the <see cref="converterClass "/>
+        /// <exception cref="ConverterCollectionException">An exception raised by the <see cref="Create(Type)"/> method pre-instance creation, if the <paramref name="converterClass "/>
         /// was previously instanced by the <see cref="ConverterCollection"/>.</exception>
         /// <exception cref="TargetInvocationException">An exception-wrapper containing an <see cref="Exception.InnerException"/> of an error which occurred during or 
         /// at instance creation.</exception>

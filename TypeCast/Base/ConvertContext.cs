@@ -63,7 +63,7 @@ namespace Core.TypeCast.Base
         public Type To { get; set; }
 
         /// <summary>
-        /// The argument <see cref="Type"/> of the `model` as used in <see cref="ConvertTo{TIn, TOut}(TIn, object)"/>
+        /// The argument <see cref="Type"/> of the `model` as used in <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object, bool)"/>
         /// </summary>
         public Type Argument { get; set; }
 

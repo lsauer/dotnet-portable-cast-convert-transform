@@ -19,7 +19,7 @@ namespace Core.TypeCast.Base
     using Extensions;
 
     /// <summary>
-    /// The abstract generic factory for creating arbitrary instances requiring up to two arguments. Use a container type such as <see cref="Tuple"/> or <see cref="struct"/> 
+    /// The abstract generic factory for creating arbitrary instances requiring up to two arguments. Use a container type such as <see cref="Tuple"/> or <see langword="struct"/> 
     /// as second parameter type <typeparamref name="TIn2"/> if more parameters are required.
     /// </summary>
     /// <typeparam name="TInstance">The <see cref="Type"/> of the instances to create and return by the factory method <see cref="Create(TIn1)"/>
@@ -87,9 +87,9 @@ namespace Core.TypeCast.Base
         /// <summary>
         /// Internal method for object instantiation by a passed type <paramref name="type"/>
         /// </summary>
-        /// <param name="type">the type of the <see cref="class"/> or <see cref="struct"/> which to instance</param>
-        /// <param name="parameters">the parameters passed to the constructor of the <see cref="class"/> or <see cref="struct"/></param>
-        /// <returns>Returns an instance object of type <typeparamref name="TOut"/> or `null`</returns>
+        /// <param name="type">the type of the <see langword="class"/> or <see langword="struct"/> which to instance</param>
+        /// <param name="parameters">the parameters passed to the constructor of the <see langword="class"/> or <see langword="struct"/></param>
+        /// <returns>Returns an instance object of type <paramref name="type"/> or `null`</returns>
         protected static object Instantiate(Type type, params object[] parameters)
         {
             return Instantiate<object>(type: type, args: parameters);
@@ -98,10 +98,10 @@ namespace Core.TypeCast.Base
         /// <summary>
         /// Internal method for object instantiation following the "Try" convention of returning a bool `true` upon success and passing the result with `out`
         /// </summary>
-        /// <param name="type">The type of the <see cref="class"/> or <see cref="struct"/> which to instance</param>
-        /// <param name="parameters">The parameters passed to the constructor of the <see cref="class"/> or <see cref="struct"/></param>
-        /// <param name="instance">The assigned instance reference upon instancing of type <typeparamref name="TOut"/> or `null` upon failure</param>
-        /// <returns>Returns <see cref="bool"/> `true` upon success or `false` upon failure and assigning `null` to <paramref name="instance"/></returns>
+        /// <param name="type">The type of the <see langword="class"/> or <see langword="struct"/> which to instance</param>
+        /// <param name="parameters">The parameters passed to the constructor of the <see langword="class"/> or <see langword="struct"/></param>
+        /// <param name="instance">The assigned instance reference upon instancing of type <paramref name="type"/> or `null` upon failure</param>
+        /// <returns>Returns <see langword="bool"/> `true` upon success or `false` upon failure and assigning `null` to <paramref name="instance"/></returns>
         protected static bool TryInstantiate(Type type, out object instance, params object[] parameters)
         {
             instance = null;
@@ -118,9 +118,9 @@ namespace Core.TypeCast.Base
         /// Internal method object instantiation of a generic type , with the generic-parameters passed as the second argument
         /// </summary>
         /// <typeparam name="TOut">The type of the instance to pass out</typeparam>
-        /// <param name="type">The type of the <see cref="class"/> or <see cref="struct"/> which to instance</param>
+        /// <param name="type">The type of the <see langword="class"/> or <see langword="struct"/> which to instance</param>
         /// <param name="parameters">the generic types that comprise the generic type</param>
-        /// <param name="args">The parameters passed to the constructor of the <see cref="class"/> or <see cref="struct"/></param>
+        /// <param name="args">The parameters passed to the constructor of the <see langword="class"/> or <see langword="struct"/></param>
         /// <returns>Returns an instance object of type <typeparamref name="TOut"/> or `null`</returns>
         protected static TOut Instantiate<TOut>(Type type, Type[] parameters, params object[] args)
         {
@@ -132,10 +132,10 @@ namespace Core.TypeCast.Base
         /// <summary>
         /// Creates an instance of the type designated by the specified generic type parameter
         /// </summary>
-        /// <param name="type">The type of the <see cref="class"/> or <see cref="struct"/> which to instance</param>
-        /// <param name="args">the parameters passed to the constructor of the <see cref="class"/> or <see cref="struct"/></param>
+        /// <param name="type">The type of the <see langword="class"/> or <see langword="struct"/> which to instance</param>
+        /// <param name="args">the parameters passed to the constructor of the <see langword="class"/> or <see langword="struct"/></param>
         /// <returns>A reference to the newly created object.</returns>
-        /// <exception cref="System.MissingMethodException">NoteIn the .NET for Windows Store apps or the Portable Class Library, catch the
+        /// <exception cref="MissingMemberException">Note: In .NET for Windows Store apps or the Portable Class Library, catch the
         /// base class exception, System.MissingMemberException, instead. The type that specified for T does not have a parameterless constructor.</exception>
         /// <remarks>Centralize all runtime calls to <code>`Activator.Create(...)`</code> and <code>constructor.Invoke(...)`</code> </remarks>
         protected static TOut Instantiate<TOut>(Type type, object[] args = null)

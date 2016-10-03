@@ -6,11 +6,13 @@
 // <version>   3.1.0.2                                                                  </version>
 // <author>    Lorenz Lo Sauer; people credited in the sources                          </author>
 // <project>   https://github.com/lsauer/dotnet-portable-type-cast                      </project>
+using System;
+
 namespace Core.TypeCast
 {
     /// <summary>
     /// The generic, common factory interface for declaring factories creating arbitrary object instances requiring up to two arguments. 
-    /// Use a container type such as <see cref="Tuple"/> or <see cref="struct"/> as second parameter <typeparamref name="TIn2"/> if more parameters are required.
+    /// Use a container type such as <see cref="Tuple"/> or <see langword="struct"/> as second parameter <typeparamref name="TIn2"/> if more parameters are required.
     /// </summary>
     /// <typeparam name="TInstance">The <see cref="Type"/> of the instances to create and return by the factory method <see cref="Create(TIn1)"/>
     /// and <see cref="Create(TIn1, TIn2)"/>.</typeparam>

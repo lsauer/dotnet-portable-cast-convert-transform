@@ -36,7 +36,7 @@ namespace Core.TypeCast.Test
         #region Overrides of ConverterCollectionDependency<string, bool>
 
         /// <summary>
-        /// A test method converting a <see cref="bool"/> to a <see cref="decimal"/> value
+        /// A test method converting a <see langword="bool"/> to a <see cref="decimal"/> value
         /// </summary>
         /// <param name="str"></param>
         /// <returns>A string representation of the input boolean value</returns>
@@ -47,7 +47,7 @@ namespace Core.TypeCast.Test
         }
 
         /// <summary>
-        /// A test method converting a <see cref="bool"/> to a <see cref="decimal"/> value, with a <see cref="IConvertContext"/>
+        /// A test method converting a <see langword="bool"/> to a <see cref="decimal"/> value, with a <see cref="IConvertContext"/>
         /// </summary>
         /// <param name="str">The  input value of type bool</param>
         /// <param name="context"></param>
@@ -75,7 +75,7 @@ namespace Core.TypeCast.Test
         /// </summary>
         /// <param name="value">The input value of <see cref="Type"/> <see cref="string"/></param>
         /// <param name="defaultValue">A default value of the same type as the input</param>
-        /// <returns>A <see cref="bool"/> value</returns>
+        /// <returns>A <see langword="bool"/> value</returns>
         public override bool Convert(string value, bool defaultValue = default(bool))
         {
             throw new NotImplementedException();

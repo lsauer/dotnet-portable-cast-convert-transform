@@ -38,18 +38,22 @@ namespace Core.TypeCast
     }
 
     /// <summary>The generic repository interface with one lookup identifier, and a strict entity return type of <typeparamref name="TOut"/></summary>
-    /// <typeparam name="TId1">The <see cref="Type"/> of the lookup identifier <paramref name="id1"/></typeparam>
+    /// <typeparam name="TId1">The <see cref="Type"/> of the lookup identifier</typeparam>
     /// <typeparam name="TOut">The <see cref="Type"/> of the entity returned from the repository method <see cref="Get(TId1)"/></typeparam>
     /// <remarks>Implemented by any instantiable object which can provide data by passing one Identifier to facilitate lookup</remarks>
     public interface IRepository<in TId1, out TOut>
     {
+        /// <summary>The initialize method.</summary>
+        /// <param name="id1">The argument value of the lookup identifier</param>
+        /// <returns>A strict entity return type of <typeparamref name="TOut"/> which may be a single entity or collection thereof, implementing <see cref="IEnumerable"/>
+        /// </returns>
         TOut Get(TId1 id1);
     }
 
     /// <summary>The generic repository interface with twp lookup identifiers, and a strict entity return type of <typeparamref name="TOut"/></summary>
-    /// <typeparam name="TId1">The <see cref="Type"/> of the lookup identifier <paramref name="id1"/></typeparam>
-    /// <typeparam name="TId1">The <see cref="Type"/> of the lookup identifier <paramref name="id2"/></typeparam>
-    /// <typeparam name="TOut">The <see cref="Type"/> of the entity returned from the repository method <see cref="Get(TId1)"/></typeparam>
+    /// <typeparam name="TId1">The <see cref="Type"/> of the lookup identifier </typeparam>
+    /// <typeparam name="TId2">The <see cref="Type"/> of the lookup identifier </typeparam>
+    /// <typeparam name="TOut">The <see cref="Type"/> of the entity returned from the repository method <see cref="IRepository{TId1, TOut}.Get(TId1)"/></typeparam>
     /// <remarks>Implemented by any instantiable object which can provide data by passing two Identifiers to facilitate lookup</remarks>
     public interface IRepository<in TId1, in TId2, out TOut> : IRepository<TId1, TOut>
     {

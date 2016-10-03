@@ -207,11 +207,11 @@ namespace Core.TypeCast
 
 
         /// <summary>
-        /// Filters items in <see cref="ConverterCollection"/> which have <see cref="Converter.From.IsGenericType"/> set equal to <paramref name="typeFromIsGenericType"/>
+        /// Filters items in <see cref="ConverterCollection"/> which have <see cref="TypeInfo.IsGenericType"/> set equal to <paramref name="typeFromIsGenericType"/>
         /// </summary>
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods 
         /// in <see cref="ConverterCollectionFilters"/></param>
-        /// <param name="typeFromIsGenericType">The Boolean <see cref="Converter.From.IsGenericType"/> Type-property to look for</param>
+        /// <param name="typeFromIsGenericType">The Boolean <see cref="TypeInfo.IsGenericType"/> Type-property to look for</param>
         /// <returns>Returns a new filtered query as <see cref="IQueryable{Converter}"/> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IQueryable<Converter> WithFromIsGenericType(this IQueryable<Converter> query, bool? typeFromIsGenericType = true)
@@ -224,11 +224,11 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Filters items in <see cref="ConverterCollection"/> which have <see cref="Converter.To.IsGenericType"/> set equal to <paramref name="typeToIsGenericType"/>
+        /// Filters items in <see cref="ConverterCollection"/> which have <see cref="TypeInfo.IsGenericType"/> set equal to <paramref name="typeToIsGenericType"/>
         /// </summary>
         /// <param name="query">The typeToIsGenericType <see cref="IQueryable{Converter}"/> instance which invokes the static extension 
         /// methods in <see cref="ConverterCollectionFilters"/></param>
-        /// <param name="typeToIsGenericType">The Boolean <see cref="Converter.To.IsGenericType"/> Type-property to look for</param>
+        /// <param name="typeToIsGenericType">The Boolean <see cref="TypeInfo.IsGenericType"/> Type-property to look for</param>
         /// <returns>Returns a new filtered query as <see cref="IQueryable{Converter}"/> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IQueryable<Converter> WithToIsGenericType(this IQueryable<Converter> query, bool? typeToIsGenericType = true)
@@ -261,7 +261,7 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Filters items in <see cref="ConverterCollection"/> which have <see cref="Converter.Attribute.Name"/> set equal to <paramref name="containedName"/>
+        /// Filters items in <see cref="ConverterCollection"/> which have <see cref="ConverterAttribute.Name"/> set equal to <paramref name="containedName"/>
         /// </summary>
         /// <param name="query">The typeToIsGenericType <see cref="IQueryable{Converter}"/> instance which invokes the static extension 
         /// methods in <see cref="ConverterCollectionFilters"/></param>
@@ -309,8 +309,8 @@ namespace Core.TypeCast
         /// <param name="typeBase">The <see cref="Converter.BaseType"/> Type to look for</param>
         /// <param name="hasDefaultFunction">The Boolean <see cref="Converter.HasDefaultFunction"/> Property to look for</param>
         /// <param name="isStandard">The Boolean <see cref="Converter.Standard"/> property to look for</param>
-        /// <param name="typeFromIsGenericType">The Boolean <see cref="Converter.From.IsGenericType"/> Type-property to look for</param>
-        /// <param name="typeToIsGenericType">The Boolean <see cref="Converter.To.IsGenericType"/> Type-property to look for</param>
+        /// <param name="typeFromIsGenericType">The Boolean <see cref="TypeInfo.IsGenericType"/> Type-property in <see cref="Converter.From"/> to look for</param>
+        /// <param name="typeToIsGenericType">The Boolean <see cref="TypeInfo.IsGenericType"/> Type-property in <see cref="Converter.To"/> to look for</param>
         /// <param name="functionName">A search-string to be contained in the <see cref="Converter.Function"/> or<see cref="Converter.FunctionDefault"/> to filter through</param>
         /// <param name="attributeName">A search-string to be contained in the <see cref="ConverterAttribute.Name"/> to filter through</param>
         /// <param name="assignableFrom">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
@@ -319,7 +319,6 @@ namespace Core.TypeCast
         /// <param name="assignableBaseType">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
         /// <param name="withContext">Whether to include argument types that support a conversion context for the model.</param> 
         /// <returns>Returns a new filtered query as <see cref="IQueryable{Converter}"/> </returns>
-        /// <seealso cref="ConverterCollection.Get(TypeInfo, TypeInfo, TypeInfo, bool?, bool, bool?, bool?, bool?)"/>
         public static IQueryable<Converter> ApplyAllFilters(
             this IQueryable<Converter> query,
             TypeInfo typeFrom = null,

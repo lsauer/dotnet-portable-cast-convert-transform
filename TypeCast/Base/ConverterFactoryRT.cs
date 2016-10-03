@@ -16,14 +16,23 @@ namespace Core.TypeCast.Base
 
     /// <summary>
     /// Creates new instances of <see cref="Converter{TIn, TOut}"/> or <see cref="Converter{TIn, TOut, TArg}"/> dependent on the 
-    /// number of parameters defined in <paramref name="methodInfo"/> and whether a delegate was passed.
+    /// number of parameters defined in the provided <see cref="MethodInfo"/> instance and whether a delegate was passed.
     /// </summary>
     /// <typeparam name="TConverter">The generic type of the Converter class to instance</typeparam>
     public class ConverterFactoryRT<TConverter> : Factory<Converter, MethodInfo, object> where TConverter : class
     {
-        public override Converter Create(MethodInfo method)
+        /// <summary>
+        ///     Creates a strictly typed <see cref="Converter{TIn, TOut, TArg}"/> container in case of any attribute-assigned method
+        ///     or a passed <see cref="MethodInfo"/> with a parameter argument count of two. Otherwise a strictly typed <see cref="Converter{TIn, TOut}"/> container 
+        ///     instance is created and returned.
+        /// </summary>
+        /// <param name="methodInfo">A methodInfo for a converter method, crucially confining the number of function parameters between one and two. 
+        /// Otherwise an <see cref="ConverterException"/> is raised.</param>
+        /// <returns>A new instance of a <see cref="Converter"/> with a parent of either <see cref="Converter{TIn, TOut, TArg}"/> or <see cref="Converter{TIn, TOut}"/>.</returns>
+        /// <exception cref="ConverterException">If the number or types of the parameters mismatch an exception is raised.</exception>
+        public override Converter Create(MethodInfo methodInfo)
         {
-            return this.Create(method, null);
+            return this.Create(methodInfo, null);
         }
 
         /// <summary>
@@ -50,7 +59,7 @@ namespace Core.TypeCast.Base
                 throw new ConverterException(ConverterCause.ConverterArgumentDelegateNoParameters);
             }
 
-            bool isInstanceMethod = converterDelegate == null;
+            var isInstanceMethod = converterDelegate == null;
 
             var parameterTypes = new ConverterParameters(methodInfo.ReturnParameter, parameterInfos);
 

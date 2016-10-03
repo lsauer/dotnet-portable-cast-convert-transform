@@ -61,10 +61,8 @@ namespace Core.TypeCast
         /// </summary>
         /// <param name="loadOnDemand">Set to `true` to allow joint initialization by the lazy instancing of the <see cref="ConverterCollection"/> <see cref="Core.Singleton"/>  </param>
         /// <param name="isStatic"> Set to `true` to invoke the method with `this` reference set to null, otherwise with an instance reference passed. Default is `true`. </param>
-        /// <param name="name"> An alias as a string, ideally set via the <see cref="nameof"/> operator to identify among ambiguous converters.</param>
-        /// <param name="dependencyInjection">
-        /// Whether the declaring converter class is instantiated via dependency Injection.
-        /// </param>
+        /// <param name="name"> An alias as a string, ideally set via the <see langword="nameof"/> operator to identify among ambiguous converters. See <see cref="Name"/> </param>
+        /// <param name="passInstance">Whether the method should be wrapped and passed an instance of its containing class as the first argument (`true`).See  <see cref="PassInstance"/>.</param>
         public ConverterMethodAttribute(bool isStatic = true, bool loadOnDemand = true, string name = "", bool passInstance = false)
         {
             this.LoadOnDemand = loadOnDemand;
@@ -140,7 +138,7 @@ namespace Core.TypeCast
 
         /// <summary>
         /// Gets a value indicating whether the method should be wrapped and passed an instance of its containing class as the first argument (`true`). 
-        /// Default is <see cref="false"/>, which does not wrap the attributed method.
+        /// Default is <see langword="false"/>, which does not wrap the attributed method.
         /// </summary>
         public bool PassInstance { get; }
 

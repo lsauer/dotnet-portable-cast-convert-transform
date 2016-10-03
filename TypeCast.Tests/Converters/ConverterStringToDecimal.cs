@@ -35,7 +35,7 @@ namespace Core.TypeCast.Test
             }
             return defaultValue;
         }
-        
+
         /// <summary>
         /// A dummy non-converting method, which will not be added since it is not attributed by `ConverterMethodAttribute`
         /// </summary>

@@ -9,6 +9,7 @@
 namespace Core.TypeCast
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Globalization;
 
     using Core.TypeCast.Base;
@@ -31,7 +32,7 @@ namespace Core.TypeCast
         /// <summary>
         /// Initializes a new instance of the <see cref="ConverterCollectionSettings"/> class.
         /// </summary>
-        /// <param name="defaultValueAnyType">Set to `true` if any argument type is allowed. If set to `false` <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object)"/> cannot be used.</param>
+        /// <param name="defaultValueAnyType">Set to `true` if any argument type is allowed. If set to `false` <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object, bool)"/> cannot be used.</param>
         /// <param name="useFunctionDefaultWrapper">
         /// Whether to use a function default wrapper if the <see cref="Converter.FunctionDefault"/> is `null`, yet required for <see cref="Converter.Convert"/>.
         /// </param>
@@ -40,10 +41,12 @@ namespace Core.TypeCast
         /// </param>
         /// <param name="converterMissingException">Whether to throw a converter missing exception.  </param>
         /// <param name="converterClassExistsException">Whether to throw a converter class exists exception.  </param>
+        /// <param name="autoInitialize">whether to allow auto-initialization through attribute scanning of the entry-assembly.</param>
         /// <param name="allowGenericTypes">Whether to allow generic types as source or target types of converters</param>
-        /// <param name="converterDefaultWrapperOrException">
-        /// Whether to use a default-value wrapper if one is required or throw a default-function missing exception.
-        /// </param>
+        /// <param name="allowExplicitObject">Whether to allow generic types as source or target types of converters. See <see cref="AllowExplicitObject"/>.</param>
+        /// <param name="allowDynamicType">whether to allow invoking dynamic implicit casting as a cast Fallback. See <see cref="AllowDynamicType"/>.</param>
+        /// <param name="converterDefaultWrapperOrException"> Whether to use a default-value wrapper if one is required or throw a default-function missing exception. </param>
+        /// <param name="boundedCapacity">The bounded capacity of <see cref="BlockingCollection{Converter}"/> instance . See <see cref="BoundedCapacity"/>.</param>
         public ConverterCollectionSettings(
             NumberFormatInfo numberFormat = null,
             bool defaultValueAnyType = false,
@@ -88,7 +91,7 @@ namespace Core.TypeCast
         /// <summary>
         /// Gets or sets whether to allow invoking dynamic implicit casting as a cast Fallback in <see cref="ObjectExtension.InvokeConvert{TIn, TOut}(TIn, out TOut, object, bool, Converter, IConvertContext, string)"/>.
         /// </summary>
-        /// The implementation is based on C# 4+'s core feature using a <see cref="dynamic"/> Type using internal CLR reflection logic, but may alternatively be invoked via explicit reflection as well.
+        /// The implementation is based on C# 4+'s core feature using a <see langword="dynamic"/> Type using internal CLR reflection logic, but may alternatively be invoked via explicit reflection as well.
         /// <remarks>See http://stackoverflow.com/a/2090228/901946 </remarks>
         public bool AllowDynamicType { get; set; }
 

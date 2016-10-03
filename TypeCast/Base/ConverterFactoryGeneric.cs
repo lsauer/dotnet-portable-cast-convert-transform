@@ -18,23 +18,23 @@ namespace Core.TypeCast.Base
     public abstract class ConverterFactory<TInstance> : ConverterFactoryRT<TInstance>  where TInstance : class
     {
         /// <summary>
-        /// Creates new <see cref="TInstance"/> instances dependent on the source <typeparamref name="TIn"/> and target <see cref="Type"/> <typeparamref name="TOut"/>
+        /// Creates new <typeparamref name="TInstance"/> instances dependent on the source <typeparamref name="TIn"/> and target <see cref="Type"/> <typeparamref name="TOut"/>
         /// </summary>
         /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to convert</typeparam>
         /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to convert</typeparam>
         /// <param name="method">The converter method taking only one input parameter of <see cref="Type"/> <typeparamref name="TIn"/></param>
         /// <remarks>Only one method may be passed during instance creation, as compatible standard converters (<see cref="Converter.Standard"/>) are merged automatically.</remarks>
-        /// <returns>Returns a new instance of <see cref="TInstance"/> upon success</returns>
+        /// <returns>Returns a new instance of <typeparamref name="TInstance"/> upon success</returns>
         public abstract TInstance Create<TIn, TOut>(Func<TIn, TOut> method);
 
         /// <summary>
-        /// Creates new <see cref="TInstance"/> instances dependent on the source <typeparamref name="TIn"/> and target <see cref="Type"/> <typeparamref name="TOut"/>
+        /// Creates new <typeparamref name="TInstance"/> instances dependent on the source <typeparamref name="TIn"/> and target <see cref="Type"/> <typeparamref name="TOut"/>
         /// </summary>
         /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to convert</typeparam>
         /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to convert</typeparam>
         /// <param name="method">The converter method taking two input parameters of <see cref="Type"/> <typeparamref name="TIn"/> and <typeparamref name="TOut"/></param>
         /// <remarks>Only one method may be passed during instance creation, as compatible standard converters (<see cref="Converter.Standard"/>) are merged automatically.</remarks>
-        /// <returns>Returns a new instance of <see cref="TInstance"/> upon success</returns>
+        /// <returns>Returns a new instance of <typeparamref name="TInstance"/> upon success</returns>
         public abstract TInstance Create<TIn, TOut>(Func<TIn, TOut, TOut> method);
     }
 }
