@@ -81,7 +81,7 @@ after_build:
 artifacts: 
   - path: deploy\*.zip
     name: TypeCastRelease
-  - path: "**\%nuget_id%*.nupkg"                 # find all release NuGet packages recursively
+  - path: '**\%nuget_id%*.nupkg'                 # find all release NuGet packages recursively
     name: NuGetPackage
     
 after_test:
