@@ -9,7 +9,7 @@ configuration:
   #- Debug
 
 # Start builds on tags only (GitHub and BitBucket)
-skip_non_tags: true
+skip_non_tags: false
 
 matrix:
   fast_finish: true
@@ -43,7 +43,7 @@ assembly_info:
 
 environment:
   access_token:
-    secure: hDtElcG5tKay8VLXhoC7Y5AVHZtLoEpXc0bc2lVCHwkoQYwe+dgO+pecWheMlZsa
+secure: MILj/WXEknAZr6e4pF1bGol5qz4AWQONB1G+mAcKx2x0NPOseKNe23oLNffH7pcH
 
 install: 
   - cmd: echo "Install started..."
@@ -80,6 +80,8 @@ after_build:
 artifacts: 
   - path: deploy\*.zip
     name: TypeCastRelease
+  - path: '**\Core*.nupkg'                 # find all release NuGet packages recursively
+    name: NuGetPackage
     
 after_test:
   - cmd: copy README.md %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\README.md
@@ -89,9 +91,11 @@ after_test:
   - ps:  '.\NuGet\pack.ps1 "TypeCast" "Core.TypeCast" "Core.Cast-Transform-Convert"'
   - cmd: copy .\*.nupkg %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\
   - cmd: mkdir deploy
-  - cmd: 7z a deploy\DotNetCastConvertTransform.zip %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\*.*
+  #- cmd: copy .\*.nupkg deploy\
   - cmd: appveyor PushArtifact deploy\DotNetCastConvertTransform.zip 
-  - bash <(curl -s https://codecov.io/bash)
+  - cmd: 7z a deploy\DotNetCastConvertTransform.zip %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\*.*
+  #- cmd: appveyor PushArtifact NuGetPackage
+  #- bash <(curl -s https://codecov.io/bash)
   
 on_success:
   - git config --global credential.helper store
@@ -108,7 +112,7 @@ deploy:
     #release: TypeCast-v$(APPVEYOR_BUILD_VERSION)
     description: 'TypeCast uncompromising Conversions'
     auth_token:
-      secure: hDtElcG5tKay8VLXhoC7Y5AVHZtLoEpXc0bc2lVCHwkoQYwe+dgO+pecWheMlZsa
+    secure: MILj/WXEknAZr6e4pF1bGol5qz4AWQONB1G+mAcKx2x0NPOseKNe23oLNffH7pcH
     artifact: TypeCastRelease            # upload artifact package to release assets
     draft: false
     prerelease: false
@@ -123,12 +127,20 @@ deploy:
       secure: jGbn/mXu3fLPmAuMgXcRMVAY7GAt3d5AKn5Aa+6ac5sNZdoW64RHv3LeUK1nz/Zg
     skip_symbols: false
     #symbol_server: https://your.symbol.server/feed
-    artifact: /.*\.nupkg/
+    artifact: NuGetPackage
     
+  - provider: NuGet                             # deploy to MyGet.org
+    server: https://www.myget.org/F/dotnet-portable-cast-convert-transform/api/v2/package
+    api_key:
+      secure: ApXKqiEzjHPtRTcD3WcFz2y0SY5SEscQQejU6DnEUuv7pct/hGg9rLb5QqHAqP7P
+    skip_symbols: false
+    symbol_server: https://www.myget.org/F/dotnet-portable-cast-convert-transform/api/v2/package
+    artifact: NuGetPackage
+
 notifications: 
   - provider: Email 
     to: 
-    - lorenz.lo.sauer@gmail.com
+      secure: KnlsT2MzjEmZquxK6VTN5bFcbTEhcEL5GY+zJY/Qo1o=
     on_build_success: false 
     on_build_failure: true 
     on_build_status_changed: false
@@ -137,6 +149,7 @@ notifications:
     url: https://webhooks.gitter.im/e/23956b01699c1e6d3f8f
     method: GET
 
+  #experimental
   - provider: GitHubPullRequest
     auth_token:
       secure: JEasSfnCSjLkQbLg5yWenG/o1oAS5GSUWfOzEu4YswsNb/zFRRaex7CfLbMQbEUh
