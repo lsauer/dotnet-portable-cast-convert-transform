@@ -4,15 +4,17 @@
 ## Portable TypeCast -  <small>Cast, Convert & Transform without compromises.</small>    
 ##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Intuitive, easy-to-use, portable, tested, documented, serializable, thread-safe, strongly typed,...
 
+[![Join the chat at https://gitter.im/dotnet-portable-cast-convert-transform/Lobby](https://badges.gitter.im/dotnet-portable-cast-convert-transform/Lobby.svg)](https://gitter.im/dotnet-portable-cast-convert-transform/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ---
 **author** | <a href="http://stackexchange.com/users/485574/lo-sauer"><img src="http://stackexchange.com/users/flair/485574.png" width="208" height="58" alt="profile for Lo Sauer on Stack Exchange, a network of free, community-driven Q&amp;A sites" title="profile for Lo Sauer on Stack Exchange, a network of free, community-driven Q&amp;A sites" /></a>
 :------------ | :------------- 
 **website** | <a href="https://github.com/lsauer/dotnet-portable-cast-convert-transform" target="_blank">https://github.com/lsauer/dotnet-portable-cast-convert-transform</a>
 **license** | <a href="http://lsauer.mit-license.org/" target="_blank">MIT license</a>   
-**current** |  [![Build Status](https://travis-ci.org/lsauer/dotnet-portable-cast-convert-transform.svg?branch=master)](https://travis-ci.org/lsauer/dotnet-portable-cast-convert-transform) [![Build status](https://ci.appveyor.com/api/projects/status/pjambnikbik9m4nl?svg=true)](https://ci.appveyor.com/project/lsauer/dotnet-portable-cast-convert-transform/) [![Coverage Status](https://img.shields.io/coveralls/bfontaine/badges2svg.svg)](https://ci.appveyor.com/project/lsauer/dotnet-portable-cast-convert-transform/build/tests)
+**current** |  [![Build Status](https://travis-ci.org/lsauer/dotnet-portable-cast-convert-transform.svg?branch=master)](https://travis-ci.org/lsauer/dotnet-portable-cast-convert-transform) [![Master Status](https://ci.appveyor.com/api/projects/status/pjambnikbik9m4nl?svg=true&branch=master&passingText=master%20-%20OK)](https://github.com/lsauer/dotnet-portable-cast-convert-transform/releases) [![Coverage Status](https://img.shields.io/coveralls/bfontaine/badges2svg.svg)](https://ci.appveyor.com/project/lsauer/dotnet-portable-cast-convert-transform/build/tests)
 **package** | <a href="https://www.nuget.org/packages/Core.Cast-Transform-Convert/" target="_blank"><img src="https://img.shields.io/nuget/v/Core.Cast-Transform-Convert.svg?maxAge=6000"/></a>  `PM> Install-Package Core.Cast-Transform-Convert` 
 **description** | An easy to use, portable library for changing between unrestricted, arbitrary data types   
-**documentation** |  <a href="https://dotnet-cast-convert-transform.firebaseapp.com/">complete reference v3.1.0.2</a>
+**documentation** | <a href="https://github.com/lsauer/dotnet-portable-cast-convert-transform/wiki"><img src="https://img.shields.io/badge/wiki-70%25-yellow.svg"/></a>  <a href="https://dotnet-cast-convert-transform.firebaseapp.com/"><img src="https://img.shields.io/badge/full--reference-v3.1.0.4-green.svg"/></a>
 **supported** | <ul><li><a href="https://msdn.microsoft.com/en-us/library/gg597391(v=vs.110).aspx" target="_blank">Portable Class Library (PLC)</a></li> <li><a href="https://en.wikipedia.org/wiki/.NET_Framework#.NET_Core" target="_blank">.NET Core</a></li> <li>.NET Framework 4.5</li> <li>Windows Phone 8.1</li>  <li>Windows 8, 10</li> <li><a href="https://developer.xamarin.com/guides/android/" target="_blank">Xamarin.Android</a></li> <li><a href="https://developer.xamarin.com/guides/ios/" target="_blank">Xamarin.iOS</a></li>  <li>Xamarin.iOS Classic</li><li>XBOX 360 XNA (req. adaptations)</li></ul>   
 
 
