@@ -88,12 +88,12 @@ after_test:
   - cmd: 'git log --graph --all --date=relative > .\CHANGELOG.txt'
   - cmd: copy .\CHANGELOG.txt %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\CHANGELOG.txt
   - cmd: copy TypeCast\bin\x64\Release\*.* %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\
+  - cmd: mkdir deploy
   - ps:  '.\NuGet\pack.ps1 "TypeCast" "Core.TypeCast" "Core.Cast-Transform-Convert"'
   - cmd: copy .\*.nupkg %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\
-  - cmd: mkdir deploy
   #- cmd: copy .\*.nupkg deploy\
-  - cmd: appveyor PushArtifact deploy\DotNetCastConvertTransform.zip 
   - cmd: 7z a deploy\DotNetCastConvertTransform.zip %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\*.*
+  - cmd: appveyor PushArtifact deploy\DotNetCastConvertTransform.zip 
   #- cmd: appveyor PushArtifact NuGetPackage
   #- bash <(curl -s https://codecov.io/bash)
   
