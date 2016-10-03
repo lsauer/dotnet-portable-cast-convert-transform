@@ -43,7 +43,7 @@ assembly_info:
 
 environment:
   access_token:
-secure: MILj/WXEknAZr6e4pF1bGol5qz4AWQONB1G+mAcKx2x0NPOseKNe23oLNffH7pcH
+    secure: MILj/WXEknAZr6e4pF1bGol5qz4AWQONB1G+mAcKx2x0NPOseKNe23oLNffH7pcH
 
 install: 
   - cmd: echo "Install started..."
