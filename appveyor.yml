@@ -90,8 +90,8 @@ after_test:
   - cmd: 'git log --graph --all --date=relative > .\CHANGELOG.txt'
   - cmd: copy .\CHANGELOG.txt %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\CHANGELOG.txt
 
-  - ps: if($env:Platform -eq "x64") { copy TypeCast\bin\x64\**\*.* %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\ }
-  - ps: if($env:Platform -eq "x86") { copy TypeCast\bin\x86\**\*.* %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\ }
+  - ps: if($env:Platform -eq "x64") { copy TypeCast\bin\x64\**\*.* $env:APPVEYOR_BUILD_FOLDER\TypeCast\bin\ }
+  - ps: if($env:Platform -eq "x86") { copy TypeCast\bin\x86\**\*.* $env:APPVEYOR_BUILD_FOLDER\TypeCast\bin\ }
   #- cmd: IF "%Platform%" == "Any CPU" IF (copy TypeCast\bin\**\*.* %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\)
   - cmd: mkdir deploy
   - ps: .\NuGet\pack.ps1 "TypeCast" "Core.TypeCast" "Core.Cast-Transform-Convert"
