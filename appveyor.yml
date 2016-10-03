@@ -119,12 +119,12 @@ deploy:
     description: 'TypeCast uncompromising Conversions'
     auth_token:
       secure: "MILj/WXEknAZr6e4pF1bGol5qz4AWQONB1G+mAcKx2x0NPOseKNe23oLNffH7pcH"
-    artifact: 'C:\projects\dotnet-portable-cast-convert-transform\Core.Cast-Transform-Convert.3.0.1.nupkg'            # upload artifact package to release assets
+    artifact: TypeCastRelease           # upload artifact package to release assets
     draft: true
     prerelease: false
     on:
       branch: experimental           # release from master branch only
-      appveyor_repo_tag: false       # deploy on tag push only
+      appveyor_repo_tag: true       # deploy on tag push only
 
   # Deploying to NuGet feed
   - provider: NuGet
