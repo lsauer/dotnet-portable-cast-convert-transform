@@ -71,7 +71,6 @@
     <Compile Include="Extension\ObjectExtension[Transform].cs" />
     <Compile Include="Extension\ObjectExtension[Cast].cs" />
     <Compile Include="Extension\ObjectExtension[Convert].cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Interface\IConvertContext.cs" />
     <Compile Include="Interface\IFactory.cs" />
     <Compile Include="Converter_2T.cs" />
