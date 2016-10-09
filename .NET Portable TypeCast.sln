@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.25618.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.TypeCast", "TypeCast\Core.TypeCast.csproj", "{C79492BC-D45C-469A-AF8F-0952141B2369}"
 EndProject
@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE = LICENSE
 		mitlicense.md = mitlicense.md
 		README.md = README.md
+		VERSION = VERSION
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeCast.Tests", "TypeCast.Tests\TypeCast.Tests.csproj", "{E6A07B1E-3040-4268-A9AD-AE2F3A985F04}"
@@ -41,6 +42,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example10", "Examples\Example10\Example10.csproj", "{53934290-A800-4B9D-95D3-FCAB496D719E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BioCore", "Examples\Example11\BioCore.csproj", "{612F3863-DCF4-419B-84A2-54FB2E11B6FF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{675DBB90-66FB-465C-8F21-0464382023E8}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet\Core.Cast-Transform-Convert.nuspec = NuGet\Core.Cast-Transform-Convert.nuspec
+		NuGet\NuGet.exe = NuGet\NuGet.exe
+		NuGet\pack.ps1 = NuGet\pack.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

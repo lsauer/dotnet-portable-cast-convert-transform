@@ -3,7 +3,7 @@
 // </copyright>
 // <summary>   A tested, generic, portable, runtime-extensible type converter library   </summary
 // <language>  C# > 6.0                                                                 </language>
-// <version>   3.1.0.2                                                                  </version>
+// <version>   3.1.0.5                                                                  </version>
 // <author>    Lorenz Lo Sauer; people credited in the sources                          </author>
 // <project>   https://github.com/lsauer/dotnet-portable-type-cast                      </project>
 
@@ -36,7 +36,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("3.1.0.*")]
-[assembly: AssemblyFileVersion("3.1.0.2")]
+[assembly: AssemblyFileVersion("3.1.0.5")]
 
 // Project-level suppressions either have no target or are given 
 // a specific target and scoped to a namespace, type, member, etc.
