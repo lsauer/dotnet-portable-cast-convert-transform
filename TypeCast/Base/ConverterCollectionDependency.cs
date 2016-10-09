@@ -44,7 +44,7 @@ namespace Core.TypeCast.Base
         ///     dependency injection.
         /// </param>
         /// <exception cref="DependencyInjectionException">
-        ///     If the <paramref name="injector" /> is `null` a <see cref="DependencyInjectionException"/> is thrown
+        ///     If the <paramref name="collection" /> is `null` a <see cref="DependencyInjectionException"/> is thrown
         /// </exception>
         protected ConverterCollectionDependency(IConverterCollection collection)
             : base(collection)
@@ -88,9 +88,9 @@ namespace Core.TypeCast.Base
         }
 
         /// <summary> The converter function that needs to be overwritten as part of the <see cref="IConverter" /> interface support. </summary>
-        /// <param name="value">The value of <see cref="Type" /> <see cref="TIn" /> to be converted.</param>
-        /// <param name="defaultValue">The optional default value of <see cref="Type" /> <see cref="TOut" />to be passed if the conversion fails or is `null`.</param>
-        /// <returns>The value converted to <see cref="Type" /> of <see cref="TOut" /> </returns>
+        /// <param name="value">The value of <see cref="Type"/> <typeparamref name="TIn"/> to be converted.</param>
+        /// <param name="defaultValue">The optional default value of <see cref="Type" /> <typeparamref name="TOut"/> to be passed if the conversion fails or is `null`.</param>
+        /// <returns>The value converted to <see cref="Type" /> of <typeparamref name="TOut"/> </returns>
         /// <exception cref="ConverterException">Throws an exception of <see cref="ConverterCause.ConverterNotImplemented" /> if the parent class does not implement
         ///     <code>`public override TOut `</code> <see cref="Convert" />
         /// </exception>

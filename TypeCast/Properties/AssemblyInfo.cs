@@ -35,5 +35,11 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.0.1.*")]
+[assembly: AssemblyVersion("3.1.0.*")]
 [assembly: AssemblyFileVersion("3.1.0.2")]
+
+// Project-level suppressions either have no target or are given 
+// a specific target and scoped to a namespace, type, member, etc.
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CC0057:Unused parameters", Justification = "<Pending>", Scope = "member", Target = "~M:Core.TypeCast.ConverterCollectionLookup.Get``3(System.Linq.IQueryable{Core.TypeCast.Base.Converter},``0,``1,``2,System.Nullable{System.Boolean},System.Boolean)~Core.TypeCast.Base.Converter")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CC0057:Unused parameters", Justification = "<Pending>", Scope = "member", Target = "~M:Core.TypeCast.ObjectExtension.CanConvertTo``2(System.Object,``0,``1)~System.Boolean")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CC0057:Unused parameters", Justification = "<Pending>", Scope = "member", Target = "~M:Core.TypeCast.ObjectExtension.CanConvertTo``2(``0,System.Type,``1)~System.Boolean")]

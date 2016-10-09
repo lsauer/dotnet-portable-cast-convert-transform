@@ -31,7 +31,7 @@ namespace Core.TypeCast
     /// <remarks> See https://github.com/lsauer/csharp-singleton for more information.</remarks>
     /// <remarks> Building the project requires the Singleton-library: https://www.nuget.org/packages/CSharp.Portable-Singleton/ </remarks>
     /// <remarks>If <see cref="SingletonAttribute.CreateInternal"/> is set to `false`, <see cref="ConverterCollection"/> must explicitly be instantiated using 
-    /// `new ConverterCollection(...)` and  not use <see cref="ConverterCollection.CurrentInstance"/> before instantiation. 
+    /// `new ConverterCollection(...)` and  not use <see cref="Singleton{ConverterCollection}.CurrentInstance"/> before instantiation. 
     /// If <see cref="SingletonAttribute.CreateInternal"/> is set to `true`, lazy-instantiation of the singleton is possible at any time, 
     /// after the program's assembly entry point is reached.</remarks>
     public partial class ConverterCollection : Singleton<ConverterCollection>, IConverterCollection, IDisposable, IEnumerable<Converter>, IQueryable<Converter>
@@ -101,10 +101,9 @@ namespace Core.TypeCast
             /// <summary>
             /// Creates and adds a <see cref="Converter"/> instance to the collection of <see cref="ConverterCollection.Items"/> using a <see cref="Delegate"/>
             /// </summary>
-            /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-            /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
+            /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></typeparam>
+            /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparam>
             /// <param name="converterAction">A function delegate <see cref="Func{TIn, TOut}"/> to use as the <see cref="Converter.Function"/></param>
-            /// <param name="cancellationToken">Optional token to propagate notification that operations should be canceled. From <see cref="System.Threading.Tasks"/>.</param>
             /// <returns>Returns a (nested-class) instance of <see cref="AddBuilder{TBase}"/> with strongly-typed generic methods for deferred grouped-adding.</returns>
             /// <exception cref="ConverterException"> Throws a <see cref="ConverterCause.ConverterCollectionAddFailed"/> with a wrapped <see cref="Exception.InnerException"/>
             /// if an internal error occurred</exception>
@@ -117,10 +116,9 @@ namespace Core.TypeCast
             /// <summary>
             /// Creates and adds a <see cref="Converter"/> instance to the collection of <see cref="ConverterCollection.Items"/> using a <see cref="Delegate"/>
             /// </summary>
-            /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-            /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
+            /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></typeparam>
+            /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparam>
             /// <param name="converterActionDefault">A function delegate <see cref="Func{TIn, TOut, TOut}"/> to use as the <see cref="Converter.Function"/></param>
-            /// <param name="cancellationToken">Optional token to propagate notification that operations should be canceled. From <see cref="System.Threading.Tasks"/>.</param>
             /// <returns>Returns a (nested-class) instance of <see cref="AddBuilder{TBase}"/> with strongly-typed generic methods for deferred grouped-adding.</returns>
             /// <exception cref="ConverterException"> Throws a <see cref="ConverterCause.ConverterCollectionAddFailed"/> with a wrapped <see cref="Exception.InnerException"/>
             /// if an internal error occurred</exception>

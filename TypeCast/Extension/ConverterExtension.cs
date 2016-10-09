@@ -79,13 +79,13 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// If possible, the method merges a second Converter instance <paramref name="converter"/> into the own instance, and returns <see cref="bool"/> `true` if successful, else `false`
+        /// If possible, the method merges a second Converter instance <paramref name="converter"/> into the own instance, and returns <see langword="bool"/> `true` if successful, else `false`
         /// </summary>
         /// <param name="self">the current instance of the <see cref="Core.TypeCast.Base.Converter"/></param>
         /// <param name="converter">the other converter instance of which to look up the function and assign it to the own instance</param>
         /// <exception cref="ConverterCollectionException">Raises an exception if both converters have either their <see cref="Converter.Function"/> or 
         /// <see cref="Converter.FunctionDefault"/> assigned, with the cause: <see cref="ConverterCollectionCause.ConverterExists"/></exception>
-        /// <returns>Returns <see cref="bool"/> `true` if successful in merging, else `false`.</returns>
+        /// <returns>Returns <see langword="bool"/> `true` if successful in merging, else `false`.</returns>
         public static bool MergeStandard(this Converter self, Converter converter)
         {
             // check that either converter has a Function and DefaultFunction set
@@ -117,7 +117,7 @@ namespace Core.TypeCast
         /// </summary>
         /// <param name="self">the current instance of the <see cref="Core.TypeCast.Base.Converter"/></param>
         /// <param name="collection">An instance reference to a <see cref="ConverterCollection"/></param>
-        /// <returns><see cref="bool"/> `true` if successful, `false` if <see cref="Converter.Collection"/> is null.</returns>
+        /// <returns><see langword="bool"/> `true` if successful, `false` if <see cref="Converter.Collection"/> is null.</returns>
         public static bool SetCollectionDefaults(this Converter self, ConverterCollection collection = null)
         {
             if(collection != null)

@@ -14,7 +14,7 @@ namespace Core.TypeCast.Base
     using System.Runtime.Serialization;
 
     /// <summary>The Converter base class, providing a simple container for conversion types, <see cref="ConverterAttribute" /> and corresponding conversion functions</summary>
-    /// <remarks>The Converter is usually invoked through <see cref="ObjectExtension.CastTo{TOut}" /> and <see cref="ObjectExtension.TryCast{TIn,TOut}" /></remarks>
+    /// <remarks>The Converter is usually invoked through <see cref="ObjectExtension.CastTo" /> and <see cref="ObjectExtension.TryCast{TIn,TOut}" /></remarks>
     /// <seealso cref="Converter{TIn,TOut}" />
     /// <seealso cref="ConverterCollection" />
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
@@ -62,7 +62,7 @@ namespace Core.TypeCast.Base
 
         /// <summary>Gets or sets the <see cref="ConverterAttribute" /> if the custom converter class has one defined, else it is set `null`.</summary>
         /// <remarks>The value is set once upon first access and is not updated thereafter, unless reset to `null`</remarks>
-        /// <seealso cref="ConverterCollection.GetConverterAttributeFromIConverter(System.Reflection.TypeInfo,Core.TypeCast.ConverterAttribute,bool)" />
+        /// <seealso cref="ConverterCollection.ConverterAttributeFromIConverter(TypeInfo, ConverterAttribute, bool)" />
         public ConverterAttribute Attribute
         {
             get
@@ -87,8 +87,8 @@ namespace Core.TypeCast.Base
         public IConverterCollection Collection { get; set; }
 
         /// <summary>
-        /// Optional <see cref="bool"/> value to indicate whether a <see cref="ConverterCollection"/> is allowed to contain multiple converters with the 
-        /// same source and target <see cref="Type"/>s in the collection of <see cref="Items"/>. Only set to `true` for transform functions.</param>
+        /// Optional <see langword="bool"/> value to indicate whether a <see cref="ConverterCollection"/> is allowed to contain multiple converters with the 
+        /// same source and target <see cref="Type"/>s in the collection of <see cref="ConverterCollection.Items"/>. Only set to `true` for transform functions.
         /// </summary>
         [DataMember]
         public bool AllowDisambiguates { get; set; }
@@ -127,7 +127,7 @@ namespace Core.TypeCast.Base
 
         /// <summary>
         ///     The boxed converter function with an additional second argument value that allows passing a any arbitrary or default-value which may be returned in case of conversion
-        ///     failure or the conversion result yielding `null`. It may also be used as an essential argument for <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object)"/>
+        ///     failure or the conversion result yielding `null`. It may also be used as an essential argument for <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object, bool)"/>
         /// </summary>
         /// <returns>`null` if no function is set</returns>
         /// <remarks>The actual implementation and use of the second parameter lies solely within the scope of the programmer implementing the converter logic</remarks>

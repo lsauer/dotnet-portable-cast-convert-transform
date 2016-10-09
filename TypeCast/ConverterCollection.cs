@@ -31,7 +31,7 @@ namespace Core.TypeCast
     /// <remarks> See https://github.com/lsauer/csharp-singleton for more information.</remarks>
     /// <remarks> Building the project requires the Singleton-library: https://www.nuget.org/packages/CSharp.Portable-Singleton/ </remarks>
     /// <remarks>If <see cref="SingletonAttribute.CreateInternal"/> is set to `false`, <see cref="ConverterCollection"/> must explicitly be instantiated using 
-    /// `new ConverterCollection(...)` and  not use <see cref="ConverterCollection.CurrentInstance"/> before instantiation. 
+    /// `new ConverterCollection(...)` and  not use <see cref="Singleton{ConverterCollection}.CurrentInstance"/> before instantiation. 
     /// If <see cref="SingletonAttribute.CreateInternal"/> is set to `true`, lazy-instantiation of the singleton is possible at any time, 
     /// after the program's assembly entry point is reached.</remarks>
     [Singleton(disposable: true, createInternal: true, initByAttribute: true)]
@@ -104,7 +104,7 @@ namespace Core.TypeCast
         /// Initializes a new instance of the <see cref="ConverterCollection"/> class with default-parameters.
         /// </summary>
         /// <param name="application">The <see cref="TypeInfo.BaseType"/> type which serves as the assembly entry point of the application e.g. `Program`</param>
-        /// <param name="converterClass">The type of a converter class to look for converters and load into the collection  <see cref="Items"/></param>
+        /// <param name="converterClasses">The type of a converter class to look for converters and load into the collection  <see cref="Items"/></param>
         public ConverterCollection(Type application = null, params Type[] converterClasses)
             : this(application: application, numberFormatDefault: null, converterClasses: converterClasses)
         {
@@ -129,7 +129,7 @@ namespace Core.TypeCast
         /// </example>
         /// <param name="application">The <see cref="TypeInfo.BaseType"/> type which serves as the assembly entry point of the application e.g. `Program`</param>
         /// <param name="numberFormatDefault">An optional <see cref="NumberFormatInfo"/> to provide to any added converters for formatting.</param>
-        /// <param name="converterClass">The types of a converter classes to encapsulate in <see cref="Converter"/> instances and add into the collection <see cref="Items"/></param>
+        /// <param name="converterClasses">The types of a converter classes to encapsulate in <see cref="Converter"/> instances and add into the collection <see cref="Items"/></param>
         public ConverterCollection(Type application = null, NumberFormatInfo numberFormatDefault = null, params Type[] converterClasses)
         {
             this.Settings = new ConverterCollectionSettings();
@@ -177,7 +177,7 @@ namespace Core.TypeCast
         public ConverterFactory Factory { get; }
 
         /// <summary>
-        /// Reference to the runtime-creation <see cref="BaseClassFactoryRT"/> which facilitates the instantiation of any <see cref="class"/> 
+        /// Reference to the runtime-creation <see cref="BaseClassFactoryRT"/> which facilitates the instantiation of any <see langword="class"/> 
         /// which declares a converter function and has a <see cref="ConverterAttribute"/>
         /// </summary>
         public BaseClassFactoryRT FactoryBaseClass { get; }
@@ -188,7 +188,7 @@ namespace Core.TypeCast
         public string ApplicationNameSpace { get; set; }
 
         /// <summary>
-        /// Stores a list of classes that were passed into the constructor as a <see cref="params"/> list of types and have been added to <see cref="Items"/>
+        /// Stores a list of classes that were passed into the constructor as a <see crlangword="params"/> list of types and have been added to <see cref="Items"/>
         /// </summary>
         public List<Type> ConstructorAddedClasses { get; }
 
@@ -313,7 +313,7 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Gets a <see cref="Converter"/> for a given Key by invoking <see cref="Get(TypeInfo, TypeInfo)"/>. If none is found, `null` is returned.
+        /// Gets a <see cref="Converter"/> for a given Key by invoking <see cref="ConverterCollectionLookup.Get(IQueryable{Converter}, Type, Type)"/>. If none is found, `null` is returned.
         /// </summary>
         /// <param name="typeFrom">The source <see cref="Type"/> to look up in <see cref="Items"/></param>
         /// <param name="typeTo">The target <see cref="Type"/> to look up in <see cref="Items"/></param>
@@ -327,7 +327,7 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Gets a <see cref="Converter"/> for a given Key by invoking <see cref="Get(TypeInfo, TypeInfo)"/>. If none is found, `null` is returned.
+        /// Gets a <see cref="Converter"/> for a given Key by invoking <see cref="ConverterCollectionLookup.Get(IQueryable{Converter}, Type, Type)"/>. If none is found, `null` is returned.
         /// </summary>
         /// <param name="typeFrom">The source <see cref="Type"/> to look up in <see cref="Items"/></param>
         /// <param name="typeTo">The target <see cref="Type"/> to look up in <see cref="Items"/></param>
@@ -357,7 +357,7 @@ namespace Core.TypeCast
         /// <summary>
         /// Allows to perform a deferred adding operation of multiple adds using a common Base-Class <see cref="Type"/> argument, 
         /// common <see cref="ConverterCollectionSettings"/> as well as a mutual <see cref="CancellationToken"/> for the added group of converters.
-        /// The operation is applied upon invoking <see cref="End"/>, and can be explicitly canceled by invoking <see cref="Cancel"/>
+        /// The operation is applied upon invoking <see cref="AddBuilder{TBase}.End"/>, and can be explicitly canceled by invoking <see cref="AddBuilder{TBase}.Cancel"/>
         /// </summary>
         /// <typeparam name="TBase">The declaring <see cref="Type"/> of the converter-functions to add as a group.</typeparam>
         /// <param name="settings">Optional common <see cref="ConverterCollectionSettings"/> to be applied for the added group of converter-functions</param>
@@ -372,7 +372,7 @@ namespace Core.TypeCast
         /// <summary>
         /// Allows to perform a deferred adding operation of multiple adds using a common Base-Class <see cref="Type"/> argument, 
         /// common <see cref="ConverterCollectionSettings"/> as well as a mutual <see cref="CancellationToken"/> for the added group of converters.
-        /// The operation is applied upon invoking <see cref="End"/>, and can be explicitly canceled by invoking <see cref="Cancel"/>
+        /// The operation is applied upon invoking <see cref="AddBuilder{TBase}.End"/>, and can be explicitly canceled by invoking <see cref="AddBuilder{TBase}.Cancel"/>
         /// </summary>
         /// <typeparam name="TBase">The declaring <see cref="Type"/> of the converter-functions to add as a group.</typeparam>
         /// <param name="settings">Common <see cref="ConverterCollectionSettings"/> to be applied for the added group of converter-functions</param>
@@ -390,8 +390,8 @@ namespace Core.TypeCast
         /// <param name="converterAction">A function delegate <see cref="Func{TIn, TOut}"/> to use as the <see cref="Converter.Function"/></param>
         /// <param name="cancellationToken">Optional token to propagate notification that operations should be canceled. From <see cref="System.Threading.Tasks"/>.</param>
         /// <param name="baseType">The <see cref="Type"/> of the declaring and attributed custom converter class, if one exists</param>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparam>
         /// <returns>Returns a <see cref="IConverterCollection"/> for safe, constricted function chaining.</returns>
         /// <exception cref="ConverterException"> Throws a <see cref="ConverterCause.ConverterCollectionAddFailed"/> with a wrapped <see cref="Exception.InnerException"/>
         /// if an internal error occurred</exception>
@@ -413,8 +413,8 @@ namespace Core.TypeCast
         /// <param name="converterActionBackward">A target-to-source <see cref="Type"/> converting function delegate <see cref="Func{TOut, TIn}"/> to use as the <see cref="Converter.Function"/></param>
         /// <param name="cancellationToken">Optional token to propagate notification that operations should be canceled. From <see cref="System.Threading.Tasks"/>.</param>
         /// <param name="baseType">The <see cref="Type"/> of the declaring and attributed custom converter class, if one exists</param>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparam>
         /// <returns>Returns a <see cref="IConverterCollection"/> for safe, constricted function chaining.</returns>
         /// <exception cref="ConverterException"> Throws a <see cref="ConverterCause.ConverterCollectionAddFailed"/> with a wrapped <see cref="Exception.InnerException"/>
         /// if an internal error occurred</exception>
@@ -431,8 +431,8 @@ namespace Core.TypeCast
         /// <summary>
         /// Creates and adds a <see cref="Converter"/> instance to the collection of <see cref="ConverterCollection.Items"/> using a <see cref="Delegate"/>
         /// </summary>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparam>
         /// <typeparam name="TBase">The <see cref="Type"/> of the declaring and attributed custom converter class</typeparam>
         /// <param name="converterAction">A function delegate <see cref="Func{TIn, TOut}"/> to use as the <see cref="Converter.Function"/></param>
         /// <param name="cancellationToken">Optional token to propagate notification that operations should be canceled. From <see cref="System.Threading.Tasks"/>.</param>
@@ -449,8 +449,9 @@ namespace Core.TypeCast
         /// <summary>
         /// Creates and adds a <see cref="Converter"/> instance to the collection of <see cref="ConverterCollection.Items"/> using a <see cref="Delegate"/>
         /// </summary>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TBase">The <see cref="Type"/> of the declaring and attributed custom converter class, if one exists</typeparam>
         /// <param name="converterActionDefault">A function delegate <see cref="Func{TIn, TOut, TOut}"/> to use as the <see cref="Converter.Function"/></param>
         /// <param name="cancellationToken">Optional token to propagate notification that operations should be canceled. From <see cref="System.Threading.Tasks"/>.</param>
         /// <returns>Returns a <see cref="IConverterCollection"/> for safe, constricted function chaining.</returns>
@@ -469,9 +470,9 @@ namespace Core.TypeCast
         /// </summary>
         /// <param name="converterActionAny">A function delegate <see cref="Func{TIn, TArg, TOut}"/> to use as the <see cref="Converter.Function"/></param>
         /// <param name="cancellationToken">Optional token to propagate notification that operations should be canceled. From <see cref="System.Threading.Tasks"/>.</param>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-        /// <typeparam name="TArg">The Argument <see cref="Type"/> for generic converters using see <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object)"/>.</typeparam>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TArg">The Argument <see cref="Type"/> for generic converters using see <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object, bool)"/>.</typeparam>
         /// <typeparam name="TBase">The <see cref="Type"/> of the declaring and attributed custom converter class, if one exists</typeparam>
         /// <returns>Returns a <see cref="IConverterCollection"/> for safe, constricted function chaining.</returns>
         /// <exception cref="ConverterException"> Throws a <see cref="ConverterCause.ConverterCollectionAddFailed"/> with a wrapped <see cref="Exception.InnerException"/>
@@ -494,9 +495,9 @@ namespace Core.TypeCast
         /// <param name="converterActionAny">A function delegate <see cref="Func{TIn, TArg, TOut}"/> to use as the <see cref="Converter.Function"/></param>
         /// <param name="baseType">The <see cref="Type"/> of the declaring and attributed custom converter class, if one exists</param>
         /// <param name="cancellationToken">Optional token to propagate notification that operations should be canceled. From <see cref="System.Threading.Tasks"/>.</param>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-        /// <typeparam name="TArg">The Argument <see cref="Type"/> for generic converters using see <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object)"/>.
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TArg">The Argument <see cref="Type"/> for generic converters using see <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object, bool)"/>.</typeparam>
         /// <returns>Returns a <see cref="IConverterCollection"/> for safe, constricted function chaining.</returns>
         /// <exception cref="ConverterException"> Throws a <see cref="ConverterCause.ConverterCollectionAddFailed"/> with a wrapped <see cref="Exception.InnerException"/>
         /// if an internal error occurred</exception>
@@ -574,7 +575,7 @@ namespace Core.TypeCast
         /// <param name="methodInfo">A <see cref="MethodInfo"/> instance describing a method to create a delegate from and add to the converter</param>
         /// <param name="converterDelegate">An optional function delegate to use as the <see cref="Converter.Function"/></param>
         /// <param name="baseType">The <see cref="Type"/> of the declaring and attributed custom converter class, if one exists</param>
-        /// <param name="baseInstance">An optional base-class instance containing a method which is added to the converter and seves as `this` reference during invocation.</param>
+        /// <param name="baseInstance">An optional base-class instance containing a method which is added to the converter and serves as `this` reference during invocation.</param>
         /// <param name="cancellationToken">Optional token to propagate notification that operations should be canceled. From <see cref="System.Threading.Tasks"/>.</param>
         /// <returns>Returns a <see cref="IConverterCollection"/> for safe, constricted function chaining.</returns>
         /// <exception cref="ConverterException">Throws an exception if adding failed</exception>
@@ -600,7 +601,7 @@ namespace Core.TypeCast
         /// </summary>
         /// <param name="converter">The <see cref="Converter"/> instance to add to the <see cref="ConverterCollection.Items"/></param>
         /// <param name="baseType">The <see cref="Type"/> of the declaring and attributed custom converter class, if one exists</param>
-        /// <param name="allowDisambiguates">Optional <see cref="bool"/> value to indicate whether to allow multiple converters with the 
+        /// <param name="allowDisambiguates">Optional <see langword="bool"/> value to indicate whether to allow multiple converters with the 
         /// same return and parameter <see cref="Type"/>s in the collection of <see cref="Items"/>. Only set to `true` for transform functions.</param>
         /// <param name="cancellationToken">Optional token to propagate notification that operations should be canceled. From <see cref="System.Threading.Tasks"/>.</param>
         /// <returns>Returns a <see cref="IConverterCollection"/> for safe, constricted function chaining.</returns>
@@ -673,10 +674,10 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Returns <see cref="bool"/>  `true` if the <see cref="ConverterCollection"/> supports conversion for a given Type <paramref name="typeFrom"/>, else `false`.
+        /// Returns <see langword="bool"/>  `true` if the <see cref="ConverterCollection"/> supports conversion for a given Type <paramref name="typeFrom"/>, else `false`.
         /// </summary>
         /// <param name="typeFrom">The source <see cref="Type"/> to look up in <see cref="Items"/></param>
-        /// <remarks>The function is a wrapper for <see cref="ConverterCollectionFilters.WithFrom(IQueryable{Converter}, TypeInfo)"/>.</remarks>
+        /// <remarks>The function is a wrapper for <see cref="ConverterCollectionFilters.WithFrom(IQueryable{Converter}, TypeInfo, bool)"/>.</remarks>
         /// <returns>`true` if the source <see cref="Type"/> is supported as source type by any converter in the <see cref="ConverterCollection"/>, else `false`</returns>
         public bool CanConvertFrom(Type typeFrom)
         {
@@ -684,10 +685,10 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Returns <see cref="bool"/>  `true` if the <see cref="ConverterCollection"/> supports conversion for a given Type <paramref name="typeFrom"/>, else `false`.
+        /// Returns <see langword="bool"/>  `true` if the <see cref="ConverterCollection"/> supports conversion for a given Type <typeparamref name="TIn"/>, else `false`.
         /// </summary>
         /// <typeparam name="TIn">The source <see cref="Type"/> to look up in <see cref="Items"/></typeparam>
-        /// <remarks>The function is a wrapper for <see cref="ConverterCollectionFilters.WithFrom(IQueryable{Converter}, TypeInfo)"/>.</remarks>
+        /// <remarks>The function is a wrapper for <see cref="ConverterCollectionFilters.WithFrom(IQueryable{Converter}, TypeInfo, bool)"/>.</remarks>
         /// <returns>`true` if the source <see cref="Type"/> is supported as source type by any converter in the <see cref="ConverterCollection"/>, else `false`</returns>
         public bool CanConvertFrom<TIn>()
         {
@@ -695,10 +696,10 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Returns <see cref="bool"/>  `true` if the <see cref="ConverterCollection"/> supports conversion for a given Type <paramref name="typeTo"/>, else `false`.
+        /// Returns <see langword="bool"/>  `true` if the <see cref="ConverterCollection"/> supports conversion for a given Type <paramref name="typeTo"/>, else `false`.
         /// </summary>
         /// <param name="typeTo">The target <see cref="Type"/> to look up in <see cref="Items"/></param>
-        /// <remarks>The function is a wrapper for <see cref="ConverterCollectionFilters.WithTo(IQueryable{Converter}, TypeInfo)"/>.</remarks>
+        /// <remarks>The function is a wrapper for <see cref="ConverterCollectionFilters.WithTo(IQueryable{Converter}, TypeInfo, bool)"/>.</remarks>
         /// <returns>`true` if the target <see cref="Type"/> is supported as source type by any converter in the <see cref="ConverterCollection"/>, else `false`</returns>
         public bool CanConvertTo(Type typeTo)
         {
@@ -706,10 +707,10 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Returns <see cref="bool"/>  `true` if the <see cref="ConverterCollection"/> supports conversion for a given Type <paramref name="typeTo"/>, else `false`.
+        /// Returns <see langword="bool"/>  `true` if the <see cref="ConverterCollection"/> supports conversion for a given Type <typeparamref name="TOut"/>, else `false`.
         /// </summary>
-        /// <typeparam name="TIn">The target <see cref="Type"/> to look up in <see cref="Items"/></typeparam>
-        /// <remarks>The function is a wrapper for <see cref="ConverterCollectionFilters.WithTo(IQueryable{Converter}, TypeInfo)"/>.</remarks>
+        /// <typeparam name="TOut">The target <see cref="Type"/> to look up in <see cref="Items"/></typeparam>
+        /// <remarks>The function is a wrapper for <see cref="ConverterCollectionFilters.WithTo(IQueryable{Converter}, TypeInfo, bool)"/>.</remarks>
         /// <returns>`true` if the target <see cref="Type"/> is supported as source type by any converter in the <see cref="ConverterCollection"/>, else `false`</returns>
         public bool CanConvertTo<TOut>()
         {
@@ -751,7 +752,7 @@ namespace Core.TypeCast
         /// <remarks>Any compatible <see cref="Converter.Standard"/> converters will have merged after loading, as such  the returned number of loaded 
         /// converters does not have a direct relationship to the <see cref="Count"/>
         /// </remarks>
-        /// <returns>Returns <see cref="bool"/> an integer number > `0` if the Converters of the namespace from <paramref name="typeTo"/> were successfully added, otherwise returns `0`</returns>
+        /// <returns>Returns <see langword="bool"/> an integer number > `0` if the Converters of the namespace from <paramref name="typeTo"/> were successfully added, otherwise returns `0`</returns>
         public int LoadOnDemandConverter(Type typeTo)
         {
             var nameSpace = typeTo?.Namespace.Split('.').Last();
@@ -771,7 +772,7 @@ namespace Core.TypeCast
         private static bool AutoInitialized;
 
         /// <summary>
-        /// Checks if the <see cref="ConverterCollection"/> is initialized. Attempts to initialize and load the user-assembly if <see cref="ConverterCollection.Initialized"/> is `false`
+        /// Checks if the <see cref="ConverterCollection"/> is initialized. Attempts to initialize and load the user-assembly if <see cref="Singleton{ConverterCollection}.Initialized"/> is `false`
         /// </summary>
         /// <remarks>
         /// see also: http://stackoverflow.com/questions/35655726/system-reflection-assembly-does-not-contain-a-definition-for-getexecutingassemb/39192534#39192534
@@ -817,7 +818,7 @@ namespace Core.TypeCast
         /// </example>
         public void Initialize(string applicationNameSpace)
         {
-            IEnumerable<TypeInfo> types = Assembly.Load(new AssemblyName(applicationNameSpace)).DefinedTypes;
+            var types = Assembly.Load(new AssemblyName(applicationNameSpace)).DefinedTypes;
             this.Initialize(types);
         }
 
@@ -931,7 +932,7 @@ namespace Core.TypeCast
         /// <summary>
         /// Sets the <see cref="Converter"/> of the <see cref="ConverterCollection"/> as initialized
         /// </summary>
-        /// <param name="converterClass">The <see cref="class"/> instance of a custom converter implementation that is to be marked initialized</param>
+        /// <param name="converterClass">The <see langword="class"/> instance of a custom converter implementation that is to be marked initialized</param>
         /// <returns>Returns `true` if the concurrent dictionary update succeeded</returns>
         /// <remarks>The class can support <see cref="IConverter"/> </remarks>
         protected bool SetConverterClassInitialized(TypeInfo converterClass)
@@ -942,8 +943,8 @@ namespace Core.TypeCast
         /// <summary>
         /// Creates a custom converter instance
         /// </summary>
-        /// <param name="converterClass">The <see cref="class"/> instance of a custom converter implementation that is to be marked initialized</param>
-        /// <returns>Returns an instance of the <see cref="class"/> type argument provided. `Null` if unsuccessful.</returns>
+        /// <param name="converterClass">The <see langword="class"/> instance of a custom converter implementation that is to be marked initialized</param>
+        /// <returns>Returns an instance of the <see langword="class"/> type argument provided. `Null` if unsuccessful.</returns>
         /// <remarks>Use <see cref="AddAllConvertersByAttribute"/> to instantiate a custom converter with regard to the <see cref="ConverterAttribute"/> properties</remarks>
         private object CreateConverterClassInstance(Type converterClass)
         {

@@ -19,14 +19,30 @@ namespace Core.TypeCast
     [StructLayout(LayoutKind.Sequential)]
     public struct ConverterParameters
     {
+        /// <summary>
+        /// The number of parameters
+        /// </summary>
         public int Count;
+
+        /// <summary>
+        /// The source type for the conversion function
+        /// </summary>
         public Type In;
+
+        /// <summary>
+        /// The target type to which the function converts to
+        /// </summary>
         public Type Out;
+
+        /// <summary>
+        /// The Type of the second parameter of the conversion
+        /// </summary>
         public Type Arg;
 
         /// <summary>
         /// Creates a new instance of <see cref="ConverterParameters"/>
         /// </summary>
+        /// <param name="parameterOut">The return type which is equal to the type to which the function converts to.</param>
         /// <param name="parameters">A sequential list of function parameters in order of In, Out, Argument</param>
         /// <example>
         /// <code>
@@ -66,14 +82,14 @@ namespace Core.TypeCast
         /// <summary>
         /// Returns an Array of <see cref="Type"/> in the order of the Converter generic arguments <seealso cref="Converter{TIn, TOut, TArg}"/>
         /// </summary>
-        /// <returns>an array containing <paramref name="In"/>, <paramref name="Out"/>, <paramref name="Arg"/></returns>
+        /// <returns>an array containing <see cref="In"/>, <see cref="Out"/>, <see cref="Arg"/></returns>
         public Type[] ToArray()
         {
             return new[] { this.In, this.Out, this.Arg };
         }
 
         /// <summary>
-        /// Returns a string representation of the <see cref="struct"/> contents
+        /// Returns a string representation of the <see langword="struct"/> contents
         /// </summary>
         /// <returns></returns>
         public override string ToString()

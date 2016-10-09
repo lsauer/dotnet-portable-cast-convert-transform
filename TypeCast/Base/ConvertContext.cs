@@ -18,7 +18,7 @@ namespace Core.TypeCast.Base
     using System.Collections.Generic;
     using System.Text;
     using Extensions;
-
+    using Core.TypeCast;
 
     /// <summary>
     /// Wraps the model value for the converter in a conversion-context
@@ -63,7 +63,7 @@ namespace Core.TypeCast.Base
         public Type To { get; set; }
 
         /// <summary>
-        /// The argument <see cref="Type"/> of the `model` as used in <see cref="ConvertTo{TIn, TOut}(TIn, object)"/>
+        /// The argument <see cref="Type"/> of the `model` as used in <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object, bool)"/>
         /// </summary>
         public Type Argument { get; set; }
 
@@ -73,7 +73,7 @@ namespace Core.TypeCast.Base
         public object Value { get; }
 
         /// <summary>
-        /// The <see cref="Converter"/> instance for the corresponding types <typeparamref name="TIn"/> and <typeparamref name="TOut"/>
+        /// The <see cref="Converter"/> instance for the corresponding <see cref="Type"/> of <see cref="Converter.From"/> and <see cref="Converter.To"/>
         /// </summary>
         public Converter Converter { get; set; }
 
@@ -83,7 +83,7 @@ namespace Core.TypeCast.Base
         public string Caller { get; set; }
 
         /// <summary>
-        /// Whether the original <paramref name="From"/> <see cref="Type"/> was nullable
+        /// Whether the original source <see cref="Type"/> <see cref="Converter.From"/> was nullable
         /// </summary>
         public bool? Nullable { get; set; }
 

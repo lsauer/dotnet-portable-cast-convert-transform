@@ -16,7 +16,7 @@ namespace Core.TypeCast.Base
     using System.Runtime.Serialization;
 
     /// <summary>
-    /// Creates new instances of <see cref="Converter{TIn, TOut}"/> dependent on the source <typeparamref name="TIn"/> and target <see cref="Type"/> <typeparamref name="TOut"/>
+    /// Creates new instances of <see cref="Converter{TIn, TOut}"/> dependent on the source <see cref="Type"/> `TIn`  and target <see cref="Type"/> `TOut`
     /// </summary>
     [System.Runtime.InteropServices.ComVisible(false)]
     public class ConverterFactory : ConverterFactory<Converter>
@@ -24,8 +24,8 @@ namespace Core.TypeCast.Base
         /// <summary>
         /// Creates new <see cref="Converter{TIn, TOut}"/> instances dependent  on the source <typeparamref name="TIn"/> and target <see cref="Type"/> <typeparamref name="TOut"/>
         /// </summary>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparam>
         /// <param name="method">The converter method taking only one input parameter of <see cref="Type"/> <typeparamref name="TIn"/></param>
         /// <remarks>Only one method may be passed during instance creation, as compatible standard converters (<see cref="Converter.Standard"/>) are merged automatically.</remarks>
         /// <returns>Returns a new instance of <see cref="Converter{TIn, TOut}"/> upon success</returns>
@@ -40,8 +40,8 @@ namespace Core.TypeCast.Base
         /// <summary>
         /// Creates new <see cref="Converter{TIn, TOut, TArg}"/> instances dependent on the source <typeparamref name="TIn"/> and <typeparamref name="TOut"/>
         /// </summary>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparam>
         /// <param name="method">The converter method taking two input parameters of <see cref="Type"/> <typeparamref name="TIn"/> and <typeparamref name="TOut"/></param>
         /// <remarks>Only one method may be passed during instance creation, as compatible standard converters (<see cref="Converter.Standard"/>) are merged automatically.</remarks>
         /// <returns>Returns a new instance of <see cref="Converter{TIn, TOut, TArg}"/> upon success</returns>
@@ -55,7 +55,7 @@ namespace Core.TypeCast.Base
 
         /// <summary>
         /// Create a converter-wrapper which passes the own class-instance of a given method <paramref name="declaredMethod"/> as first argument for methods which are attributed 
-        /// by <see cref="ConverterMethodAttribute"/> yet do not have any arguments in their function declaration or have <see cref="ConverterMethodAttribute.PassInstance"/> set to <see cref="true"/>
+        /// by <see cref="ConverterMethodAttribute"/> yet do not have any arguments in their function declaration or have <see cref="ConverterMethodAttribute.PassInstance"/> set to <see langword="true"/>
         /// </summary>
         /// <param name="type">The <see cref="Type"/> of the class which contains the method <paramref name="declaredMethod"/></param>
         /// <param name="declaredMethod">The method declared to be bound to the new <see cref="Converter"/> instance.</param>
@@ -79,7 +79,7 @@ namespace Core.TypeCast.Base
             {
                 throw new ConverterException(ConverterCause.ConverterArgumentDelegateTooManyParameters);
             }
-            var args = new object[] { declaredMethod }; //: new object[] { declaredMethod }.Concat(parameters).ToArray();
+            var args = new object[] { declaredMethod };
 
             var converter = (Converter)makeConverter.Invoke(this, args);
 

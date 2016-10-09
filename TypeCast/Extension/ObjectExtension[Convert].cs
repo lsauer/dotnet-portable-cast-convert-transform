@@ -27,8 +27,8 @@ namespace Core.TypeCast
         /// to the target-<see cref="Type"/><typeparamref name="TOut"/></param>
         /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
         /// A context provides meta-data about the conversion arguments and is rarely needed.</param>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparam>
         /// <returns>Returns the converted value of <see cref="Type"/> <typeparamref name="TOut" /> </returns>
         /// <example>
         ///     <code>
@@ -50,7 +50,7 @@ namespace Core.TypeCast
         /// </example>
         /// <exception cref="ConverterException">Throws an exception of type <see cref="ConverterException" />if the conversion fails</exception>
         /// <remarks>note: The <see cref="ConverterCollection"/> is lazy instantiated upon the first invocation of the method</remarks>
-        /// <seealso cref="TryConvert{TOut}(object, out TOut, object, bool)"/>
+        /// <seealso cref="TryConvert{TOut}(object, out TOut, object, bool, bool)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TOut ConvertTo<TIn, TOut>(this TIn self, object model, bool withContext = false)
         {
@@ -65,8 +65,8 @@ namespace Core.TypeCast
         /// <param name="self">The current instance holding the boxed value to convert from</param>
         /// <param name="model">An model-instance, for instance a Data-Transfer-Object/DTO that encapsulates further data parameters for the conversion process 
         /// to the target-<see cref="Type"/><typeparamref name="TOut"/></param>
-        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. </param>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparam>
         /// <returns>Returns the converted value of <see cref="Type"/> <typeparamref name="TOut" /> </returns>
         /// <example>
         ///     <code>
@@ -88,7 +88,7 @@ namespace Core.TypeCast
         /// </example>
         /// <exception cref="ConverterException">Throws an exception of type <see cref="ConverterException" />if the conversion fails</exception>
         /// <remarks>note: The <see cref="ConverterCollection"/> is lazy instantiated upon the first invocation of the method</remarks>
-        /// <seealso cref="TryConvert{TOut}(object, out TOut, object, bool)"/>
+        /// <seealso cref="ObjectExtension.TryConvert{TOut}(object, out TOut, object, bool, bool)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TOut ConvertTo<TOut>(this object self, object model, bool withContext = false)
         {
@@ -98,7 +98,7 @@ namespace Core.TypeCast
         }
 
 
-        /// <summary>The convert method following the `Try` convention, of the .Net Framework, returning a <see cref="bool"/> success 
+        /// <summary>The convert method following the `Try` convention, of the .Net Framework, returning a <see langword="bool"/> success 
         /// status rather than throwing an <see cref="Exception"/> upon a failed conversion. Conversion can involve up to three different types to convert 
         /// an arbitrary input type to another arbitrary output type, by using a third model parameter which encapsulates all data and fields required for the conversion function. 
         /// A maximum of three involving types is by design, to enforce adherence to the single responsibility principle.</summary>
@@ -109,7 +109,7 @@ namespace Core.TypeCast
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
         /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
         /// <see cref="Type" /> <typeparamref name="TOut"/></param>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparam>
         /// <returns>Returns the converted value of <see cref="Type"/> <typeparamref name="TOut" /> </returns>
         /// <returns>The success state as <see cref="bool" /> indicating if the conversion succeeded (`true`) or failed (`false`).</returns>
         /// <remarks>
@@ -119,8 +119,8 @@ namespace Core.TypeCast
         /// </remarks>
         /// <exception cref="ConverterException">Throws an exception of type <see cref="ConverterException" />if the conversion fails</exception>
         /// <remarks>note: The <see cref="ConverterCollection"/> is lazy instantiated upon the first invocation of the method</remarks>
-        /// <seealso cref="GetConverterOrDefault{TIn, TOut}(TIn, out Converter, out TOut, Type, Type, bool, bool, bool)"/>
-        /// <seealso cref="InvokeConvert{TIn, TOut}(TIn, out TOut, object, bool, Converter)"/>
+        /// <seealso cref="GetConverterOrDefault{TIn, TOut}(TIn, out Converter, out TOut, Type, Type, Type, bool, bool, string, bool)"/>
+        /// <seealso cref="InvokeConvert{TIn, TOut}(TIn, out TOut, object, bool, Converter, IConvertContext, string)"/>
         public static bool TryConvert<TOut>(this object self, out TOut result, object model, bool throwException = false, bool withContext = false)
         {
             Converter converter;
@@ -133,7 +133,7 @@ namespace Core.TypeCast
             return InvokeConvert(self, out result, model, throwException, converter, contextInstance: (withContext ? new ConvertContext(model) : null));
         }
 
-        /// <summary>The convert method following the `Try` convention, of the .Net Framework, returning a <see cref="bool"/> success 
+        /// <summary>The convert method following the `Try` convention, of the .Net Framework, returning a <see langword="bool"/> success 
         /// status rather than throwing an <see cref="Exception"/> upon a failed conversion. Conversion can involve up to three different types to convert 
         /// an arbitrary input type to another arbitrary output type, by using a third model parameter which encapsulates all data and fields required for the conversion function. 
         /// A maximum of three involving types is by design, to enforce adherence to the single responsibility principle.</summary>
@@ -144,9 +144,9 @@ namespace Core.TypeCast
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
         /// <param name="withContext">Whether to provide a conversion context with the model argument set within 
         /// <see cref="Type" /> <typeparamref name="TOut"/></param>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <typeparam name="TArg">The Argument <see cref="Type"/> for generic converters using see <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object)"/>. 
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TArg">The Argument <see cref="Type"/> for generic converters using see <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object, bool)"/>. </typeparam>
         /// <returns>Returns the converted value of <see cref="Type"/> <typeparamref name="TOut" /> </returns>
         /// <returns>The success state as <see cref="bool" /> indicating if the conversion succeeded (`true`) or failed (`false`).</returns>
         /// <remarks>
@@ -156,8 +156,8 @@ namespace Core.TypeCast
         /// </remarks>
         /// <exception cref="ConverterException">Throws an exception of type <see cref="ConverterException" />if the conversion fails</exception>
         /// <remarks>note: The <see cref="ConverterCollection"/> is lazy instantiated upon the first invocation of the method</remarks>
-        /// <seealso cref="GetConverterOrDefault{TIn, TOut}(TIn, out Converter, out TOut, Type, Type, bool, bool, bool)"/>
-        /// <seealso cref="InvokeConvert{TIn, TOut}(TIn, out TOut, object, bool, Converter)"/>
+        /// <seealso cref="GetConverterOrDefault{TIn, TOut}(TIn, out Converter, out TOut, Type, Type, Type, bool, bool, string, bool)"/>
+        /// <seealso cref="InvokeConvert{TIn, TOut}(TIn, out TOut, object, bool, Converter, IConvertContext, string)"/>
         public static bool TryConvert<TIn, TOut, TArg>(this TIn self, out TOut result, TArg model, bool throwException = false, bool withContext = false)
         {
             Converter converter;

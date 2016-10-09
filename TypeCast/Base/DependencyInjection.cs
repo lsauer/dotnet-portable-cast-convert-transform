@@ -19,7 +19,7 @@ namespace Core.TypeCast.Base
     /// </summary>
     /// <typeparam name="TDependency">The <see cref="Type"/> of the dependency</typeparam>
     /// <exception cref="DependencyInjectionException">
-    ///     If the <paramref name="injector" /> is `null` a <see cref="DependencyInjectionException"/> is thrown
+    ///     If the <typeparamref name="TDependency"/> instance is `null` a <see cref="DependencyInjectionException"/> is thrown
     /// </exception>
     /// <seealso cref="ConverterCollectionDependency"/>
     [System.Runtime.InteropServices.ComVisible(false)]
@@ -27,7 +27,7 @@ namespace Core.TypeCast.Base
     {
         /// <summary>Initializes a new instance of the abstract <see cref="DependencyInjection{TDependency}" /> class.</summary>
         /// <param name="injector">
-        ///     The <see cref="injector" /> injection parameter which is required as an argument of the parent class constructor for dependency injection.
+        ///     The <paramref name="injector" />  injection parameter is required as an argument of the parent class constructor for dependency injection.
         /// </param>
         /// <exception cref="DependencyInjectionException">
         ///     If the <paramref name="injector" /> is `null` a <see cref="DependencyInjectionException"/> is thrown

@@ -26,21 +26,21 @@ namespace Core.TypeCast
         private static TypeInfo objectTypeInfo = typeof(object).GetTypeInfo();
 
         /// <summary>A method wrapper to safely lookup the required converter instance for the conversion and intercept possible exceptions.
-        /// The method returns <see cref="bool"/> `true` if the <paramref name="result"/> value is already determined, in case of <paramref name="self"/> 
+        /// The method returns <see langword="bool"/> `true` if the <paramref name="result"/> value is already determined, in case of <paramref name="self"/> 
         /// already having <see cref="Type"/> <typeparamref name="TOut"/>
         /// </summary>
         /// <param name="self">The current instance holding the boxed value to convert from</param>
         /// <param name="converter">The <see cref="Converter"/> instance for the corresponding types <typeparamref name="TIn"/> and <typeparamref name="TOut"/></param>
         /// <param name="result">  The converted result of Type <typeparamref name="TOut" />. </param>
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
-        /// <param name="unboxObjectType"> in case the type is boxed and TIn set to `object`, use <paramref name="typeIn" /> to override the unboxed source <see cref="Type" /></param>
-        /// <param name="typeArgument">The argument <see cref="Type"/> of the `model` as used in <see cref="ConvertTo{TIn, TOut}(TIn, object)"/></param>
-        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <see cref="self"/> to</param>
-        /// <param name="typeBase">The base-type <see cref="Type"/> to which to convert the <see cref="Type"/> of <see cref="self"/> to</param>
+        /// <param name="unboxObjectType"> in case the type is boxed and TIn set to `object`, use <typeparamref name="TIn" /> to override the unboxed source <see cref="Type" /></param>
+        /// <param name="typeArgument">The argument <see cref="Type"/> of the `model` as used in <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/></param>
+        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <paramref name="self"/> to</param>
+        /// <param name="typeBase">The base-type <see cref="Type"/> to which to convert the <see cref="Type"/> of <paramref name="self"/> to</param>
         /// <param name="attributeName">A search-string to be contained in the <see cref="ConverterAttribute.Name"/> to filter through</param>
-        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. </param>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparam>
         /// <returns>The result state as <see cref="bool" /> indicating if the conversion is already finished (`true`) or still pending (`false`).</returns>
         /// <remarks>
         ///     Note that the <see cref="Type" /> `object` as `TOut` or set via `typeOut` is allowed although such a case is not sensible, except under special
@@ -101,7 +101,7 @@ namespace Core.TypeCast
             return false;
         }
 
-        /// <summary>A method wrapper to safely invoke the converter functions and intercept possible exceptions, returning the conversion status as a <see cref="bool"/>.</summary>
+        /// <summary>A method wrapper to safely invoke the converter functions and intercept possible exceptions, returning the conversion status as a <see langword="bool"/>.</summary>
         /// <param name="self">The current instance holding the boxed value to convert from</param>
         /// <param name="result">  The converted result of Type <typeparamref name="TOut" />. </param>
         /// <param name="defaultValue">An optional default value for the given type, which must not be null, otherwise an <see cref="ConverterException" /> may be thrown.</param>
@@ -109,8 +109,8 @@ namespace Core.TypeCast
         /// <param name="converter">The <see cref="Converter"/> instance for the corresponding types <typeparamref name="TIn"/> and <typeparamref name="TOut"/></param>
         /// <param name="contextInstance">>An optional context instance, providing current parameters of the conversion process and context.</param>
         /// <param name="caller">The caller method name which is automatically filled-in via the <see cref="CallerMemberNameAttribute"/>, and used for context information.</param>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparam>
         /// <returns>The success state as <see cref="bool" /> indicating if the conversion succeeded (`true`) or failed (`false`).</returns>
         /// <exception cref="Exception">A generic exception that occurred during the invocation of the conversion functions</exception>
         /// <exception cref="ConverterException">Throws an exception of type <see cref="ConverterException" />if the conversion fails</exception>
@@ -182,15 +182,13 @@ namespace Core.TypeCast
         /// <summary>
         /// Updates a ConvertContext instance with the parameters provided
         /// </summary>
-        /// <param name="self">The current instance holding the boxed value to convert from</param>
-        /// <param name="result">  The converted result of Type <typeparamref name="TOut" />. </param>
+        /// <param name="contextInstance">The current context instance, providing current parameters of the conversion process and context.</param>
         /// <param name="defaultValue">an optional default value for the given type, which must not be null, otherwise an <see cref="ConverterException" /> may be thrown.</param>
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
         /// <param name="converter">The <see cref="Converter"/> instance for the corresponding types <typeparamref name="TIn"/> and <typeparamref name="TOut"/></param>
-        /// <param name="contextInstance">>An optional context instance, providing current parameters of the conversion process and context.</param>
         /// <param name="caller">The caller method name which is automatically filled-in via the <see cref="CallerMemberNameAttribute"/>, and used for context information.</param>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparam>
         /// <returns>An updated ConvertContext instance if one was passed in, else `null` </returns>
         private static IConvertContext SetContext<TIn, TOut>(IConvertContext contextInstance, object defaultValue, bool throwException, Converter converter, string caller)
         {
@@ -211,13 +209,13 @@ namespace Core.TypeCast
 
         /// <summary>
         /// Checks if the value of an arbitrary <see cref="Type"/> can be converted to a given <see cref="Type"/> <paramref name="self"/>,
-        /// in analogy to the virtual method <see cref="System.ComponentModel.TypeConverter.CanConvertFrom"/> 
+        /// in analogy to the virtual method ' System.ComponentModel.TypeConverter.CanConvertFrom`
         /// </summary>
         /// <param name="self">The own instance of any unrestricted <see cref="Type"/>, which invokes the static extension method.</param>
         /// <param name="target">The own instance of any unrestricted <see cref="Type"/>, which invokes the static extension method.</param>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <returns>Returns `true` if the own value is equal to the <see cref="default"/>, else `false` is returned.</returns>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <returns>Returns `true` if the own value is equal to the <see langword="default"/>, else `false` is returned.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool CanConvertTo<TIn, TOut>(this TIn self, TOut target = default(TOut))
         {
@@ -229,14 +227,14 @@ namespace Core.TypeCast
 
         /// <summary>
         /// Checks if the value of an arbitrary <see cref="Type"/> can be converted to a given <see cref="Type"/> <paramref name="self"/>,
-        /// in analogy to the virtual method <see cref="System.ComponentModel.TypeConverter.CanConvertFrom"/> 
+        /// in analogy to the virtual method `System.ComponentModel.TypeConverter.CanConvertFrom`
         /// </summary>
         /// <param name="self">The own instance of any unrestricted <see cref="Type"/>, which invokes the static extension method.</param>
         /// <param name="target">The own instance of any unrestricted <see cref="Type"/>, which invokes the static extension method.</param>
-        /// <param name="model">An model-instance, for instance a Data-Transfer-Object/DTO that encapsulates further data parameters for the conversion process
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <typeparam name="TArg">The Argument <see cref="Type"/> for generic converters using see <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object)"/>. 
-        /// <returns>Returns `true` if the own value is equal to the <see cref="default"/>, else `false` is returned.</returns>
+        /// <param name="model">An model-instance, for instance a Data-Transfer-Object/DTO that encapsulates further data parameters for the conversion process</param>
+        /// <typeparamref name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparamref>
+        /// <typeparamref name="TArg">The Argument <see cref="Type"/> for generic converters using see <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object, bool)"/>. </typeparamref>
+        /// <returns>Returns `true` if the own value is equal to the <see langword="default"/>, else `false` is returned.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool CanConvertTo<TOut, TArg>(this object self, TOut target = default(TOut), TArg model = default(TArg))
         {
@@ -248,14 +246,14 @@ namespace Core.TypeCast
 
         /// <summary>
         /// Checks if the value of an arbitrary <see cref="Type"/> can be converted to a given <see cref="Type"/> <paramref name="self"/>,
-        /// in analogy to the virtual method <see cref="System.ComponentModel.TypeConverter.CanConvertFrom"/> 
+        /// in analogy to the virtual method `System.ComponentModel.TypeConverter.CanConvertFrom`
         /// </summary>
         /// <param name="self">The own instance of any unrestricted <see cref="Type"/>, which invokes the static extension method.</param>
-        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <see cref="self"/> to</param>
-        /// <param name="model">An model-instance, for instance a Data-Transfer-Object/DTO that encapsulates further data parameters for the conversion process
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <typeparam name="TArg">The Argument <see cref="Type"/> for generic converters using see <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object)"/>. 
-        /// <returns>Returns `true` if the own value is equal to the <see cref="default"/>, else `false` is returned.</returns>
+        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <paramref name="self"/> to</param>
+        /// <param name="model">An model-instance, for instance a Data-Transfer-Object/DTO that encapsulates further data parameters for the conversion process</param>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TArg">The Argument <see cref="Type"/> for generic converters using see <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object, bool)"/>. </typeparam>
+        /// <returns>Returns `true` if the own value is equal to the <see langword="default"/>, else `false` is returned.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool CanConvertTo<TIn, TArg>(this TIn self, Type typeTo, TArg model = default(TArg))
         {
@@ -267,13 +265,13 @@ namespace Core.TypeCast
 
         /// <summary>
         /// Checks if the value of an arbitrary <see cref="Type"/> can be converted to a given <see cref="Type"/> <paramref name="self"/>,
-        /// in analogy to the virtual method <see cref="System.ComponentModel.TypeConverter.CanConvertFrom"/> 
+        /// in analogy to the virtual method `System.ComponentModel.TypeConverter.CanConvertFrom`
         /// </summary>
         /// <param name="self">The own instance of any unrestricted <see cref="Type"/>, which invokes the static extension method.</param>
-        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <see cref="self"/> to</param>
-        /// <param name="typeModel">A <see cref="Type"/> of the model-instance, for instance a Data-Transfer-Object/DTO that encapsulates further data parameters for the conversion process
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <returns>Returns `true` if the own value is equal to the <see cref="default"/>, else `false` is returned.</returns>
+        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <paramref name="self"/> to</param>
+        /// <param name="typeModel">A <see cref="Type"/> of the model-instance, for instance a Data-Transfer-Object/DTO that encapsulates further data parameters for the conversion process</param>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <returns>Returns `true` if the own value is equal to the <see langword="default"/>, else `false` is returned.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool CanConvertTo<TIn>(this TIn self, Type typeTo, Type typeModel)
         {
@@ -285,12 +283,12 @@ namespace Core.TypeCast
 
         /// <summary>
         /// Checks if the value of an arbitrary <see cref="Type"/> can be converted to a given <see cref="Type"/> <paramref name="self"/>,
-        /// in analogy to the virtual method <see cref="System.ComponentModel.TypeConverter.CanConvertFrom"/> 
+        /// in analogy to the virtual method `System.ComponentModel.TypeConverter.CanConvertFrom`
         /// </summary>
         /// <param name="self">The own instance of any unrestricted <see cref="Type"/>, which invokes the static extension method.</param>
-        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <see cref="self"/> to</param>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <returns>Returns `true` if the own value is equal to the <see cref="default"/>, else `false` is returned.</returns>
+        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <paramref name="self"/> to</param>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <returns>Returns `true` if the own value is equal to the <see langword="default"/>, else `false` is returned.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool CanConvertTo<TIn>(this TIn self, Type typeTo)
         {
@@ -302,11 +300,11 @@ namespace Core.TypeCast
 
         /// <summary>
         /// Checks if the value of an arbitrary <see cref="Type"/> can be converted to a given <see cref="Type"/> <paramref name="self"/>,
-        /// in analogy to the virtual method <see cref="System.ComponentModel.TypeConverter.CanConvertFrom"/> 
+        /// in analogy to the virtual method `System.ComponentModel.TypeConverter.CanConvertFrom` 
         /// </summary>
         /// <param name="self">The own instance of any unrestricted <see cref="Type"/>, which invokes the static extension method.</param>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <returns>Returns `true` if the own value is equal to the <see cref="default"/>, else `false` is returned.</returns>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <returns>Returns `true` if the own value is equal to the <see langword="default"/>, else `false` is returned.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool CanConvertTo<TOut>(this object self)
         {
@@ -317,11 +315,11 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Checks if the value of an arbitrary <see cref="Type"/> is equal to its <see cref="default"/>
+        /// Checks if the value of an arbitrary <see cref="Type"/> is equal to its <see langword="default"/>
         /// </summary>
         /// <typeparam name="TIn">An arbitrary <see cref="Type"/></typeparam>
         /// <param name="self">The own instance of any unrestricted <see cref="Type"/>, which invokes the static extension method.</param>
-        /// <returns>Returns `true` if the own value is equal to the <see cref="default"/>, else `false` is returned.</returns>
+        /// <returns>Returns `true` if the own value is equal to the <see langword="default"/>, else `false` is returned.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsDefaultValue<TIn>(this TIn self)
         {
@@ -329,11 +327,11 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Checks if the value of an arbitrary <see cref="Type"/> <typeparamref name="TIn"/> is equal to its <see cref="default"/>
+        /// Checks if the value of an arbitrary <see cref="Type"/> <typeparamref name="TIn"/> is equal to its <see langword="default"/>
         /// </summary>
         /// <typeparam name="TIn">An arbitrary <see cref="Type"/></typeparam>
         /// <param name="self">The own instance of any unrestricted <see cref="Type"/>, which invokes the static extension method.</param>
-        /// <returns>Returns `true` if the own value is equal to the <see cref="default"/>, else `false` is returned.</returns>
+        /// <returns>Returns `true` if the own value is equal to the <see langword="default"/>, else `false` is returned.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsDefaultValue<TIn>(this object self)
         {

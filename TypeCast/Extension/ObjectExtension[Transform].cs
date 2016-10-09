@@ -21,7 +21,7 @@ namespace Core.TypeCast
     {
 
         /// <summary>
-        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
+        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
         /// All Types involved in the conversion must be from the same namespace. If the optional parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match.
         /// This does not hold true for the "Try" version, which has no optional `strictTypeCheck` argument.
         /// </summary>
@@ -37,7 +37,7 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
+        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
         /// All Types involved in the conversion must be from the same namespace. If the optional parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match.
         /// This does not hold true for the "Try" version, which has no optional `strictTypeCheck` argument.
         /// </summary>
@@ -47,17 +47,16 @@ namespace Core.TypeCast
         /// to the target-<see cref="Type"/><typeparamref name="TOut"/></param>
         /// <param name="functionAlias">Applies an optional search string to the filter lookup, as Transform functions are allowed to be ambivalent 
         /// i.e. have same argument and return types</param>
-        /// <param name="strictTypeCheck">Whether the input and output arguments are of the same type, otherwise an exception is thrown, when set to true.</param>
-        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. </param>
         /// <returns>Returns the transformed value of the <see cref="Type"/> as <typeparamref name="TOut" /> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TOut Transform<TOut>(this TOut self, object model, Enum functionAlias, bool strictTypeCheck = true, bool withContext = false)
+        public static TOut Transform<TOut>(this TOut self, object model, Enum functionAlias,  bool withContext = false)
         {
             return Transform<TOut>(self: self, model: model, functionAlias: functionAlias.ToString(), withContext: withContext);
         }
 
         /// <summary>
-        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
+        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
         /// All Types involved in the conversion must be from the same namespace. If the optional parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match.
         /// This does not hold true for the "Try" version, which has no optional `strictTypeCheck` argument.
         /// </summary>
@@ -73,7 +72,7 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
+        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
         /// All Types involved in the conversion must be from the same namespace. If the optional parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match.
         /// This does not hold true for the "Try" version, which has no optional `strictTypeCheck` argument.
         /// </summary>
@@ -83,7 +82,7 @@ namespace Core.TypeCast
         /// to the target-<see cref="Type"/><typeparamref name="TOut"/></param>
         /// <param name="functionAlias">Applies an optional search string to the filter lookup, as Transform functions are allowed to be ambivalent 
         /// i.e. have same argument and return types</param>
-        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. </param>
         /// <returns>Returns the transformed value of the <see cref="Type"/> as <typeparamref name="TOut" /> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TOut Transform<TOut>(this object self, object model, Enum functionAlias, bool withContext = false)
@@ -92,7 +91,7 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
+        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
         /// All Types involved in the conversion must be from the same namespace. If the optional parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match.
         /// This does not hold true for the "Try" version, which has no optional `strictTypeCheck` argument.
         /// </summary>
@@ -102,7 +101,7 @@ namespace Core.TypeCast
         /// to the target-<see cref="Type"/><typeparamref name="TOut"/></param>
         /// <param name="functionAlias">Applies an optional search string to the filter lookup, as Transform functions are allowed to be ambivalent 
         /// i.e. have same argument and return types</param>
-        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. </param>
         /// <returns>Returns the transformed value of the <see cref="Type"/> as <typeparamref name="TOut" /> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TOut Transform<TOut>(this TOut self, object model, string functionAlias = null, bool withContext = false)
@@ -111,18 +110,19 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
+        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
         /// All Types involved in the conversion must be from the same namespace. If the optional parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match.
         /// This does not hold true for the "Try" version, which has no optional `strictTypeCheck` argument.
         /// </summary>
         /// <typeparam name="TOut">The output <see cref="Type"/> which must equal the input type of the own value <paramref name="self"/></typeparam>
+        /// <typeparam name="TBase">The <see cref="Type"/> of the declaring and attributed custom converter class, if one exists</typeparam>
         /// <param name="self">The current instance holding the boxed value to convert from</param>
         /// <param name="model">An model-instance, for instance a Data-Transfer-Object/DTO that encapsulates further data parameters for the conversion process
         /// to the target-<see cref="Type"/><typeparamref name="TOut"/></param>
         /// <param name="functionAlias">Applies an optional search string to the filter lookup, as Transform functions are allowed to be ambivalent 
         /// i.e. have same argument and return types</param>
         /// <param name="strictTypeCheck">Whether the input and output arguments are of the same type, otherwise an exception is thrown, when set to true.</param>
-        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. </param>
         /// <returns>Returns the transformed value of the <see cref="Type"/> as <typeparamref name="TOut" /> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TOut Transform<TBase, TOut>(this object self, object model = null, string functionAlias = null, bool strictTypeCheck = false, bool withContext = false)
@@ -131,6 +131,22 @@ namespace Core.TypeCast
             return (TOut)Transform<TBase, object, TOut>(self: self, model: model, functionAlias: functionAlias, strictTypeCheck: strictTypeCheck, withContext: withContext);
         }
 
+        /// <summary>
+        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
+        /// All Types involved in the conversion must be from the same namespace. If the optional parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match.
+        /// This does not hold true for the "Try" version, which has no optional `strictTypeCheck` argument.
+        /// </summary>
+        /// <typeparam name="TOut">The output <see cref="Type"/> which must equal the input type of the own value <paramref name="self"/></typeparam>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TBase">The <see cref="Type"/> of the declaring and attributed custom converter class, if one exists</typeparam>
+        /// <param name="self">The current instance holding the boxed value to convert from</param>
+        /// <param name="model">An model-instance, for instance a Data-Transfer-Object/DTO that encapsulates further data parameters for the conversion process
+        /// to the target-<see cref="Type"/><typeparamref name="TOut"/></param>
+        /// <param name="functionAlias">Applies an optional search string to the filter lookup, as Transform functions are allowed to be ambivalent 
+        /// i.e. have same argument and return types</param>
+        /// <param name="strictTypeCheck">Whether the input and output arguments are of the same type, otherwise an exception is thrown, when set to true.</param>
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. </param>
+        /// <returns>Returns the transformed value of the <see cref="Type"/> as <typeparamref name="TOut" /> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TOut Transform<TBase, TIn, TOut>(this object self, object model = null, string functionAlias = null, bool strictTypeCheck = false, bool withContext = false)
         {
@@ -140,7 +156,7 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
+        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
         /// All Types involved in the conversion must be from the same namespace. If the optional parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match.
         /// This does not hold true for the "Try" version, which has no optional `strictTypeCheck` argument.
         /// </summary>
@@ -151,7 +167,7 @@ namespace Core.TypeCast
         /// to the target-<see cref="Type"/><typeparamref name="TOut"/></param>
         /// <param name="functionAlias">Applies an optional search string to the filter lookup, as Transform functions are allowed to be ambivalent 
         /// i.e. have same argument and return types</param>
-        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. </param>
         /// <returns>Returns the transformed value of the <see cref="Type"/> as <typeparamref name="TOut" /> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TOut Transform<TOut>(this TOut self, Type typeBase, object model = null, string functionAlias = null, bool withContext = false)
@@ -160,21 +176,21 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
+        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
         /// All Types involved in the conversion must be from the same namespace. If the optional parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match.
         /// This does not hold true for the "Try" version, which has no optional `strictTypeCheck` argument.
         /// </summary>
         /// <typeparam name="TBase">The declaring <see cref="Type"/> of the converter-functions to add as a group.</typeparam>
         /// <param name="self">The current instance holding the boxed value to convert from</param>
-        /// <param name="model">An model-instance, for instance a Data-Transfer-Object/DTO that encapsulates further data parameters for the conversion process
-        /// to the target-<see cref="Type"/><typeparamref name="TOut"/></param>
+        /// <param name="model">An model-instance, for instance a Data-Transfer-Object/DTO that encapsulates further data parameters for the conversion process.
+        /// to the target-<see cref="Type"/><aramref name="typeTo"/></param>
         /// <param name="typeBase">The <see cref="Type"/> of the declaring and attributed custom converter class, if one exists</param>
-        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <see cref="self"/> to</param>
+        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <paramref name="self"/> to</param>
         /// <param name="functionAlias">Applies an optional search string to the filter lookup, as Transform functions are allowed to be ambivalent 
         /// i.e. have same argument and return types</param>
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
-        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
-        /// <returns>Returns the transformed value of the <see cref="Type"/> as <typeparamref name="TOut" /> </returns>
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. </param>
+        /// <returns>Returns the transformed value of the <see cref="Type"/> as <paramref name="typeTo" /> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static object Transform<TBase>(this object self, object model = null, Type typeBase = null, Type typeTo = null, string functionAlias = null, bool throwException = true, bool withContext = false)
         {
@@ -182,20 +198,20 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
+        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
         /// All Types involved in the conversion must be from the same namespace. If the optional parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match.
         /// This does not hold true for the "Try" version, which has no optional `strictTypeCheck` argument.
         /// </summary>
         /// <param name="self">The current instance holding the boxed value to convert from</param>
         /// <param name="model">An model-instance, for instance a Data-Transfer-Object/DTO that encapsulates further data parameters for the conversion process
-        /// to the target-<see cref="Type"/><typeparamref name="TOut"/></param>
+        /// to the target-<see cref="Type"/> <paramref name="typeTo"/></param>
         /// <param name="typeBase">The <see cref="Type"/> of the declaring and attributed custom converter class, if one exists</param>
-        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <see cref="self"/> to</param>
+        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <paramref name="self"/> to</param>
         /// <param name="functionAlias">Applies an optional search string to the filter lookup, as Transform functions are allowed to be ambivalent 
         /// i.e. have same argument and return types</param>
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
-        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
-        /// <returns>Returns the transformed value of the <see cref="Type"/> as <typeparamref name="TOut" /> </returns>
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. </param>
+        /// <returns>Returns the transformed value of the <see cref="Type"/> as <paramref name="typeTo" /> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static object Transform(this object self, object model = null, Type typeBase = null, Type typeTo = null, string functionAlias = null, bool throwException = true, bool withContext = false)
         {
@@ -204,21 +220,21 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
+        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
         /// All Types involved in the conversion must be from the same namespace. If the optional parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match.
         /// This does not hold true for the "Try" version, which has no optional `strictTypeCheck` argument.
         /// </summary>
         /// <param name="self">The current instance holding the boxed value to convert from</param>
-        /// <param name="converter">The <see cref="Converter"/> instance for the corresponding types <typeparamref name="TIn"/> and <typeparamref name="TOut"/></param>
+        /// <param name="converter">The <see cref="Converter"/> instance for the corresponding types <typeparamref name="TIn"/> and <paramref name="typeTo"/></param>
         /// <param name="model">An model-instance, for instance a Data-Transfer-Object/DTO that encapsulates further data parameters for the conversion process
-        /// to the target-<see cref="Type"/><typeparamref name="TOut"/></param>
+        /// to the target-<see cref="Type"/> <paramref name="typeTo"/></param>
         /// <param name="typeBase">The <see cref="Type"/> of the declaring and attributed custom converter class, if one exists</param>
-        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <see cref="self"/> to</param>
+        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <paramref name="self"/> to</param>
         /// <param name="functionAlias">Applies an optional search string to the filter lookup, as Transform functions are allowed to be ambivalent 
         /// i.e. have same argument and return types</param>
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
-        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
-        /// <returns>Returns the transformed value of the <see cref="Type"/> as <typeparamref name="TOut" /> </returns>
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. </param>
+        /// <returns>Returns the transformed value of the <see cref="Type"/> as <paramref name="typeTo" /> </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static object Transform<TIn>(this TIn self, out Converter converter, object model = null, Type typeBase = null, Type typeTo = null, string functionAlias = null, bool throwException = true, bool withContext = false)
         {
@@ -237,12 +253,12 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
+        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
         /// All Types involved in the conversion must be from the same namespace. If the optional parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match.
         /// This does not hold true for the "Try" version, which has no optional `strictTypeCheck` argument.
         /// </summary>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparam>
         /// <param name="self">The current instance holding the boxed value to convert from</param>
         /// <param name="converterAction">A function delegate <see cref="Func{TIn, TOut}"/> to use as the <see cref="Converter.Function"/></param>
         /// <param name="addWithAttributeName">An Enum containing an enumeration of aliases for the converters for unique identification and lookup</param>
@@ -255,15 +271,15 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Alias for <see cref="ConvertTo{TIn, TOut}(TIn, object)"/> with parameter `transform` set to true, to allow equality of the input and output types.
+        /// Alias for <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> with parameter `transform` set to true, to allow equality of the input and output types.
         /// Use Transform when the input and output <see cref="Type"/> match, otherwise an exception is raised.
         /// </summary>
         /// <param name="self">The current instance holding the boxed value to convert from</param>
         /// <param name="converterAction">A function delegate <see cref="Func{TIn, TOut}"/> to use as the <see cref="Converter.Function"/></param>
         /// <param name="addWithAttributeName">An Enum containing an enumeration of aliases for the converters for unique identification and lookup</param>
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparam>
         /// <returns>Returns the transformed value of the <see cref="Type"/> as <typeparamref name="TOut" /> </returns>
         public static TOut Transform<TIn, TOut>(this TIn self, Func<TIn, TOut> converterAction, string addWithAttributeName = null, bool throwException = true)
         {
@@ -285,20 +301,20 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
+        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
         /// All Types involved in the conversion must be from the same namespace. If the optional parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match.
         /// This does not hold true for the "Try" version, which has no optional `strictTypeCheck` argument.
         /// </summary>
         /// <param name="self">The current instance holding the boxed value to convert from</param>
         /// <param name="result">The variable reference to which the conversion result is assigned.</param>
         /// <param name="model">An model-instance, for instance a Data-Transfer-Object/DTO that encapsulates further data parameters for the conversion process
-        /// to the target-<see cref="Type"/><typeparamref name="TOut"/></param>
+        /// to the target-<see cref="Type"/><paramref name="typeTo"/></param>
         /// <param name="typeBase">The <see cref="Type"/> of the declaring and attributed custom converter class, if one exists</param>
-        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <see cref="self"/> to</param>
+        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <paramref name="self"/> to</param>
         /// <param name="functionAlias">Applies an optional search string to the filter lookup, as Transform functions are allowed to be ambivalent 
         /// i.e. have same argument and return types</param>
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
-        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. </param>
         /// <returns>The success state as <see cref="bool" /> indicating if the transformation succeeded (`true`) or failed (`false`).</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryTransform(this object self, out object result, object model = null, Type typeBase = null, Type typeTo = null, string functionAlias = null, bool throwException = false, bool withContext = false)
@@ -309,7 +325,7 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
+        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
         /// All Types involved in the conversion must be from the same namespace. If the optional parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match.
         /// This does not hold true for the "Try" version, which has no optional `strictTypeCheck` argument.
         /// </summary>
@@ -318,14 +334,13 @@ namespace Core.TypeCast
         /// <param name="model">An model-instance, for instance a Data-Transfer-Object/DTO that encapsulates further data parameters for the conversion process
         /// to the target-<see cref="Type"/><typeparamref name="TOut"/></param>
         /// <param name="typeBase">The <see cref="Type"/> of the declaring and attributed custom converter class, if one exists</param>
-        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <see cref="self"/> to</param>
         /// <param name="functionAlias">Applies an optional search string to the filter lookup, as Transform functions are allowed to be ambivalent 
         /// i.e. have same argument and return types</param>
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
         /// <param name="strictTypeCheck">Whether the input and output arguments are of the same type, otherwise an exception is thrown, when set to true.</param>
-        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. </param>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparam>
         /// <returns>The success state as <see cref="bool" /> indicating if the transformation succeeded (`true`) or failed (`false`).</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryTransform<TIn, TOut>(this TIn self, out TOut result, object model = null, Type typeBase = null, string functionAlias = null, bool throwException = false, bool strictTypeCheck = false, bool withContext = false)
@@ -349,7 +364,7 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
+        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
         /// All Types involved in the conversion must be from the same namespace. If the optional parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match.
         /// This does not hold true for the "Try" version, which has no optional `strictTypeCheck` argument.
         /// </summary>
@@ -361,9 +376,9 @@ namespace Core.TypeCast
         /// i.e. have same argument and return types</param>
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
         /// <param name="strictTypeCheck">Whether the input and output arguments are of the same type, otherwise an exception is thrown, when set to true.</param>
-        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. </param>
         /// <typeparam name="TBase">The declaring <see cref="Type"/> of the converter-functions to add as a group.</typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparam>
         /// <returns>The success state as <see cref="bool" /> indicating if the transformation succeeded (`true`) or failed (`false`).</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryTransform<TBase, TOut>(this object self, out TOut result, object model = null, string functionAlias = null, bool throwException = false, bool strictTypeCheck = false, bool withContext = false)
@@ -387,7 +402,7 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
+        /// `Transform`is similar to <see cref="ConvertTo{TIn, TOut}(TIn, object, bool)"/> but should be preferred in situations wherein the input and output type are similar or the same. 
         /// All Types involved in the conversion must be from the same namespace. If the optional parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match.
         /// This does not hold true for the "Try" version, which has no optional `strictTypeCheck` argument.
         /// </summary>
@@ -399,10 +414,10 @@ namespace Core.TypeCast
         /// i.e. have same argument and return types</param>
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
         /// <param name="strictTypeCheck">Whether the input and output arguments are of the same type, otherwise an exception is thrown, when set to true.</param>
-        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. 
+        /// <param name="withContext">Whether to provide a conversion context with the model argument set within. </param>
         /// <typeparam name="TBase">The declaring <see cref="Type"/> of the converter-functions to add as a group.</typeparam>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparam>
         /// <returns>The success state as <see cref="bool" /> indicating if the transformation succeeded (`true`) or failed (`false`).</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryTransform<TBase, TIn, TOut>(this TIn self, out TOut result, object model = null, string functionAlias = null, bool throwException = false, bool strictTypeCheck = false, bool withContext = false)
@@ -427,10 +442,10 @@ namespace Core.TypeCast
 
         /// <summary>
         /// If the parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match. 
-        /// If `strictTypeCheck` is set to `false` an exception is thrown if the <see cref="Type.Namespace"/> of the input <typeparamref name="TIn"/> and output type <typeparamref name="TOut"/> do not match. 
+        /// If `strictTypeCheck` is set to `false` an exception is thrown if the <see cref="Type.Namespace"/> of the input and output type <typeparamref name="TOut"/> do not match. 
         /// This does not hold true for the "Try" version, which has no optional `StrictTypeCheck` invocation.
         /// </summary>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparam>
         /// <param name="self">The current instance holding the boxed value to convert from</param>
         /// <param name="strictTypeCheck"> If the parameter `strictTypeCheck` is set to `true`, an exception will be thrown if the input and output types do not match. </param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

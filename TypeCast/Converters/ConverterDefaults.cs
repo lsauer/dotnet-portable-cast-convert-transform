@@ -52,7 +52,6 @@ namespace Core.TypeCast.Converters
         /// The converters to convert from a boxed <see cref="object"/> value to Types of the Common C# language <see cref="System"/>
         /// </summary>
         /// <param name="collection">The <see cref="IConverterCollection"/> collection instance to which the converters are added</param>
-        /// <seealso cref="Core.TypeCast.Test"/>
         private void AddObjectConverter(IConverterCollection collection)
         {
             collection.Add<object, int>(o => int.Parse(o != null ? o.ToString() : string.Empty, this.NumberFormat), this.self)

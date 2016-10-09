@@ -13,7 +13,7 @@ namespace Core.TypeCast
     using Core.Extensions;
 
     /// <summary>
-    ///     The Exception-type which is raised exclusively by the <see cref="Converter{T}" /> Library
+    ///     The Exception-type which is raised exclusively by the <see cref="Converter{TIn, TOut, TArg}"/> Library
     /// </summary>
     /// <seealso cref="ConverterCollectionCause" />
     public class ConverterCollectionException : Exception, IException<ConverterCollectionCause>

@@ -38,8 +38,8 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Looks up an object <see cref="class"/> or <see cref="struct"/> <see cref="Type"/> implementing the <see cref="IConverter"/> and <see cref="IConverter{TIn, TOut}"/> interface 
-        /// by deriving the source and target type from the generic argument parameters of the interface to look up a possible candidate in <see cref="Items"/>
+        /// Looks up an object <see langword="class"/> or <see langword="struct"/> <see cref="Type"/> implementing the <see cref="IConverter"/> and <see cref="IConverter{TIn, TOut}"/> interface 
+        /// by deriving the source and target type from the generic argument parameters of the interface to look up a possible candidate in <see cref="ConverterCollection.Items"/>
         /// </summary>
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
         /// <param name="baseType">an arbitrary class <see cref="Type"/> implementing the <see cref="IConverter"/> and <see cref="IConverter{TIn, TOut}"/> interface </param>
@@ -64,8 +64,8 @@ namespace Core.TypeCast
         /// Gets the <see cref="Converter"/> for a given arbitrary conversion source-type <paramref name="typeFrom"/> and an arbitrary conversion target-type <paramref name="typeTo"/>
         /// </summary>
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
-        /// <param name="typeFrom">The Source- / From- <see cref="Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></param>
-        /// <param name="typeTo">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></param>
+        /// <param name="typeFrom">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></param>
+        /// <param name="typeTo">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></param>
         /// <returns>A converter instance if the query yielded a result, or `null` if no suitable <see cref="Converter"/> could be found.</returns>
         public static Converter Get(this IQueryable<Converter> query, Type typeFrom, Type typeTo)
         {
@@ -73,11 +73,11 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Gets the <see cref="Converter"/> for a given arbitrary conversion source-type <paramref name="typeFrom"/> and an arbitrary conversion target-type <paramref name="typeTo"/>
+        /// Gets the <see cref="Converter"/> for a given arbitrary conversion source-type <typeparamref name="TOut"/> and an arbitrary conversion target-type <typeparamref name="TOut"/>
         /// </summary>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparam>
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
-        /// <param name="value">The Source- / From- object from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></param>
+        /// <param name="value">The Source- / From- object from which to <see cref="Converter.Convert(object,object)"/></param>
         /// <param name="hasDefault">The Boolean <see cref="Converter.HasDefaultFunction"/> Property to look for</param>
         /// <param name="loadOnDemand">Whether to look for any <see cref="Converter"/> in the Load-On-Demand list, if no results are yielded.</param>
         /// <returns>A converter instance if the query yielded a result, or `null` if no suitable <see cref="Converter"/> could be found.</returns>
@@ -87,12 +87,12 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Gets the <see cref="Converter"/> for a given arbitrary conversion source-type <paramref name="typeFrom"/> and an arbitrary conversion target-type <paramref name="typeTo"/>
+        /// Gets the <see cref="Converter"/> for a given arbitrary conversion source-type <typeparamref name="TIn"/> and an arbitrary conversion target-type <typeparamref name="TOut"/>
         /// </summary>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparam>
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
-        /// <param name="value">The Source- / From- object from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></param>
+        /// <param name="value">The Source- / From- object from which to <see cref="Converter.Convert(object,object)"/></param>
         /// <param name="typeArgument">The <see cref="Converter.Argument"/> Type to look for</param>
         /// <param name="hasDefault">The Boolean <see cref="Converter.HasDefaultFunction"/> Property to look for</param>
         /// <param name="loadOnDemand">Whether to look for any <see cref="Converter"/> in the Load-On-Demand list, if no results are yielded.</param>
@@ -103,17 +103,17 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Gets the <see cref="Converter"/> for a given arbitrary conversion source-type <paramref name="typeFrom"/> and an arbitrary conversion target-type <paramref name="typeTo"/>
+        /// Gets the <see cref="Converter"/> for a given arbitrary conversion source-type <typeparamref name="TIn"/> and an arbitrary conversion target-type <typeparamref name="TOut"/>
         /// </summary>
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
-        /// <param name="value">The Source- / From- object from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></param>
+        /// <param name="value">The Source- / From- object from which to <see cref="Converter.Convert(object,object)"/></param>
         /// <param name="argument">The <see cref="Converter.Argument"/> Type to look for</param>
         /// <param name="defaultValue">An optional default value from which the <see cref="Type"/> is derived</param>
         /// <param name="hasDefault">The Boolean <see cref="Converter.HasDefaultFunction"/> Property to look for</param>
         /// <param name="loadOnDemand">Whether to look for any <see cref="Converter"/> in the Load-On-Demand list, if no results are yielded.</param>
-        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
-        /// <typeparam name="TArg">The Argument <see cref="Type"/> for generic converters using see <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object)"/>. 
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type"/>from which to <see cref="Converter.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TArg">The Argument <see cref="Type"/> for generic converters using see <see cref="ObjectExtension.ConvertTo{TIn, TOut}(TIn, object, bool)"/>. </typeparam>
         /// <returns>A converter instance if the query yielded a result, or `null` if no suitable <see cref="Converter"/> could be found.</returns>
         /// <returns>A converter instance if the query yielded a result, or `null` if no suitable <see cref="Converter"/> could be found.</returns>
         public static Converter Get<TIn, TArg, TOut>(this IQueryable<Converter> query, TIn value = default(TIn), TArg argument = default(TArg), TOut defaultValue = default(TOut), bool? hasDefault = null, bool loadOnDemand = false)
@@ -122,9 +122,9 @@ namespace Core.TypeCast
         }
 
         /// <summary>
-        /// Gets the <see cref="Converter"/> for a given arbitrary conversion source-type <paramref name="typeFrom"/> and an arbitrary conversion target-type <paramref name="typeTo"/>
+        /// Gets the <see cref="Converter"/> for a given arbitrary conversion source-type <paramref name="typeFrom"/> and an arbitrary conversion target-type <typeparamref name="TOut"/>
         /// </summary>
-        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter{TIn,TOut}.Convert(object,object)"/></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type"/> to which to <see cref="Converter.Convert(object,object)"/></typeparam>
         /// <param name="query">The own <see cref="IQueryable{Converter}"/> instance which invokes the static extension methods in <see cref="ConverterCollectionFilters"/></param>
         /// <param name="typeFrom">The <see cref="Converter.From"/> Type to look for</param>
         /// <param name="typeArgument">The <see cref="Converter.Argument"/> Type to look for</param>
@@ -154,10 +154,10 @@ namespace Core.TypeCast
         /// <param name="assignable">Whether to check via <see cref="TypeInfo.IsAssignableFrom(TypeInfo)"/> for supported interfaces or base-classes.r</param>
         /// <param name="withContext">Whether to include argument types that support a conversion context for the model.</param> 
         /// <returns>A converter instance if the query yielded a result, or `null` if no suitable <see cref="Converter"/> could be found.</returns>
-        /// <remarks>note that invocation of <see cref="Get"/> may instantiate and thus initializes any required converters referenced in <see cref="loadOnDemandConverters"/>
+        /// <remarks>note that invocation of this method may instantiate and thus initializes any required converters referenced in <paramref name="loadOnDemand"/>
         /// </remarks>
         /// <remarks>`new Nullable&lt;int>(5).GetType().IsConstructedGenericType` will yield `false` due to boxing steps during the Reflection process. 
-        /// As such use the strictly typed <seealso cref="Get{TOut}(object,bool,bool)"/></remarks>
+        /// As such use the strictly typed <seealso cref="Get{TOut}(IQueryable{Converter}, object, bool?, bool)"/></remarks>
         /// <exception cref="ConverterCollectionException">Throws an exception if the lookup yielded a null reference or an internal error.</exception>
         public static Converter Get(this IQueryable<Converter> query, 
             TypeInfo typeFrom,

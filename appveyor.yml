@@ -6,19 +6,30 @@ platform:
 
 configuration:
   - Release
-  - Debug
+  #- Debug
+
+# Start builds on tags only (GitHub and BitBucket)
+skip_non_tags: false
 
 matrix:
   fast_finish: true
 
   allow_failures:
-    - configuration: Debug    
+    - platform: x86
+      configuration: Debug
+    - platform: x64
+      configuration: Debug
 
+# branches to build
 branches: 
   only: 
-  - master 
-  - production
-  - experimental
+    - master 
+    - production
+    - experimental
+
+  except:
+    - gh-pages
+
 
 image: Visual Studio 2015 
 
@@ -29,40 +40,127 @@ assembly_info:
   assembly_file_version: '{version}' 
   assembly_informational_version: '{version}' 
 
+
+environment:
+  access_token:
+    secure: MILj/WXEknAZr6e4pF1bGol5qz4AWQONB1G+mAcKx2x0NPOseKNe23oLNffH7pcH
+  #nuget_id: "Core.Cast-Transform-Convert"
+
 install: 
-- cmd: 
+  - cmd: echo "Install started..."
+  - cmd:  git checkout experimental
 
 nuget: 
   account_feed: true 
   project_feed: true 
   disable_publish_on_pr: true 
 
+before_package:
+  - cmd: echo "Packaging now!"
+  
 before_build: 
-- cmd: nuget restore ".NET Portable TypeCast.sln"
+  - cmd: echo "Before Build Environmental variables..."
+  - ps: 'ls env:'
+  #- cmd: git fetch origin master:master
+  #- cmd: git pull
+  - cmd: 'git log --graph --all --date=relative'
+  - cmd: nuget restore ".NET Portable TypeCast.sln"
 
 build: 
+  parallel: false
   project: ".NET Portable TypeCast.sln"
   publish_nuget: true 
   publish_nuget_symbols: true 
   include_nuget_references: true 
   verbosity: normal 
 
-after_build: 
-- cmd: >- 
-    7z a DotNetCastConvertTransform.zip %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\Release\*.*
+after_build:
+  - cmd: echo "After Build Environmental variables..."
+  - ps: 'ls env:'
 
-    appveyor PushArtifact DotNetCastConvertTransform.zip 
+artifacts: 
+  - path: deploy\*.zip
+    name: TypeCastRelease
+  # find all release NuGet packages recursively
+  - path: deploy\Core.Cast-Transform-Convert*.nupkg
+    name: NuGetPackage
+    
+after_test:
+  - cmd: copy README.md %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\README.md
+  - cmd: 'git log --graph --all --date=relative > .\CHANGELOG.txt'
+  - cmd: copy .\CHANGELOG.txt %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\CHANGELOG.txt
+  - ps: if($env:Platform -eq "x64") { copy TypeCast\bin\x64\**\*.* $env:APPVEYOR_BUILD_FOLDER\TypeCast\bin\ }
+  - ps: if($env:Platform -eq "x86") { copy TypeCast\bin\x86\**\*.* $env:APPVEYOR_BUILD_FOLDER\TypeCast\bin\ }
+  - ps: if($env:Platform -eq "Any CPU") { copy TypeCast\bin\**\*.* $env:APPVEYOR_BUILD_FOLDER\TypeCast\bin\ }
+  #- cmd: IF "%Platform%" == "Any CPU" IF (copy TypeCast\bin\**\*.* %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\)
+  - cmd: mkdir deploy
+  - ps: .\NuGet\pack.ps1 "TypeCast" "Core.TypeCast" "Core.Cast-Transform-Convert"
+  - cmd: copy .\*.nupkg %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\
+  - cmd: copy .\*.nupkg deploy\
+  - cmd: 7z a deploy\DotNetCastConvertTransform.zip %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\*.*
+  #- cmd: appveyor PushArtifact deploy\DotNetCastConvertTransform.zip 
+  #- cmd: appveyor PushArtifact NuGetPackage
+  #- bash <(curl -s https://codecov.io/bash)
+  
+#on_success:
+#  - cmd: nuget push <your-package.nupkg> -ApiKey <your-api-key> -Source <feed-url>
+#  - git config --global credential.helper store
+#  - git config --global push.default matching
+#  - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
+#  - git config --global user.email "lorenz.lo.sauer@gmail.com"
+#  - git config --global user.name "Lo Sauer"
+#  - git tag "{version}"
+#  - git push origin --tags
+  
+deploy: 
+  # Deploy to GitHub Releases
+  - provider: GitHub
+    #release: TypeCast-v$(APPVEYOR_BUILD_VERSION)
+    description: 'TypeCast uncompromising Conversions'
+    auth_token:
+      secure: "MILj/WXEknAZr6e4pF1bGol5qz4AWQONB1G+mAcKx2x0NPOseKNe23oLNffH7pcH"
+    artifact: TypeCastRelease           # upload artifact package to release assets
+    draft: true
+    prerelease: false
+    on:
+      branch: experimental           # release from master branch only
+      appveyor_repo_tag: true       # deploy on tag push only
 
-deploy: off 
+  # Deploying to NuGet feed
+  - provider: NuGet
+    #server: https://my.nuget.server/feed
+    api_key:
+      secure: jGbn/mXu3fLPmAuMgXcRMVAY7GAt3d5AKn5Aa+6ac5sNZdoW64RHv3LeUK1nz/Zg
+    skip_symbols: false
+    #symbol_server: https://your.symbol.server/feed
+    artifact: NuGetPackage
+    
+  - provider: NuGet                             # deploy to MyGet.org
+    server: https://www.myget.org/F/dotnet-portable-cast-convert-transform/api/v2/package
+    api_key:
+      secure: ApXKqiEzjHPtRTcD3WcFz2y0SY5SEscQQejU6DnEUuv7pct/hGg9rLb5QqHAqP7P
+    skip_symbols: false
+    symbol_server: https://www.myget.org/F/dotnet-portable-cast-convert-transform/api/v2/package
+    artifact: NuGetPackage
 
 notifications: 
-- provider: Email 
-  to: 
-  - lorenz.lo.sauer@gmail.com
-  on_build_success: false 
-  on_build_failure: true 
-  on_build_status_changed: false
-  
+  - provider: Email 
+    to: 
+      - lorenz.lo.sauer@gmail.com
+    on_build_success: false 
+    on_build_failure: true 
+    on_build_status_changed: false
+
+  - provider: Webhook
+    url: https://webhooks.gitter.im/e/23956b01699c1e6d3f8f
+    method: GET
+
+  #experimental
+  - provider: GitHubPullRequest
+    auth_token:
+      secure: JEasSfnCSjLkQbLg5yWenG/o1oAS5GSUWfOzEu4YswsNb/zFRRaex7CfLbMQbEUh
+    template: "{{#passed}}:white_check_mark:{{/passed}}{{#failed}}:x:{{/failed}} [Build {{&projectName}} {{buildVersion}} {{status}}]({{buildUrl}}) (commit {{commitUrl}} by @{{&commitAuthorUsername}})"
+    
 skip_commits:
   # Regex for matching commit message
   message: /Update.*\.(md)/
@@ -78,3 +176,4 @@ only_commits:
     - '**/*.csproj'
     - '**/*.config'
     - '**/*.sln'
+    - appveyor.yml

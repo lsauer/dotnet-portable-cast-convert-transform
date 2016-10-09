@@ -11,8 +11,17 @@ namespace Core.Extension
     using System;
     using System.Reflection;
 
+    /// <summary>
+    /// extension methods for <see cref="Type"/> used for comprehensive tests
+    /// </summary>
     public static class TypeExtension
     {
+        /// <summary>
+        /// Gets the Minimum value of most common system types
+        /// </summary>
+        /// <typeparam name="T">The generic type parameter</typeparam>
+        /// <param name="self">The own <see cref="Type"/> instance</param>
+        /// <returns>The value of the `MinValue` field</returns>
         public static T MinValue<T>(this Type self)
         {
             return (T)self.GetField(nameof(MinValue), BindingFlags.Public | BindingFlags.Static)?.GetValue(self);
@@ -23,6 +32,12 @@ namespace Core.Extension
             return self.MinValue<object>();
         }
 
+        /// <summary>
+        /// Gets the Maximum value of most common system types
+        /// </summary>
+        /// <typeparam name="T">The generic type parameter</typeparam>
+        /// <param name="self">The own <see cref="Type"/> instance</param>
+        /// <returns>The value of the `MaxValue` field</returns>
         public static T MaxValue<T>(this Type self)
         {
             return (T)self.GetField(nameof(MaxValue), BindingFlags.Public | BindingFlags.Static)?.GetValue(self);
