@@ -48,6 +48,17 @@ Full Version | NuGet | Build | NuGet Install
 ------------ | :-------------: | :-------------: | :-------------:
 Core.Cast-Transform-Convert | <a href="https://www.nuget.org/packages/Core.Cast-Transform-Convert/" target="_blank"><img src="https://img.shields.io/nuget/v/Core.Cast-Transform-Convert.svg?maxAge=6000"/></a> | [![Build Status](https://travis-ci.org/lsauer/dotnet-portable-cast-convert-transform.svg?branch=master)](https://travis-ci.org/lsauer/dotnet-portable-cast-convert-transform) [![Build status](https://ci.appveyor.com/api/projects/status/pjambnikbik9m4nl?svg=true)](https://ci.appveyor.com/project/lsauer/dotnet-portable-cast-convert-transform/) [![Coverage Status](https://img.shields.io/coveralls/bfontaine/badges2svg.svg)](https://ci.appveyor.com/project/lsauer/dotnet-portable-cast-convert-transform/build/tests) [![Master Status](https://ci.appveyor.com/api/projects/status/pjambnikbik9m4nl?svg=true&branch=master&passingText=master%20-%20OK)](https://github.com/lsauer/dotnet-portable-cast-convert-transform/releases)  | ```PM> Install-Package Core.Cast-Transform-Convert```
 
+## Build Status
+
+| windows-vs2015-x86            | windows-vs2015-x64            | osx-xcode7.2-x86            | linux-ubuntu-12.4-x86            |
+|-------------------------------|-------------------------------|-----------------------------|----------------------------------|
+| [![windows-vs2015-x86][1]][2] | [![windows-vs2015-x64][1]][2] | [![osx-xcode7.2-x86][3]][4] | [![linux-ubuntu-12.4-x86][3]][4] |
+
+[1]: https://ci.appveyor.com/api/projects/status/pjambnikbik9m4nl/branch/master?svg=true
+[2]: https://ci.appveyor.com/project/lsauer/dotnet-portable-cast-convert-transform/branch/master
+[3]: https://travis-ci.org/lsauer/dotnet-portable-cast-convert-transform.svg?branch=master
+[4]: https://travis-ci.org/lsauer/dotnet-portable-cast-convert-transform/
+
 Social:  [![Twitter](https://img.shields.io/twitter/url/https/github.com/lsauer/csharp-singleton.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D) <a href="https://twitter.com/sauerlo/" target="_blank"><img src="https://lsauer.github.io/res/github/icons/gh_twitter_like.png" alt="Twitter Follow" height="18" /></a>
 <a href="https://www.facebook.com/lorenz.lo.sauer/" target="_blank"><img src="https://lsauer.github.io/res/github/icons/gh_facebook_like.png" alt="Facebook Like" height="18" /></a>  
 
