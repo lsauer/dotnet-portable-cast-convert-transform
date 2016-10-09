@@ -7,9 +7,7 @@ $nugetid = $args[2] # e.g. "CSharp.Portable-Singleton"
 
 $root = (split-path -parent $MyInvocation.MyCommand.Definition) + '\..'
 Write-Host "Root is: $root"
-$version = [System.Reflection.Assembly]::LoadFile("$root\$project\bin\Release\$dllname.dll").GetName().Version
-$versionStr = "{0}.{1}.{2}" -f ($version.Major, $version.Minor, $version.Build)
-
+$versionStr = [System.Diagnostics.FileVersionInfo]::GetVersionInfo("$root\$project\bin\Release\$dllname.dll").FileVersion.ToString()
 Write-Host "Set $nugetid.nuspec version tag: $versionStr"
 
 $env:EnableNuGetPackageRestore = 'true'
