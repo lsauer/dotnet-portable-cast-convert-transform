@@ -216,14 +216,14 @@ namespace Core.TypeCast
         /// <param name="self">The current instance holding the boxed value to convert from</param>
         /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <paramref name="self"/> to</param>
         /// <param name="result">The variable reference to which the conversion result is assigned.</param>
-        /// <param name="defaultValue">An optional default value of the target-<see cref="Type"/><typeparamref name="TOut"/></param>
+        /// <param name="defaultValue">An optional default value of the target-<see cref="Type"/><paramref name="typeTo"/></param>
         /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
         /// <param name="unboxObjectType">Whether to determine the type from the parameters <paramref name="self"/> and <paramref name="result"/> respectively.</param>
         /// <param name="contextInstance">An optional context instance, providing current parameters of the conversion process and context.</param>
         /// <returns>The success state as <see cref="bool" /> indicating if the conversion succeeded (`true`) or failed (`false`).</returns>
         /// <remarks>
-        ///     The methods follows the "Try" convention. It accepts an object "value" and an out parameter <paramref name="result"/> of type <typeparamref name="TOut"/>. 
-        ///     If the attempt to cast the value of <paramref name="self"/> into <see cref="Type"/> <typeparamref name="TOut"/> succeeds, `true` is returned, else `result = default(T)`
+        ///     The methods follows the "Try" convention. It accepts an object "value" and an out parameter <paramref name="result"/> of type <paramref name="typeTo"/>. 
+        ///     If the attempt to cast the value of <paramref name="self"/> into <see cref="Type"/> <paramref name="typeTo"/> succeeds, `true` is returned, else `result = default(T)`
         ///     and false is returned.
         /// </remarks>
         /// <remarks>For strict typing use <see cref="TryCast{TIn, TOut}(TIn, out TOut, TOut, bool, bool, IConvertContext)"/> wherever possible</remarks>

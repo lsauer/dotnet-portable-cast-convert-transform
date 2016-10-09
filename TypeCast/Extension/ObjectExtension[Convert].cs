@@ -88,7 +88,7 @@ namespace Core.TypeCast
         /// </example>
         /// <exception cref="ConverterException">Throws an exception of type <see cref="ConverterException" />if the conversion fails</exception>
         /// <remarks>note: The <see cref="ConverterCollection"/> is lazy instantiated upon the first invocation of the method</remarks>
-        /// <seealso cref="TryConvert{TOut}(object, out TOut, object, bool)"/>
+        /// <seealso cref="ObjectExtension.TryConvert{TOut}(object, out TOut, object, bool, bool)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TOut ConvertTo<TOut>(this object self, object model, bool withContext = false)
         {
