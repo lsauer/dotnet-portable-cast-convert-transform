@@ -48,7 +48,7 @@ environment:
 
 install: 
   - cmd: echo "Install started..."
-  - cmd:  git checkout experimental
+  - cmd:  git checkout %APPVEYOR_REPO_BRANCH%
 
 nuget: 
   account_feed: true 
@@ -123,7 +123,7 @@ deploy:
     draft: true
     prerelease: false
     on:
-      branch: experimental           # release from master branch only
+      branch: master           # release from master branch only
       appveyor_repo_tag: true       # deploy on tag push only
 
   # Deploying to NuGet feed
@@ -155,7 +155,7 @@ notifications:
     url: https://webhooks.gitter.im/e/23956b01699c1e6d3f8f
     method: GET
 
-  #experimental
+  #experimental:
   - provider: GitHubPullRequest
     auth_token:
       secure: JEasSfnCSjLkQbLg5yWenG/o1oAS5GSUWfOzEu4YswsNb/zFRRaex7CfLbMQbEUh
