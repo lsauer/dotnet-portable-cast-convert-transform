@@ -1,0 +1,1 @@
+.\pack.ps1 "TypeCast" "Core.TypeCast" "Core.Cast-Transform-Convert"
