@@ -56,6 +56,9 @@ namespace Example11
             };
 
             cc.Settings.NumberFormat = new NumberFormatInfo { NumberGroupSeparator = ",", NumberDecimalDigits = 3 };
+            // make more readable
+            Console.SetWindowSize(200, 30);
+            Console.SetBufferSize(200, 30);
 
             var dna = new DNA("gagtgcgccctccccgcacatgcgccctgacagcccaacaatggcggcgcccgcggagtc");
             Console.WriteLine($"{dna.GetType().Name} has Sequence: {dna.CastTo<string>()}");
