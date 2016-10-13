@@ -3,7 +3,7 @@
 // </copyright>
 // <summary>   A tested, generic, portable, runtime-extensible type converter library   </summary
 // <language>  C# > 6.0                                                                 </language>
-// <version>   3.1.0.2                                                                  </version>
+// <version>   3.1.0.5                                                                  </version>
 // <author>    Lorenz Lo Sauer; people credited in the sources                          </author>
 // <project>   https://github.com/lsauer/dotnet-portable-type-cast                      </project>
 namespace Core.TypeCast
@@ -162,7 +162,7 @@ namespace Core.TypeCast
                     {
                         ConstructorAddedClasses.Add(converterClass);
 
-                        this.AddAllConvertersByAttribute(converterClass.GetTypeInfo());
+                        this.AddAllAvailableConverters(converterClass.GetTypeInfo());
                     }
                 }
             }
@@ -901,7 +901,7 @@ namespace Core.TypeCast
         {
             foreach(var type in types)
             {
-                this.AddAllConvertersByAttribute(type);
+                this.AddAllAvailableConverters(type);
             }
         }
 
@@ -945,7 +945,7 @@ namespace Core.TypeCast
         /// </summary>
         /// <param name="converterClass">The <see langword="class"/> instance of a custom converter implementation that is to be marked initialized</param>
         /// <returns>Returns an instance of the <see langword="class"/> type argument provided. `Null` if unsuccessful.</returns>
-        /// <remarks>Use <see cref="AddAllConvertersByAttribute"/> to instantiate a custom converter with regard to the <see cref="ConverterAttribute"/> properties</remarks>
+        /// <remarks>Use <see cref="AddAllAvailableConverters"/> to instantiate a custom converter with regard to the <see cref="ConverterAttribute"/> properties</remarks>
         private object CreateConverterClassInstance(Type converterClass)
         {
             object customConverter;
@@ -958,22 +958,22 @@ namespace Core.TypeCast
 
 
         /// <summary>
-        /// Looks for a <see cref="ConverterAttribute"/> from the passed <see cref="Type"/> <paramref name="type"/> to discover and add converters into the collection
+        /// Looks for classes with a <see cref="ConverterAttribute"/> and Dependency Injectable constructors as well as classes which have an <see cref="IConverter{TIn,TOut}"/> interface.
         /// </summary>
         /// <param name="type">The <see cref="TypeInfo"/> instance from which to lookup the <see cref="TypeInfo.Assembly"/></param>
         /// <returns>Returns `true` if the type had a <see cref="ConverterAttribute"/> which could be added to the collection</returns>
         /// <remarks>Use the <see cref="CreateConverterClassInstance"/> method to instantiate a custom converter type without regard towards the <see cref="ConverterAttribute"/> properties</remarks>
-        private bool AddAllConvertersByAttribute(TypeInfo type)
+        private bool AddAllAvailableConverters(TypeInfo type)
         {
             int count = this.Count;
             object converterCustom = null;
 
-            if(ConstructorAddedClasses?.Contains(type.AsType()) == false)
+            if (ConstructorAddedClasses?.Contains(type.AsType()) == false)
             {
                 var attribute = type.GetCustomAttribute<ConverterAttribute>();
-                if(attribute == null)
+                if (attribute == null)
                 {
-                    if(type.IsClass == true && type.ImplementedInterfaces.Contains(typeof(IConverter)) == true)
+                    if (type.IsClass == true && type.ImplementedInterfaces.Contains(typeof(IConverter)) == true)
                     {
                         attribute = this.ConverterAttributeFromIConverter(type, attribute, update: true);
                     }
@@ -981,14 +981,14 @@ namespace Core.TypeCast
                     return false;
                 }
 
-                if(attribute?.LoadOnDemand == true)
+                if (attribute?.LoadOnDemand == true)
                 {
-                    if(this.loadOnDemandConverters?.ContainsKey(attribute.NameSpace) == false)
+                    if (this.loadOnDemandConverters?.ContainsKey(attribute.NameSpace) == false)
                     {
                         this.loadOnDemandConverters.Add(attribute.NameSpace, new List<Type>());
                     }
 
-                    if(this.loadOnDemandConverters[attribute.NameSpace]?.Contains(type.AsType()) == false)
+                    if (this.loadOnDemandConverters[attribute.NameSpace]?.Contains(type.AsType()) == false)
                     {
                         this.loadOnDemandConverters[attribute.NameSpace].Add(type.AsType());
                     }
@@ -996,41 +996,62 @@ namespace Core.TypeCast
                     return false;
                 }
 
-                if(attribute?.DependencInjection == true)
+                if (attribute?.DependencInjection == true)
                 {
                     converterCustom = this.CreateConverterClassInstance(type.AsType());
                 }
             }
+            converterCustom = this.AddAllConvertersByAttribute(type, converterCustom);
+
+            this.SetAssemblyInitialized(type);
+            return count != this.Count;
+        }
+
+        /// <summary>
+        /// Looks for a <see cref="ConverterAttribute"/> from the passed <see cref="Type"/> <paramref name="type"/> to discover and add converters into the collection
+        /// </summary>
+        /// <param name="type">The <see cref="TypeInfo"/> of a class in which to look for methods which habe an <see cref="ConverterMethodAttribute"/>.</param>
+        /// <param name="converterCustom">A pre-existing instance of the type defined in <paramref name="type"/> for reuse.</param>
+        /// <returns>Returns `true` if the type had a <see cref="ConverterAttribute"/> which could be added to the collection</returns>
+        /// <remarks>Use the <see cref="CreateConverterClassInstance"/> method to instantiate a custom converter type without regard towards the <see cref="ConverterAttribute"/> properties</remarks>
+        private object AddAllConvertersByAttribute(TypeInfo type, object converterCustom = null)
+        {
 
             // discover attributed methods
-            foreach(var declaredMethod in type.DeclaredMethods)
+            foreach (var declaredMethod in type.DeclaredMethods)
             {
                 var customAttribute = declaredMethod.GetCustomAttribute<ConverterMethodAttribute>() as ConverterMethodAttribute;
-                if(customAttribute != null)
+                if (customAttribute != null)
                 {
-                    // create a wrapper taking the own class-instance as first argument for methods that are attributed by `ConverterMethod` 
-                    // and do not have any arguments or `PassInstance` set to `true`
-                    if((declaredMethod.IsStatic == false && declaredMethod.GetParameters().Length == 0) || customAttribute.PassInstance == true)
+                    var declaredMethodParams = declaredMethod.GetParameters();
+                    
+                    // create a wrapper taking the own class-instance as first argument for methods that are attributed by `ConverterMethod`:
+                    if (
+
+                        // the method has no arguments, thus no input-type yet has a ConverterMethod attribute or has the specific attribute property `PassInstance` set to `true`
+                        ((declaredMethod.IsStatic == false && declaredMethodParams.Length == 0) || customAttribute.PassInstance == true) ||
+                        
+                        // the first argument is already of the containing class, e.g. static implicit or explicit operators
+                        (declaredMethod.IsStatic == true && declaredMethodParams.Length == 1 && declaredMethodParams.First().ParameterType.GetTypeInfo() == type) ||
+                        
+                        // the method is declared in a class requiring parameters to instantiate, which implies that the method requires a specific class instance
+                        ((declaredMethod.IsStatic == false && declaredMethodParams.Length == 1) && type.GetConstructorWithoutParameters() == null))
                     {
                         Converter converter = this.Factory.CreateWrapper(type, declaredMethod);
                         this.Add(converter: converter, baseType: type.AsType());
                     }
                     else
                     {
-                        if(converterCustom == null)
+                        if (declaredMethod.IsStatic == false && converterCustom == null)
                         {
                             converterCustom = this.CreateConverterClassInstance(type.AsType());
                         }
-                        if(converterCustom != null)
-                        {
-                            this.Add(methodInfo: declaredMethod, baseType: type.AsType(), baseInstance: converterCustom);
-                        }
+                        this.Add(methodInfo: declaredMethod, baseType: type.AsType(), baseInstance: converterCustom);
                     }
                 }
             }
 
-            this.SetAssemblyInitialized(type);
-            return count != this.Count;
+            return converterCustom;
         }
 
         #region Implementation of IEnumerable
