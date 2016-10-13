@@ -19,60 +19,95 @@ namespace BioCore
     /// Definitions of Polymer Types commonly found in BioInfomratics context, analogous to BioJava library
     /// </summary>
     /// <remarks>Use for demonstrative purposes only!</remarks> 
-    public enum PolymerType
+    [Flags]
+    public enum PolymerType : ulong
     {
         /// <summary>
-        /// polypeptide(L)
+        /// The undetermined value
         /// </summary>
-        [Description("Polypeptide(L)")]
-        Peptide,
-
-        /// <summary>
-        /// polypeptide(D)
-        /// </summary>
-        [Description("Polypeptide(D)")]
-        DPeptide,
-
-        /// <summary>
-        /// polydeoxyribonucleotide
-        /// </summary>
-        [Description("Polydeoxyribonucleotide")]
-        DNA,
-
-        /// <summary>
-        /// polyribonucleotide
-        /// </summary>
-        [Description("Polyribonucleotide")]
-        RNA,
-
-        /// <summary>
-        ///  polydeoxyribonucleotide/polyribonucleotide hybrid
-        /// </summary>
-        [Description("Polydeoxyribonucleotide/Polyribonucleotide hybrid")]
-        DNARNA,
-
-        /**
-         * polysaccharide(D)
-         */
-        [Description("Polysaccharide(D)")]
-        Polysaccharide,
-
-        /// <summary>
-        /// polysaccharide(L)
-        /// </summary>
-        [Description("Polysaccharide(L)")]
-        LPolysaccharide,
+        [Description(nameof(None))]
+        None = 0 << 0,
 
         /// <summary>
         /// other
         /// </summary>
         [Description(nameof(Other))]
-        Other,
+        Other = 0 << 1,
 
         /// <summary>
-        /// if the type is not determinable or unknown
+        /// At the point of determination, unknown
         /// </summary>
         [Description(nameof(Unknown))]
-        Unknown,
+        Unknown = 0 << 2,
+
+        /// <summary>
+        /// polypeptide(L)
+        /// </summary>
+        [Description("Polypeptide(L)")]
+        Peptide = 0 << 3,
+
+        /// <summary>
+        /// polypeptide(D)
+        /// </summary>
+        [Description("Polypeptide(D)")]
+        DPeptide = 0 << 4,
+
+        /// <summary>
+        /// polydeoxyribonucleotide
+        /// </summary>
+        [Description("Polydeoxyribonucleotide")]
+        DNA = 0 << 5,
+
+        /// <summary>
+        /// polyribonucleotide
+        /// </summary>
+        [Description("Polyribonucleotide")]
+        RNA = 0 << 6,
+
+        /// <summary>
+        ///  polydeoxyribonucleotide/polyribonucleotide hybrid
+        /// </summary>
+        [Description("Polydeoxyribonucleotide/Polyribonucleotide hybrid")]
+        DNARNA = 0 << 7,
+
+        /**
+         * polysaccharide(D)
+         */
+        [Description("Polysaccharide(D)")]
+        Polysaccharide = 0 << 8,
+
+        /// <summary>
+        /// polysaccharide(L)
+        /// </summary>
+        [Description("Polysaccharide(L)")]
+        LPolysaccharide = 0 << 9,
+
+        /// <summary>
+        /// protein
+        /// </summary>
+        [Description(nameof(Protein))]
+        Protein = 0 << 10,
+
+        /// <para>Flags:</para>
+
+        /// <summary>
+        /// Indicates that the polymer is a non-functional version
+        /// </summary>
+        [Description("Pseudo-Flag")]
+        Pseudo = 0 << 12,
+
+        /// <summary>
+        /// non-function version of a protein
+        /// </summary>
+        [Description(nameof(PseudoProtein))]
+        PseudoProtein = Pseudo | Protein,
+        
+        /// <summary>
+        ///peptidomimetics with other than (alpha)-aminoacids in their sequence important as pharmacophores in drugs discovery
+        /// </summary>
+        [Description(nameof(PseudoPepetide))]
+        PseudoPepetide = Pseudo | Peptide,
+
+        
     }
 }

@@ -44,7 +44,7 @@ namespace Example11
         {
             Console.WriteLine($"Running: {typeof(Program).Namespace} '{typeof(Program).GetCustomAttribute<DescriptionAttribute>()?.Description}'. Press any key...");
 
-            var cc = new ConverterCollection(typeof(Program), typeof(DNA), typeof(RNA))
+            var cc = new ConverterCollection(typeof(Program)/*, typeof(DNA), typeof(RNA)*/)
             {
                 AutoReset = true,
                 Settings =
@@ -56,6 +56,9 @@ namespace Example11
             };
 
             cc.Settings.NumberFormat = new NumberFormatInfo { NumberGroupSeparator = ",", NumberDecimalDigits = 3 };
+
+            var ecNumber = new EnzymeComissionNumber("1.2.3.4");
+            Console.WriteLine($"The EC {nameof(ecNumber.ReactionType)} is: {ecNumber.ReactionType}....in Full: {ecNumber}");
 
             var dna = new DNA("gagtgcgccctccccgcacatgcgccctgacagcccaacaatggcggcgcccgcggagtc");
             Console.WriteLine($"{dna.GetType().Name} has Sequence: {dna.CastTo<string>()}");
@@ -245,6 +248,24 @@ namespace Example11
             var proteinToConsensusSequence = orfs.FirstOrDefault().CastTo<Protein>().ToConsensus();
             var proteinToConsensusSequence2 = orfs.FirstOrDefault().CastTo<Protein>().Transform<DNA.ConsensusSequence, string>();
             var proteinToConsensusSequence3 = orfs.FirstOrDefault().CastTo<Protein>().Transform<DNA.ConsensusSequence>();
+
+
+            // invoke op_implicit in class ORF, despite the class not having a parameterless constructor
+            var orfSeq = orfs.First().CastTo<string>();
+
+            // Check that 'instance-passing' through method-wrapping is inferred from a class strictly requiring parameters for instantiation:
+
+            // invoke pseudo-method 'ToHomologous' protein
+            var homoProtein = orfs.First().ConvertTo<Protein>(new DNA("GATTACA"));
+
+            //invoke ToPeptideFragments(params int [] fragmentPositions)
+            Console.WriteLine($"Fragmenting {nameof(ORF)} with sequence ( {orfs.First().Sequence})...");
+            var peptides = orfs.First().ConvertTo<Peptide[]>(new[] { new Tuple<int,int>(10, 20), new Tuple<int, int>(30, 39), });
+
+            foreach (var peptide in peptides)
+            {
+                Console.WriteLine($" Fragment: {nameof(Peptide)} is => {peptide}");
+            }
 
             Console.WriteLine();
 

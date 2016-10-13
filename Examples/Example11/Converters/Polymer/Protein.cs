@@ -16,25 +16,24 @@ namespace BioCore.Converters
     using Core.Extensions;
     using Core.TypeCast;
     using Core.TypeCast.Base;
+
     using System.Text;
 
     /// <summary>
-    /// This class implements the assignment and operation on a single Aminoacid sequence of an simple canonical biological, assignable aminoacid alphabet. 
-    /// It should be used for demonstrative purposes only!
+    /// This class implements the assignment and operation of alpha-aminoacid sequences with genomic structural and referential background, using an assignable aminoacid alphabet,
+    /// and existing data from databanks. 
     /// </summary>
+    /// <remarks>Whereas a <see cref="Protein"/> generally requires an <see cref="ORF"/>, a <see cref="Peptide"/> does not require structural genomic information</remarks>
     /// <remarks>Use for demonstrative purposes only!</remarks> 
     [Converter(loadOnDemand: false, nameSpace: nameof(Converters), dependencyInjection: false)]
-    public class Protein : BioPolymer,
-                        IEnumerable<AminoAcid>,
-                        IConverter<string, Protein>,
-                        IConverter<Protein, string>
+    public class Protein : Peptide,
+                            IConverter<string, Protein>, 
+                            IConverter<Protein, string>
     {
         public enum Transform
         {
             ToVerbose,
         }
-
-        protected static AminoAcids aminoAcids = new AminoAcids();
 
         public Protein()
             : this(string.Empty, null)
@@ -44,36 +43,47 @@ namespace BioCore.Converters
         public Protein(string sequence, MonomerCollection<Monomer> monomers = null)
             : base(sequence: sequence, monomers: monomers ?? new AminoAcids())
         {
-            this.Type = PolymerType.Peptide;
+            this.Type = PolymerType.Protein;
         }
 
-        #region IEnumerable<AminoAcid> support
+        /// <summary>
+        /// Enzyme Commission number that is assigned to the peptide.
+        /// </summary>
+        public EnzymeComissionNumber ECNumber { get; set; }
 
-        public IEnumerable<AminoAcid> AminoAcids
-        {
-            get
-            {
-                foreach(var letter in this.Letters)
-                {
-                    yield return (AminoAcid)aminoAcids[letter];
-                }
-            }
-        }
+        /// <summary>
+        /// Reference to the <see cref="ORF"/> which created the protein, if any
+        /// </summary>
+        public string ORF { get; set; }
 
-        IEnumerator<AminoAcid> IEnumerable<AminoAcid>.GetEnumerator()
-        {
-            return this.AminoAcids.GetEnumerator();
-        }
-        #endregion
+        /// <summary>
+        /// Synonymous, replaced, obsolete or former gene symbol.
+        /// </summary>
+        public string GeneSymbol { get; set; }
+
+        /// <summary>
+        /// Genomic map position
+        /// </summary>
+        public string GenomicPosition { get; set; }
+
+        /// <summary>
+        /// Indicates that this feature is a non-functional version of the element named by the feature key.
+        /// </summary>
+        public bool Pseudo { get; set; }
+
+        /// <summary>
+        /// Accepted standard name for this feature.
+        /// </summary>
+        public string StandardName { get; set; }
 
         [ConverterMethod(passInstance: true, name: nameof(ToVerbose))]
         public string ToVerbose(bool fullName)
         {
             var seq = new StringBuilder();
-            for(var i = 0; i < this.Count; i++)
+            for (var i = 0; i < this.Count; i++)
             {
                 var aa = aminoAcids[this.Sequence[i]];
-                if(aa != null)
+                if (aa != null)
                 {
                     seq.Append((fullName ? aa.FullName : aa.Name) + (this.Count - 1 == i ? "" : "-"));
                 }
@@ -105,22 +115,6 @@ namespace BioCore.Converters
             return value?.Sequence;
         }
 
-        public string[][] ToCodonCandidates()
-        {
-            List<string[]> ret = new List<string[]>();
-            for(var i = 0; i < this.Count; i++)
-            {
-                var threeLetterAbbreviation = aminoAcids[this.Sequence[i]]?.Name;
-
-                if(threeLetterAbbreviation != null)
-                {
-                    var codons = Codon.CodonsReverse[threeLetterAbbreviation];
-                    ret.Add(codons);
-                }
-            }
-            return ret.ToArray();
-        }
-
         /// <summary>
         /// Generates a consensus <see cref="PolyNucleotide"/> sequence of the notation `A[CT]N{A}YR` such that A means that an A is always found in that position; 
         /// [CT] stands for either C or T; N stands for any base; and {A} means any base except A. Y represents any pyrimidine, and R indicates any purine.
@@ -130,35 +124,35 @@ namespace BioCore.Converters
         /// <returns></returns>
         private string ToConsensusCode(string[] codons, bool withCount = true)
         {
-            if(codons == null || codons.Length == 0)
+            if (codons == null || codons.Length == 0)
             {
                 return string.Empty;
             }
 
             Array.Sort(codons);
             var consensus = new StringBuilder();
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 var bases = codons[0].ToUpperInvariant().ToCharArray();
                 var cRef = bases[i];
                 var altBases = new Dictionary<char, int> { { cRef, 1 } };
-                for(int j = 1; j < codons.Length; j++)
+                for (int j = 1; j < codons.Length; j++)
                 {
                     var cCmp = codons[j].ToUpperInvariant()[i];
 
-                    if(cRef != cCmp)
+                    if (cRef != cCmp)
                     {
-                        if(altBases.ContainsKey(cCmp) == false)
+                        if (altBases.ContainsKey(cCmp) == false)
                         {
                             altBases.Add(cCmp, 1);
                         }
-                        else if(withCount == true)
+                        else if (withCount == true)
                         {
                             altBases[cCmp] += 1;
                         }
                     }
                 }
-                if(altBases.Count == 1)
+                if (altBases.Count == 1)
                 {
                     consensus.Append(cRef);
                 }
@@ -166,27 +160,28 @@ namespace BioCore.Converters
                 {
                     // order
                     var altBasesArray = altBases.Keys.ToArray();
-                    if(altBases.Count >= 4)
+                    if (altBases.Count >= 4)
                     {
                         // any base
                         consensus.Append("N");
                     }
-                    else if(altBases.Count == 3)
+                    else if (altBases.Count == 3)
                     {
-                        consensus.Append("{" + new string(new[] { 'A', 'C', 'G', 'T' }.Except(altBasesArray).ToArray()) + "}");
+                        consensus.Append(
+                            "{" + new string(new[] { 'A', 'C', 'G', 'T' }.Except(altBasesArray).ToArray()) + "}");
                     }
-                    else if(altBasesArray.ToLetters().IsAllPurine() == true)
+                    else if (altBasesArray.ToLetters().IsAllPurine() == true)
                     {
                         consensus.Append('Y');
                     }
-                    else if(altBasesArray.ToLetters().IsAllPyrimidine() == true)
+                    else if (altBasesArray.ToLetters().IsAllPyrimidine() == true)
                     {
                         consensus.Append('R');
                     }
-                    else if(withCount == true)
+                    else if (withCount == true)
                     {
                         consensus.Append("[");
-                        foreach(var item in altBases)
+                        foreach (var item in altBases)
                         {
                             consensus.Append($"{(item.Value > 1 ? item.Value.ToString() : "")}{item.Key}");
                         }
@@ -205,9 +200,9 @@ namespace BioCore.Converters
         [ConverterMethod(passInstance: true, BaseType = typeof(DNA.ConsensusSequence))]
         public string ToConsensus()
         {
-            var list = this.ToCodonCandidates();
+            var list = base.ToCodonCandidates();
             var seq = new StringBuilder();
-            for(int i = 0; i < list.Length; i++)
+            for (int i = 0; i < list.Length; i++)
             {
                 var codons = list[i];
                 var codon = this.ToConsensusCode(codons);
