@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Core.Cast-Transform-Convert</id>
-        <version>$version$</version>
+        <version>{version}</version>
         <title>.NET Portable Cast Convert Transform</title>
         <authors>Lorenz Lo Sauer</authors>
         <owners>Lorenz Lo Sauer</owners>
@@ -12,81 +12,17 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>An easy-to-use, portable, tested, documented, serializable, thread-safe, strongly typed library for changing between unrestricted, arbitrary data types</description>
         <summary>An easy-to-use, portable, tested, documented, serializable, thread-safe, strongly typed library for changing between unrestricted, arbitrary data types</summary>
-        <releaseNotes>=== Key Features ===
-
--Central thread-safe pool of converting functions
--Data Encapsulation
--Add converters at runtime or compile-time
--Consistent exception behavior
--Optional functions following the "Try" convention of .NET
--Instant improvement of source-code readability and maintainability
--Low overall performance impact
--Little to no learning curve
--Independent, portable library
-
-______________________________________________________
-
-### Getting started in 4 steps
-
-1. *Install* with the &lt;a href="http://goo.gl/iekUWH" target="_blank"&gt;NuGet Package manager&lt;/a&gt;: `PM&gt; Install-Package Core.TypeCast`.  
-2. *Add the namespace* to your top-listed using directives: `using Core.TypeCast;`.
-3. *Create a class* with one or more methods: `class MyConverter { ... int MyConverter(string argument) ... }`
-4. *Attribute* any class with `[ConverterAttribute]`: _`public class MyConverter { ... }`_.    
-    Subsequently, attribute the converting methods using `[ConverterMethodAttribute]`: _`public int MyConverter(string attribute){ ... }`__
-5. **Done!** 
-
-Now, invoke conversions in your code anywhere as follows: 
-```cs
-    var castedInt = "500s".CastTo&lt;int&gt;();
-    var protein = "GAGTGCGCCCTCCCCGCACATGCGCCCTGACAGCCCAACAATGGCGGCGCCCGCGGAGTC".ConvertTo&lt;IProtein&gt;();
-```
-Use library functions which suit the change of type descriptively:
-
-    `var complimentary = "GAGTGCGCCCTCCCCGCACATGCGCCCTGACAGCCCAACAATGGCGGCGCCCGCGGAGTC".Transform&lt;Complementary&gt;();`
-
-
-_____________________________________________________
-
-### Code Glance
-
-Provided below is an abbreviated example of what code may look like in your project: 
-
-```cs
-    using System.Runtime.CompilerServices;
-    // IPolyNucleotide.cs
-    public interface IPolyNucleotide { ... }
-
-    // used for "Tranform-Aliasing"
-    delegate DNA Complimentary(string dnaSequence, AModelClass arguments);
-
-    // DNA.cs
-    [Converter]
-    public class DNA : IPolyNucleotide
-    {
-        [ConverterMethod]
-        protected IProtein ToProtein(string dnaSequence, bool homologyLookup = false)
-        {
-            ... ...
-        }
-
-        [ConverterMethod]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static DNA Complimentary(string dnaSequence, AModelClass arguments)
-        {
-            ... ...
-        }
-        ...
-    }
-```</releaseNotes>
+        <releaseNotes>{releaseNotes}</releaseNotes>
         <tags>cast convert transform PCL portable class library dotnet core xamarin ios apple ease type conversion threading serialization</tags>
         <dependencies>
             <dependency id="CSharp.Portable-Singleton" version="2.0.0.4" />
         </dependencies>
     </metadata>
     <files>
-        <file src="..\CHANGELOG.txt" target="content\CHANGELOG" />
-        <file src="..\LICENSE" target="content\LICENSE" />
-        <file src="..\README.md" target="content\README.md" />
+        <file src="..\CHANGELOG.txt" target="about\Core-TypeCast-CHANGELOG.txt" />
+        <file src="..\LICENSE" target="about\Core-TypeCast\LICENSE" />
+        <file src="..\README.md" target="about\Core-TypeCast-README.md" />
+        <file src="..\VERSION" target="about\Core-TypeCast-VERSION" />
         <file src="..\TypeCast\bin\Release\Core.TypeCast.dll" target="lib\portable-windows8+net45" />
 		<file src="..\TypeCast\bin\Release\Core.TypeCast.dll" target="lib\portable-net45+win+wp8+wpa81" />
 		<file src="..\TypeCast\bin\Release\Core.TypeCast.dll" target="lib\portable-net45+sl50+MonoAndroid10+MonoTouch10" />

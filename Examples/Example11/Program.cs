@@ -3,7 +3,7 @@
 // </copyright>
 // <summary>   A tested, generic, portable, runtime-extensible type converter library   </summary
 // <language>  C# > 6.0                                                                 </language>
-// <version>   3.1.0.2                                                                  </version>
+// <version>   3.1.0.5                                                                  </version>
 // <author>    Lorenz Lo Sauer; people credited in the sources                          </author>
 // <project>   https://github.com/lsauer/dotnet-portable-type-cast                      </project>
 namespace Example11
@@ -56,6 +56,9 @@ namespace Example11
             };
 
             cc.Settings.NumberFormat = new NumberFormatInfo { NumberGroupSeparator = ",", NumberDecimalDigits = 3 };
+            // make more readable
+            Console.SetWindowSize(200, 30);
+            Console.SetBufferSize(200, 30);
 
             var ecNumber = new EnzymeComissionNumber("1.2.3.4");
             Console.WriteLine($"The EC {nameof(ecNumber.ReactionType)} is: {ecNumber.ReactionType}....in Full: {ecNumber}");
