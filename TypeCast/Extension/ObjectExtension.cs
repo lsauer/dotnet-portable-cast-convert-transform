@@ -122,7 +122,7 @@ namespace Core.TypeCast
             }
 
             // In case a converter is referenced by an alias (i.e. `attributeName` or `typeBase`), ignore IN/Out Types and look up the converter directly
-            if (attributeName != null || typeBase != null)
+            if (attributeName != null || (typeBase != null && typeBase.Namespace != nameof(System)))
             {
                 typeFrom = null;
                 typeTo = null;
