@@ -17,7 +17,7 @@ $content = (Get-Content $root\NuGet\$nugetid.nuspec)
 $content = $content -replace '{version}',$versionStr
 
 #set release notes
-$releaseNotes = [IO.File]::ReadAllText(".\releasenotes.txt")
+$releaseNotes = [IO.File]::ReadAllText("releasenotes.txt")
 $content = $content -replace '{releaseNotes}',$releaseNotes
 
 $content | Out-File $root\NuGet\$nugetid.compiled.nuspec
