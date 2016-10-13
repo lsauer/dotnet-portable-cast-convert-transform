@@ -63,7 +63,7 @@ before_build:
   - ps: 'ls env:'
   #- cmd: git fetch origin master:master
   #- cmd: git pull
-  - ps: git log --graph --all --shortstat --summary --date=relative --no-color --log-size --pretty='format:%x09 %ad %d %s (%aN)' | Write-Host
+  - ps: git log --graph --all --shortstat --summary --date=relative --no-color --pretty='format:%x09 %ad %d %s (%aN)' | Write-Host
   - cmd: nuget restore ".NET Portable TypeCast.sln"
 
 build: 
@@ -87,7 +87,7 @@ artifacts:
     
 after_test:
   - cmd: copy README.md %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\README.md
-  - ps: git log --graph --all --shortstat --summary --date=relative --no-color --log-size --pretty='format:%x09 %ad %d %s (%aN)' | Out-File ".\CHANGELOG.txt""
+  - ps: git log --graph --all --shortstat --summary --date=relative --no-color --pretty='format:%x09 %ad %d %s (%aN)' | Out-File ".\CHANGELOG.txt"
   - cmd: copy .\CHANGELOG.txt %APPVEYOR_BUILD_FOLDER%\TypeCast\bin\CHANGELOG.txt
   - ps: if($env:Platform -eq "x64") { copy TypeCast\bin\x64\**\*.* $env:APPVEYOR_BUILD_FOLDER\TypeCast\bin\ }
   - ps: if($env:Platform -eq "x86") { copy TypeCast\bin\x86\**\*.* $env:APPVEYOR_BUILD_FOLDER\TypeCast\bin\ }
