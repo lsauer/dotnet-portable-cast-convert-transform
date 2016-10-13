@@ -77,6 +77,11 @@
   <ItemGroup>
     <Compile Include="Converters\Base\LetterComparer.cs" />
     <Compile Include="Converters\Base\MonomerCollection.cs" />
+    <Compile Include="Converters\General\CustomConverters.cs" />
+    <Compile Include="Converters\Base\EnzymeComissionNumber.cs" />
+    <Compile Include="Converters\Polymer\Peptide.cs" />
+    <Compile Include="Enum\PeptideType.cs" />
+    <Compile Include="Enum\ProteinType.cs" />
     <Compile Include="Interface\IMonomer.cs" />
     <Compile Include="Interface\ICompound.cs" />
     <Compile Include="Interface\IRepository.cs" />

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.25618.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.TypeCast", "TypeCast\Core.TypeCast.csproj", "{C79492BC-D45C-469A-AF8F-0952141B2369}"
 EndProject
@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example3", "Examples\Exampl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{05C99E21-A373-4B92-A052-63E48AC7E565}"
 	ProjectSection(SolutionItems) = preProject
-		doxyfile = doxyfile
+		CHANGELOG.txt = CHANGELOG.txt
 		LICENSE = LICENSE
 		mitlicense.md = mitlicense.md
 		README.md = README.md
@@ -48,6 +48,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{675DBB90
 		NuGet\Core.Cast-Transform-Convert.nuspec = NuGet\Core.Cast-Transform-Convert.nuspec
 		NuGet\NuGet.exe = NuGet\NuGet.exe
 		NuGet\pack.ps1 = NuGet\pack.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CI", "CI", "{9BE9FF6D-2A7E-4ACA-B1FD-AB287900A4B1}"
+	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
+		appveyor.yml = appveyor.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{A5580E13-EF48-4945-9190-EE5813EAD9F0}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{69AB30C7-E48A-4A2A-92CB-431BDDE14476}"
+	ProjectSection(SolutionItems) = preProject
+		doxyfile = doxyfile
 	EndProjectSection
 EndProject
 Global
@@ -232,5 +249,8 @@ Global
 		{7908514F-7E39-4BC5-8E50-B5E02C224ACB} = {09C121AE-ACC3-49DF-8DCC-A8F9F4DE426C}
 		{53934290-A800-4B9D-95D3-FCAB496D719E} = {09C121AE-ACC3-49DF-8DCC-A8F9F4DE426C}
 		{612F3863-DCF4-419B-84A2-54FB2E11B6FF} = {09C121AE-ACC3-49DF-8DCC-A8F9F4DE426C}
+		{9BE9FF6D-2A7E-4ACA-B1FD-AB287900A4B1} = {05C99E21-A373-4B92-A052-63E48AC7E565}
+		{A5580E13-EF48-4945-9190-EE5813EAD9F0} = {05C99E21-A373-4B92-A052-63E48AC7E565}
+		{69AB30C7-E48A-4A2A-92CB-431BDDE14476} = {05C99E21-A373-4B92-A052-63E48AC7E565}
 	EndGlobalSection
 EndGlobal

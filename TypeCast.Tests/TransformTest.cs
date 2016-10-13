@@ -347,7 +347,7 @@ namespace Core.TypeCast.Test
                 }
             };
 
-            Assert.That(testDelegate, Throws.TypeOf<ConverterException>().With.Property("Cause").EqualTo(ConverterCause.LogicError));
+            Assert.That(testDelegate, Throws.TypeOf<ConverterException>().With.Property("Cause").EqualTo(ConverterCause.ConverterArgumentWrongType));
         }
 
     }

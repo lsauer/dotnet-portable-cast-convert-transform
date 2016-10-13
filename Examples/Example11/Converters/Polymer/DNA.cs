@@ -11,6 +11,7 @@ namespace BioCore.Converters
     using System;
     using System.Linq;
     using System.Collections.Generic;
+    using System.Text;
 
     using Core.TypeCast;
     using Core.TypeCast.Base;
@@ -71,5 +72,15 @@ namespace BioCore.Converters
             return this.Convert(seq).Complementary();
         }
 
+        [ConverterMethod]
+        public Peptide ToPeptide()
+        {
+            var peptide = new StringBuilder();
+            foreach (var codon in this.Codons)
+            {
+                peptide.Append((Letter)codon);
+            }
+            return new Peptide(peptide.ToString());
+        }
     }
 }

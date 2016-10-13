@@ -15,6 +15,8 @@ namespace Core.TypeCast.Base
     using System.Reflection;
     using System.Runtime.Serialization;
 
+    using Core.Extensions;
+
     /// <summary>
     /// Creates new instances of <see cref="Converter{TIn, TOut}"/> dependent on the source <see cref="Type"/> `TIn`  and target <see cref="Type"/> `TOut`
     /// </summary>
@@ -63,18 +65,34 @@ namespace Core.TypeCast.Base
         public Converter CreateWrapper(TypeInfo type, MethodInfo declaredMethod)
         {
             MethodInfo makeConverter;
-            if(declaredMethod.GetParameters().Length == 0)
+            var declaredMethodParameters = declaredMethod.GetParameters();
+
+            if (declaredMethodParameters.Length == 0)
             {
                 makeConverter = typeof(ConverterFactory).GetTypeInfo()
                                 .GetDeclaredMethod(nameof(ConverterFactory.ConverterWrapper))
                                 .MakeGenericMethod(type.AsType(), declaredMethod.ReturnParameter.ParameterType);
             }
-            else if(declaredMethod.GetParameters().Length == 1)
+            else if (declaredMethodParameters.Length == 1)
             {
-                makeConverter = typeof(ConverterFactory).GetTypeInfo()
-                                .GetDeclaredMethod(nameof(ConverterFactory.ConverterWrapperAny))
-                                .MakeGenericMethod(type.AsType(), declaredMethod.GetParameters().FirstOrDefault().ParameterType, declaredMethod.ReturnParameter.ParameterType);
+                // The first argument is already of the containing class, e.g. static implicit or explicit operators:
+                if (declaredMethodParameters.First().ParameterType.GetTypeInfo() == type)
+                {
+                    makeConverter = typeof(ConverterFactory).GetTypeInfo()
+                                    .GetDeclaredMethod(nameof(ConverterFactory.ConverterWrapperSelf))
+                                    .MakeGenericMethod(type.AsType(), declaredMethod.ReturnParameter.ParameterType);
+                }
+
+                // The method requires an existing instance of its declaring class. Let's wrap it to invoke it with an instance:
+                else
+                {
+                    makeConverter = typeof(ConverterFactory).GetTypeInfo()
+                                    .GetDeclaredMethod(nameof(ConverterFactory.ConverterWrapperAny))
+                                    .MakeGenericMethod(type.AsType(), declaredMethodParameters.FirstOrDefault().ParameterType, declaredMethod.ReturnParameter.ParameterType);
+                }
+
             }
+
             else
             {
                 throw new ConverterException(ConverterCause.ConverterArgumentDelegateTooManyParameters);
@@ -101,6 +119,18 @@ namespace Core.TypeCast.Base
         }
 
         /// <summary>
+        /// Wraps a function with one argument for self-invocation, wherein the argument is already of the containing class, e.g. static implicit or explicit operator methods
+        /// </summary>
+        /// <typeparam name="TClass">The <see cref="Type"/> of the class instance which invokes the method</typeparam>
+        /// <typeparam name="TOut">The <see cref="Type"/> of the function return argument</typeparam>
+        /// <param name="declaredMethod">The method declared to be bound to the new <see cref="Converter"/> instance.</param>
+        /// <returns>Returns a new <see cref="Converter"/> instance bound to an function-wrapper taking an instance method of <see cref="Type"/> <typeparamref name="TClass"/> as first argument.</returns>
+        public Converter ConverterWrapperSelf<TClass, TOut>(MethodInfo declaredMethod)
+        {
+            return this.Create<TClass, TOut>(InvocationWrapperSelf<TClass, TOut>(declaredMethod));
+        }
+
+        /// <summary>
         /// Wraps an argument-less function to be invoked as an instance method and creates a new <see cref="Converter"/> instance
         /// </summary>
         /// <typeparam name="TClass">The <see cref="Type"/> of the class instance which invokes the method</typeparam>
@@ -111,7 +141,7 @@ namespace Core.TypeCast.Base
         ///  and an secondly any arbitrary parameter of <see cref="Type"/> <typeparamref name="TArg"/>.</returns>
         public static Converter ConverterWrapperAny<TClass, TArg, TOut>(MethodInfo declaredMethod)
         {
-            return new Converter<TClass, TOut, TArg>(InvocationWrapper<TClass, TArg, TOut>(declaredMethod));
+            return new Converter<TClass, TOut, TArg>(InvocationWrapperAny<TClass, TArg, TOut>(declaredMethod));
         }
 
         /// <summary>
@@ -127,6 +157,18 @@ namespace Core.TypeCast.Base
         }
 
         /// <summary>
+        /// Wraps a function, taking its own containing class-instance as argument, and invokes the method in this instance whilst passing it as the first argument
+        /// </summary>
+        /// <typeparam name="TClass">The <see cref="Type"/> of the class instance which invokes the method</typeparam>
+        /// <typeparam name="TOut">The <see cref="Type"/> of the function return argument</typeparam>
+        /// <param name="declaredMethod">The method declared to be bound to the new <see cref="Converter"/> instance.</param>
+        /// <returns>Returns a new <see cref="Func{TClass, TOut}"/> taking an instance method of <see cref="Type"/> <typeparamref name="TClass"/> as first argument.</returns>
+        private static Func<TClass, TOut> InvocationWrapperSelf<TClass, TOut>(MethodInfo declaredMethod)
+        {
+            return (instance) => (TOut)declaredMethod.Invoke(instance, new object[] { instance });
+        }
+
+        /// <summary>
         /// Wraps an argument-less function to be invoked as an instance method whose first argument is the instance of <see cref="Type"/> <typeparamref name="TClass"/>
         /// </summary>
         /// <typeparam name="TClass">The <see cref="Type"/> of the class instance which invokes the method</typeparam>
@@ -135,7 +177,7 @@ namespace Core.TypeCast.Base
         /// <param name="declaredMethod">The method declared to be bound to the new <see cref="Converter"/> instance.</param>
         /// <returns>Returns a new <see cref="Func{TClass, TArg, TOut}"/> taking an instance method of <see cref="Type"/> <typeparamref name="TClass"/> as first argument, 
         /// and an secondly any arbitrary parameter of <see cref="Type"/> <typeparamref name="TArg"/>.</returns>
-        private static Func<TClass, TArg, TOut> InvocationWrapper<TClass, TArg, TOut>(MethodInfo declaredMethod)
+        private static Func<TClass, TArg, TOut> InvocationWrapperAny<TClass, TArg, TOut>(MethodInfo declaredMethod)
         {
             return (instance, parameter) => (TOut)declaredMethod.Invoke(instance, new object[] { parameter });
         }

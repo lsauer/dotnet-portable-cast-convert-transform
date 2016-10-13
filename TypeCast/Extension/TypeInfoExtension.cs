@@ -54,6 +54,24 @@ namespace Core.Extensions
         }
 
         /// <summary>
+        /// Checks for a parameterless, `public` accessible constructor in the given class type, and returns `null` if none are found.
+        /// </summary>
+        /// <param name="type">The own instance of the <see cref="TypeInfo"/> which invokes the method. </param>
+        /// <returns>The <see cref="System.Reflection.ConstructorInfo"/> of <see cref="System.Reflection.ConstructorInfo"/> of any parameterless constructor, else `null`. </returns>
+        /// <remarks>Use to check classes requiring parameters for instantiation, marking them unavailable for generics without using <see cref="Activator"/> or a similar Reflection-Logic. </remarks>
+        public static ConstructorInfo GetConstructorWithoutParameters(this TypeInfo type)
+        {
+            if (type.IsClass == false || type.DeclaredConstructors == null)
+            {
+                return null;
+            }
+            return (from constructorInfo in type.DeclaredConstructors
+                   where constructorInfo.GetParameters().Length == 0 && constructorInfo.IsPublic == true
+                   select constructorInfo)
+                   .FirstOrDefault();
+        }
+
+        /// <summary>
         /// Yields true if a <see langword="class"/> or <see langword="struct"/> contain a constructor of a <see cref="Type"/> "<paramref name="interfaceType"/>"
         /// </summary>
         /// <param name="type">The own instance of the <see cref="TypeInfo"/> which invokes the method. </param>

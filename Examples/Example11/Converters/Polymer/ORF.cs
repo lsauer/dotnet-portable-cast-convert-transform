@@ -27,11 +27,6 @@ namespace BioCore.Converters
     [Converter]
     public class ORF : DNA
     {
-        public ORF()
-            : base()
-        {
-        }
-
         public ORF(string sequence)
             : base(sequence)
         {
@@ -57,14 +52,39 @@ namespace BioCore.Converters
             return new Protein(protein.ToString());
         }
 
+        [ConverterMethod]
         public static implicit operator ORF(string val)
         {
             return new ORF(val);
         }
 
+        [ConverterMethod]
         public static implicit operator string(ORF val)
         {
             return val.ToString();
+        }
+
+
+        [ConverterMethod]
+        public Protein HomologousProtein(DNA sequence)
+        {
+            Console.WriteLine($"Invoked: {nameof(HomologousProtein)}");
+            return this.ToProtein();
+        }
+
+        [ConverterMethod]
+        public Peptide[] ToPeptideFragments(params Tuple<int, int>[] fragmentPositions)
+        {
+            var fragments = new List<Peptide>();
+            foreach (var positions in fragmentPositions)
+            {
+                if ((positions.Item1 > this.Sequence.Length) || (positions.Item2 > this.Sequence.Length) || (positions.Item1 > positions.Item2))
+                {
+                    continue;
+                }
+                fragments.Add( this.Sequence.Substring(positions.Item1, positions.Item2).CastTo<DNA>().CastTo<Peptide>() );
+            }
+            return fragments.ToArray();
         }
 
         public override string ToString()

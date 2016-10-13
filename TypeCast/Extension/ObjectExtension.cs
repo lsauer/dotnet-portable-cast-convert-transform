@@ -46,6 +46,7 @@ namespace Core.TypeCast
         ///     Note that the <see cref="Type" /> `object` as `TOut` or set via `typeOut` is allowed although such a case is not sensible, except under special
         ///     circumstances, including for testing and debugging
         /// </remarks>
+        /// <remarks>If a <paramref name="attributeName"/> is provided, <paramref name="typeTo"> and <paramref name="self"/> may both be of Type `object` as the TypeInfo is ignored. </remarks>
         private static bool GetConverterOrDefault<TIn, TOut>(
             TIn self,
             out Converter converter,
@@ -61,26 +62,27 @@ namespace Core.TypeCast
             ConverterCollection.AutoInitialize();
             if(typeof(TIn) == objectType || typeof(TOut) == objectType)
             {
-                if(throwException == true && unboxObjectType == false && ConverterCollection.CurrentInstance.Settings.AllowGenericTypes == false)
+                converter = null;
+
+                Type typeFrom = null;
+                SetTypes<TIn, TOut>(self, ref typeFrom, ref typeTo, typeBase, throwException, unboxObjectType, attributeName);
+
+                // Fetch a suitable converter
+                if (converter == null)
                 {
-                    throw new ConverterException(ConverterCause.ConverterTypeInIsExplicitObject);
+                    converter = ConverterCollection.CurrentInstance.Get(typeFrom: typeFrom?.GetTypeInfo(), typeTo: typeTo?.GetTypeInfo(), typeArgument: typeArgument?.GetTypeInfo(),
+                                            typeBase: typeBase?.GetTypeInfo(), attributeName: attributeName, loadOnDemand: true, assignable: false, withContext: withContext);
                 }
 
-                var typeFrom = unboxObjectType ? self.GetType() : objectType;
-                if(typeTo == null || typeof(TOut) != objectType)
-                {
-                    typeTo = typeTo ?? typeof(TOut);
-                }
-                converter = ConverterCollection.CurrentInstance.Get(typeFrom: typeFrom.GetTypeInfo(), typeTo: typeTo?.GetTypeInfo(), typeArgument: typeArgument?.GetTypeInfo(), 
-                                        typeBase: typeBase?.GetTypeInfo(), attributeName: attributeName, loadOnDemand: true, assignable: false, withContext: withContext);
-                // Retry by widening the search to type-inheritance
-                if(converter == null)
+                // Retry by widening the search to include type-inheritance:
+                if (converter == null)
                 {
                     converter = ConverterCollection.CurrentInstance.Get(typeFrom: typeFrom.GetTypeInfo(), typeTo: typeTo?.GetTypeInfo(), typeArgument: typeArgument?.GetTypeInfo(),
                                         typeBase: typeBase?.GetTypeInfo(), attributeName: attributeName, loadOnDemand: false, assignable: true, withContext: withContext);
                 }
-                // no specific converter found, lets find a generic fallback converter
-                if(converter == null && unboxObjectType == true && typeof(TIn) == objectType)
+
+                // No specific converter found, lets find a general, fallback converter using `object` as the Input-type
+                if (converter == null && unboxObjectType == true && typeof(TIn) == objectType)
                 {
                     converter = ConverterCollection.CurrentInstance.Get(typeFrom: objectTypeInfo, typeTo: typeTo?.GetTypeInfo(), typeArgument: typeArgument?.GetTypeInfo(),
                                         typeBase: typeBase?.GetTypeInfo(), attributeName: attributeName, loadOnDemand: false, assignable: false, withContext: withContext);
@@ -99,6 +101,37 @@ namespace Core.TypeCast
 
             result = default(TOut);
             return false;
+        }
+
+        /// <summary>A helper method to check and unbox the types if required, or avoid setting them altogether in case of an alias being provided through <paramref name="attributeName"/>
+        /// </summary>
+        /// <param name="self">The current instance holding the boxed value to convert from</param>
+        /// <param name="typeFrom">The source <see cref="Type"/>, reflected from <paramref name="self"/> , from which to convert.</param>
+        /// <param name="typeTo">The target <see cref="Type"/> to which to convert the <see cref="Type"/> of <paramref name="self"/> to</param>
+        /// <param name="throwException">Whether to throw exceptions. `false` by default such that no <see cref="ConverterException"/> is thrown</param>
+        /// <param name="unboxObjectType"> in case the type is boxed and TIn set to `object`, use <typeparamref name="TIn" /> to override the unboxed source <see cref="Type" /></param>
+        /// <param name="typeBase">The base-type <see cref="Type"/> to which to convert the <see cref="Type"/> of <paramref name="self"/> to</param>
+        /// <param name="attributeName">A search-string to be contained in the <see cref="ConverterAttribute.Name"/> to filter through</param>
+        /// <typeparam name="TIn">The Source- / From- <see cref="Type" />from which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        /// <typeparam name="TOut">The Target / To- <see cref="Type" /> to which to <see cref="Converter.Convert(object,object)" /></typeparam>
+        private static void SetTypes<TIn, TOut>(TIn self, ref Type typeFrom, ref Type typeTo, Type typeBase, bool throwException, bool unboxObjectType, string attributeName)
+        {
+            if (throwException == true && unboxObjectType == false && ConverterCollection.CurrentInstance.Settings.AllowGenericTypes == false)
+            {
+                throw new ConverterException(ConverterCause.ConverterTypeInIsExplicitObject);
+            }
+
+            // In case a converter is referenced by an alias (i.e. `attributeName` or `typeBase`), ignore IN/Out Types and look up the converter directly
+            if (attributeName != null || (typeBase != null && typeBase.Namespace != nameof(System)))
+            {
+                typeFrom = null;
+                typeTo = null;
+            }
+            else
+            {
+                typeFrom = unboxObjectType ? self.GetType() : objectType;
+                typeTo = typeTo ?? typeof(TOut);
+            }
         }
 
         /// <summary>A method wrapper to safely invoke the converter functions and intercept possible exceptions, returning the conversion status as a <see langword="bool"/>.</summary>
