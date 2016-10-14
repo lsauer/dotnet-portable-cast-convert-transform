@@ -6,7 +6,9 @@ $dllname = $args[1] # e.g. "Core.Singleton"
 $nugetid = $args[2] # e.g. "CSharp.Portable-Singleton"
 
 $rootself = (split-path -parent $MyInvocation.MyCommand.Definition)
-$root = $rootscript + '\..'
+$root = "$rootself\.."
+$releaseNotesPath = "$rootself\releaseNotes.txt"
+
 Write-Host "Root is: $root"
 $versionStr = [System.Diagnostics.FileVersionInfo]::GetVersionInfo("$root\$project\bin\Release\$dllname.dll").FileVersion.ToString()
 Write-Host "Set $nugetid.nuspec version tag: $versionStr"
@@ -18,8 +20,10 @@ $content = (Get-Content $root\NuGet\$nugetid.nuspec)
 $content = $content -replace '{version}',$versionStr
 
 #set release notes
-$releaseNotes = [IO.File]::ReadAllText("$rootself\releasenotes.txt")
-$content = $content -replace '{releaseNotes}',$releaseNotes
+if([System.IO.File]::Exists("$releaseNotesPath")){
+	$releaseNotes = [IO.File]::ReadAllText("$releaseNotesPaths")
+	$content = $content -replace '{releaseNotes}',$releaseNotes
+}
 
 $content | Out-File $root\NuGet\$nugetid.compiled.nuspec
 
