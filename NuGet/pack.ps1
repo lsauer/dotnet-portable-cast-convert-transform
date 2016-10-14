@@ -9,7 +9,7 @@ $rootself = (split-path -parent $MyInvocation.MyCommand.Definition)
 $root = "$rootself\.."
 $releaseNotesPath = "$rootself\releaseNotes.txt"
 
-Write-Host "Root is: $root"
+Write-Host "Root is: $root; Inovcation Path: $rootself"
 $versionStr = [System.Diagnostics.FileVersionInfo]::GetVersionInfo("$root\$project\bin\Release\$dllname.dll").FileVersion.ToString()
 Write-Host "Set $nugetid.nuspec version tag: $versionStr"
 Set-Content ..\VERSION $versionStr
@@ -21,8 +21,8 @@ $content = $content -replace '{version}',$versionStr
 
 #set release notes
 if([System.IO.File]::Exists("$releaseNotesPath")){
-	$releaseNotes = [IO.File]::ReadAllText("$releaseNotesPaths")
-	$content = $content -replace '{releaseNotes}',$releaseNotes
+	$releaseNotes = [IO.File]::ReadAllText("$releaseNotesPath")
+	$content = $content -replace '{releaseNotes}', $releaseNotes
 }
 
 $content | Out-File $root\NuGet\$nugetid.compiled.nuspec
