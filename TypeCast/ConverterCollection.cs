@@ -996,7 +996,7 @@ namespace Core.TypeCast
                     return false;
                 }
 
-                if (attribute?.DependencInjection == true)
+                if (attribute?.DependencyInjection == true)
                 {
                     converterCustom = this.CreateConverterClassInstance(type.AsType());
                 }

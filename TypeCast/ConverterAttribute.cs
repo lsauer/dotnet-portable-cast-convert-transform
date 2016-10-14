@@ -54,7 +54,7 @@ namespace Core.TypeCast
             this.LoadOnDemand = loadOnDemand;
             this.NameSpace = nameSpace ?? string.Empty;
             this.Name = name ?? string.Empty;
-            this.DependencInjection = dependencyInjection;
+            this.DependencyInjection = dependencyInjection;
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Core.TypeCast
         /// <summary>
         /// Gets or sets a value indicating whether dependency injection should be used during instancing of a new custom converter />.
         /// </summary>
-        public bool DependencInjection { get; set; }
+        public bool DependencyInjection { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="Converter{TIn, TOut}"/> Converter is supposed to be initialized merely by declaring the <see cref="ConverterAttribute"/>
@@ -137,7 +137,7 @@ namespace Core.TypeCast
         /// </returns>
         public override string ToString()
         {
-            return $"[LoD:{this.LoadOnDemand},Base:{this.BaseType?.Name},DepInj:{this.DependencInjection},NamSp:{this.NameSpace},Name:{this.Name}]";
+            return $"[LoD:{this.LoadOnDemand},Base:{this.BaseType?.Name},DepInj:{this.DependencyInjection},NamSp:{this.NameSpace},Name:{this.Name}]";
         }
 
     }

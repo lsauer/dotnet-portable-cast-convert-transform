@@ -194,7 +194,7 @@ namespace Core.TypeCast
             self.Attribute = new ConverterAttribute(loadOnDemand: classAttribute?.LoadOnDemand ?? false, 
                 name: String.IsNullOrWhiteSpace(classAttribute?.Name) ? methodAttribute?.Name : classAttribute.Name,
                 nameSpace: methodInfo.DeclaringType.Namespace, 
-                dependencyInjection: classAttribute?.DependencInjection ?? false);
+                dependencyInjection: classAttribute?.DependencyInjection ?? false);
 
             // set base-type delegate type used for unique transformation-lookup
             if(methodAttribute?.BaseType != null)
