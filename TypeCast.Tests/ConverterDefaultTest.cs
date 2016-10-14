@@ -263,7 +263,7 @@ namespace Core.TypeCast.Test
         {
             var n = (double.MaxValue + 1d).ToString(CultureInfo.InvariantCulture);
             TestDelegate testDelegate = () => n.CastTo<object, decimal>();
-            Assert.That(testDelegate, Throws.TypeOf<ConverterException>().With.Property("Cause").EqualTo(ConverterCause.LogicError));
+            Assert.That(testDelegate, Throws.TypeOf<ConverterException>().With.Property("Cause").EqualTo(ConverterCause.BadInputFormat));
         }
 
         [Test]
@@ -425,7 +425,7 @@ namespace Core.TypeCast.Test
                 var n = (ulong.MinValue - 1f).ToString(CultureInfo.InvariantCulture);
                 n.CastTo<object, ulong>();
             };
-            Assert.That(testDelegate, Throws.TypeOf<ConverterException>().With.Property("Cause").EqualTo(ConverterCause.BadInputFormat));
+            Assert.That(testDelegate, Throws.TypeOf<ConverterException>().With.Property("Cause").EqualTo(ConverterCause.LogicError));
         }
 
         [Test]
@@ -465,7 +465,7 @@ namespace Core.TypeCast.Test
                 var n = (short.MaxValue + 1f).ToString(CultureInfo.InvariantCulture);
                 n.CastTo<object, short>();
             };
-            Assert.That(testDelegate, Throws.TypeOf<ConverterException>().With.Property("Cause").EqualTo(ConverterCause.BadInputFormat));
+            Assert.That(testDelegate, Throws.TypeOf<ConverterException>().With.Property("Cause").EqualTo(ConverterCause.LogicError));
         }
 
         [Test]
@@ -475,7 +475,7 @@ namespace Core.TypeCast.Test
                 var n = (short.MinValue - 1f).ToString(CultureInfo.InvariantCulture);
                 n.CastTo<object, short>();
             };
-            Assert.That(testDelegate, Throws.TypeOf<ConverterException>().With.Property("Cause").EqualTo(ConverterCause.BadInputFormat));
+            Assert.That(testDelegate, Throws.TypeOf<ConverterException>().With.Property("Cause").EqualTo(ConverterCause.LogicError));
         }
 
         [Test]
@@ -514,7 +514,7 @@ namespace Core.TypeCast.Test
                 var n = (ushort.MaxValue + 1f).ToString(CultureInfo.InvariantCulture);
                 n.CastTo<object, ushort>();
             };
-            Assert.That(testDelegate, Throws.TypeOf<ConverterException>().With.Property("Cause").EqualTo(ConverterCause.BadInputFormat));
+            Assert.That(testDelegate, Throws.TypeOf<ConverterException>().With.Property("Cause").EqualTo(ConverterCause.LogicError));
         }
 
         [Test]
@@ -524,7 +524,7 @@ namespace Core.TypeCast.Test
                 var n = (ushort.MinValue - 1f).ToString(CultureInfo.InvariantCulture);
                 n.CastTo<object, ushort>();
             };
-            Assert.That(testDelegate, Throws.TypeOf<ConverterException>().With.Property("Cause").EqualTo(ConverterCause.BadInputFormat));
+            Assert.That(testDelegate, Throws.TypeOf<ConverterException>().With.Property("Cause").EqualTo(ConverterCause.LogicError));
         }
 
         [Test]
