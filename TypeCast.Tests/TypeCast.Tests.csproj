@@ -104,6 +104,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ConverterAttributeTest.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="TransformTest.cs" />
     <Compile Include="ConvertToTest.cs" />
