@@ -39,9 +39,9 @@ namespace Core.TypeCast
     public partial class ConverterCollection : Singleton<ConverterCollection>, IConverterCollection, IDisposable, IEnumerable<Converter>, IQueryable<Converter>
     {
         /// <summary>
-        /// The settings for the <see cref="ConverterCollection"/>.
+        /// `True` when the ConverterCollection has been loading assemblies through auto-discovery as implemented in <see cref="AutoInitialize"/>
         /// </summary>
-        public ConverterCollectionSettings Settings { get; set; }
+        private static bool AutoInitialized;
 
         /// <summary>
         /// A list of <see cref="Converter"/> base-classes which have not yet been instantiated and added to <see cref="Items"/>. 
@@ -143,22 +143,22 @@ namespace Core.TypeCast
             this.ConstructorAddedClasses = new List<Type>();
             this.Items = new BlockingCollection<Converter>(boundedCapacity: this.Settings.BoundedCapacity);
 
-            if(application != null)
+            if (application != null)
             {
                 ApplicationNameSpace = application.Namespace;
                 this.Initialize(ApplicationNameSpace);
             }
 
-            if(numberFormatDefault as NumberFormatInfo != null)
+            if (numberFormatDefault as NumberFormatInfo != null)
             {
                 this.Settings.NumberFormat = numberFormatDefault;
             }
 
-            if(converterClasses != null)
+            if (converterClasses != null)
             {
-                foreach(var converterClass in converterClasses)
+                foreach (var converterClass in converterClasses)
                 {
-                    if(converterClass != null && converterClass.GetTypeInfo().IsClass == true)
+                    if (converterClass != null && converterClass.GetTypeInfo().IsClass == true)
                     {
                         ConstructorAddedClasses.Add(converterClass);
 
@@ -170,6 +170,12 @@ namespace Core.TypeCast
             // Load any declared converters from the own assembly
             this.Initialize(this.GetType().GetTypeInfo()?.Assembly.DefinedTypes);
         }
+
+        /// <summary>
+        /// References the current class and method that is being loaded.
+        /// </summary>
+        /// <remarks>Used for fine grained error-reporting during auto-initialize, etc...</remarks>
+        public Tuple<TypeInfo, MethodInfo> CurrentConverterByAttribute;
 
         /// <summary>
         /// Reference to the <see cref="ConverterFactory"/> which facilitates the instantiation of any <see cref="Converter"/> 
@@ -225,7 +231,7 @@ namespace Core.TypeCast
 
             private set
             {
-                if(value != this.count)
+                if (value != this.count)
                 {
                     OnPropertyChanged();
                     this.count = value;
@@ -251,13 +257,18 @@ namespace Core.TypeCast
             }
             set
             {
-                if(value == true)
+                if (value == true)
                 {
                     this.Items.CompleteAdding();
                 }
 
             }
         }
+
+        /// <summary>
+        /// The settings for the <see cref="ConverterCollection"/>.
+        /// </summary>
+        public ConverterCollectionSettings Settings { get; set; }
 
         #region Implementation of IQueryable<Converter>
 
@@ -481,7 +492,7 @@ namespace Core.TypeCast
             Func<TIn, TArg, TOut> converterActionAny,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if(typeof(TOut) == typeof(TArg))
+            if (typeof(TOut) == typeof(TArg))
             {
                 var converter = Factory.Create<TIn, TOut>((Func<TIn, TOut, TOut>)(object)converterActionAny);
                 return this.Add(converter: converter, baseType: typeof(TBase), cancellationToken: cancellationToken);
@@ -506,7 +517,7 @@ namespace Core.TypeCast
             Type baseType = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if(typeof(TOut) == typeof(TArg))
+            if (typeof(TOut) == typeof(TArg))
             {
                 var converter = Factory.Create<TIn, TOut>((Func<TIn, TOut, TOut>)(object)converterActionAny);
                 return this.Add(converter: converter, baseType: baseType, cancellationToken: cancellationToken);
@@ -551,16 +562,16 @@ namespace Core.TypeCast
         /// if an internal error occurred</exception>
         public IConverterCollection Add(object converterDelegate, Type baseType = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if(converterDelegate == null)
+            if (converterDelegate == null)
             {
                 throw new ConverterCollectionException(ConverterCollectionCause.ConverterArgumentNull, $"{nameof(converterDelegate)} must not be null and of Type Delegate");
             }
-            if((converterDelegate is Delegate) == false)
+            if ((converterDelegate is Delegate) == false)
             {
                 throw new ConverterCollectionException(ConverterCollectionCause.ConverterArgumentWrongType, $"{nameof(converterDelegate)} must be a `Delegate` Type");
             }
 
-            if(baseType == null)
+            if (baseType == null)
             {
                 baseType = ((Delegate)converterDelegate).Target.GetType().DeclaringType;
             }
@@ -585,7 +596,7 @@ namespace Core.TypeCast
 
             var converter = this.Factory.Create(methodInfo, converterDelegate);
 
-            if(converter != null)
+            if (converter != null)
             {
                 converter.Base = baseInstance;
                 return this.Add(converter: converter, baseType: baseType, cancellationToken: cancellationToken);
@@ -609,65 +620,74 @@ namespace Core.TypeCast
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2200:RethrowToPreserveStackDetails")]
         public IConverterCollection Add(Converter converter, Type baseType = null, bool allowDisambiguates = false, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if(converter == null)
+            // Add references for detailed error-messages
+            try
             {
-                throw new ConverterCollectionException(ConverterCollectionCause.ConverterArgumentNull);
+                var function = (converter?.FunctionDefault ?? converter?.Function) as Delegate;
+                var functionInfo = function?.GetMethodInfo();
+                CurrentConverterByAttribute = new Tuple<TypeInfo, MethodInfo>(functionInfo?.DeclaringType.GetTypeInfo(), functionInfo);
+            }
+            // Not significant since CurrentConverterByAttribute itself is chiefly used for improving exception messages
+            catch (Exception) { }
+
+            if (converter == null)
+            {
+                throw new ConverterCollectionException(ConverterCollectionCause.ConverterArgumentNull, GetInitializeFailedErrorMessage());
             }
 
-            if(converter.HasFunction == false)
+            if (converter.HasFunction == false)
             {
-                throw new ConverterCollectionException(ConverterCollectionCause.ConverterFunctionsNull);
+                throw new ConverterCollectionException(ConverterCollectionCause.ConverterFunctionsNull, GetInitializeFailedErrorMessage());
             }
 
             try
             {
                 converter.SetCollectionDefaults(this);
 
-                if(allowDisambiguates == false && baseType?.GetTypeInfo().BaseType == typeof(MulticastDelegate))
+                if (allowDisambiguates == false && baseType?.GetTypeInfo().BaseType == typeof(MulticastDelegate))
                 {
                     allowDisambiguates = true;
                 }
 
                 converter.AllowDisambiguates = allowDisambiguates;
                 // if there is already a standard converter try to merge them. The condition is that the converter argument type match or is not used
-                if(allowDisambiguates == false && converter.Standard)
+                if (allowDisambiguates == false && converter.Standard)
                 {
                     var converterLookup = this.Get(typeFrom: converter.From, typeTo: converter.To, typeArgument: typeof(object).GetTypeInfo(), loadOnDemand: false, isStandard: true);
                     try
                     {
-                        if(converterLookup?.MergeStandard(converter) == true)
+                        if (converterLookup?.MergeStandard(converter) == true)
                         {
                             return this;
                         }
                     }
-                    catch(ConverterCollectionException exc)
+                    catch (ConverterCollectionException exc)
                     {
-                        exc.Cause |= ConverterCollectionCause.AddFailed;
-                        throw exc;
+                        throw new ConverterCollectionException(ConverterCollectionCause.AddFailed, exc, GetInitializeFailedErrorMessage(exc));
                     }
                 }
                 // update the base-type and thus the attribute access of the converter
-                if(baseType != null)
+                if (baseType != null)
                 {
                     converter.SetBaseType(baseType);
                 }
 
-                if(this.Items.TryAdd(converter, -1, cancellationToken) == true)
+                if (this.Items.TryAdd(converter, -1, cancellationToken) == true)
                 {
                     OnPropertyChanged(converter);
                 }
             }
-            catch(ConverterCollectionException)
+            catch (ConverterCollectionException)
             {
                 throw;
             }
-            catch(ConverterException)
+            catch (ConverterException)
             {
                 throw;
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
-                throw new ConverterException(ConverterCause.ConverterCollectionAddFailed, exc);
+                throw new ConverterException(ConverterCause.ConverterCollectionAddFailed, exc, GetInitializeFailedErrorMessage(exc));
             }
 
             return this;
@@ -726,7 +746,7 @@ namespace Core.TypeCast
         /// <returns>Returns the updated <paramref name="attribute"/>, if <paramref name="update"/> was set to `true`</returns>
         public ConverterAttribute ConverterAttributeFromIConverter(TypeInfo baseType, ConverterAttribute attribute = null, bool update = false)
         {
-            if(baseType == null || (attribute != null && update == false))
+            if (baseType == null || (attribute != null && update == false))
             {
                 return attribute;
             }
@@ -736,7 +756,7 @@ namespace Core.TypeCast
             attribute.BaseType = baseType;
             // look up a possible converter candidate with generic IConverter<,> support
             var converter = this.Get(baseType.AsType());
-            if(converter != null && (converter.Attribute == null || converter.Attribute != null && update == true))
+            if (converter != null && (converter.Attribute == null || converter.Attribute != null && update == true))
             {
                 converter.Attribute = attribute;
             }
@@ -756,7 +776,7 @@ namespace Core.TypeCast
         public int LoadOnDemandConverter(Type typeTo)
         {
             var nameSpace = typeTo?.Namespace.Split('.').Last();
-            if(nameSpace != null && this.loadOnDemandConverters.ContainsKey(nameSpace))
+            if (nameSpace != null && this.loadOnDemandConverters.ContainsKey(nameSpace))
             {
                 var loaded = this.loadOnDemandConverters[nameSpace].Select(this.CreateConverterClassInstance).Count();
                 this.loadOnDemandConverters.Remove(nameSpace);
@@ -765,11 +785,31 @@ namespace Core.TypeCast
             return 0;
         }
 
-
         /// <summary>
-        /// `True` when the ConverterCollection has been loading assemblies through auto-discovery as implemented in <see cref="AutoInitialize"/>
+        /// Provides details to the class and method where an <see cref="ConverterException"/> was thrown.
         /// </summary>
-        private static bool AutoInitialized;
+        /// <param name="exc"> An optional exception of the currently caught exception, from which to extract an <see cref="Exception.InnerException"/> message.</param>
+        /// <returns>Astring with detail of the class and method at which any Exception occurred during the use of Initialize.</returns>
+        private static string GetInitializeFailedErrorMessage(Exception exc = null)
+        {
+            var currentConverterByAttribute = CurrentInstance.CurrentConverterByAttribute;
+            if (currentConverterByAttribute == null)
+            {
+                return null;
+            }
+            var innerMessage = exc?.InnerException?.InnerException?.Message ?? exc?.InnerException?.Message ?? exc?.Message;
+            // check if the method has an attribute
+            if (currentConverterByAttribute.Item2.GetCustomAttribute<ConverterMethodAttribute>() != null)
+            {
+                return
+                    $"Please remove the {nameof(ConverterMethodAttribute)} from method '{currentConverterByAttribute.Item2?.Name}', in the class {currentConverterByAttribute.Item1?.Name}: '{innerMessage}'";
+            }
+            else
+            {
+                return
+                    $"Please remove the {nameof(Add)} declaration of the method '{currentConverterByAttribute.Item2?.Name}', in the declaring class {currentConverterByAttribute.Item1?.Name}: '{innerMessage}'";
+            }
+        }
 
         /// <summary>
         /// Checks if the <see cref="ConverterCollection"/> is initialized. Attempts to initialize and load the user-assembly if <see cref="Singleton{ConverterCollection}.Initialized"/> is `false`
@@ -782,12 +822,12 @@ namespace Core.TypeCast
         public static void AutoInitialize()
         {
             // is the ConverterCollection Initialized?
-            if(AutoInitialized == false && CurrentInstance.Settings.AutoInitialize == true)
+            if (AutoInitialized == false && CurrentInstance.Settings.AutoInitialize == true)
             {
                 try
                 {
                     var getEntryAssembly = typeof(Assembly).GetRuntimeMethods().FirstOrDefault(m => m.Name.Equals("GetEntryAssembly"));
-                    if(getEntryAssembly != null)
+                    if (getEntryAssembly != null)
                     {
                         var assembly = getEntryAssembly.Invoke(null, null) as Assembly;
                         CurrentInstance.Initialize(assembly);
@@ -796,9 +836,9 @@ namespace Core.TypeCast
                     // set as initialized regardless of success, to run only once
                     AutoInitialized = true;
                 }
-                catch(Exception exc)
+                catch (Exception exc)
                 {
-                    throw new ConverterException(ConverterCause.ConverterAutoInitializationFailed, exc);
+                    throw new ConverterException(ConverterCause.ConverterAutoInitializationFailed, exc, GetInitializeFailedErrorMessage(exc));
                 }
             }
         }
@@ -837,7 +877,7 @@ namespace Core.TypeCast
         /// </example>
         public void Initialize(Type applicationClass)
         {
-            if(applicationClass != null)
+            if (applicationClass != null)
             {
                 var assembly = applicationClass.GetTypeInfo().Assembly;
                 this.Initialize(new[] { assembly });
@@ -874,9 +914,9 @@ namespace Core.TypeCast
         /// </example>
         public void Initialize(Assembly[] assemblies)
         {
-            foreach(var assembly in assemblies)
+            foreach (var assembly in assemblies)
             {
-                if(assembly == null || this.AssemblyInitialized.ContainsKey(assembly) == true)
+                if (assembly == null || this.AssemblyInitialized.ContainsKey(assembly) == true)
                 {
                     continue;
                 }
@@ -899,9 +939,16 @@ namespace Core.TypeCast
         /// </example>
         public void Initialize(IEnumerable<TypeInfo> types)
         {
-            foreach(var type in types)
+            foreach (var type in types)
             {
-                this.AddAllAvailableConverters(type);
+                try
+                {
+                    this.AddAllAvailableConverters(type);
+                }
+                catch (Exception exc)
+                {
+                    throw new ConverterException(ConverterCause.ConverterInitializationFailed, exc, GetInitializeFailedErrorMessage(exc));
+                }
             }
         }
 
@@ -955,7 +1002,6 @@ namespace Core.TypeCast
 
             return customConverter;
         }
-
 
         /// <summary>
         /// Looks for classes with a <see cref="ConverterAttribute"/> and Dependency Injectable constructors as well as classes which have an <see cref="IConverter{TIn,TOut}"/> interface.
@@ -1020,20 +1066,21 @@ namespace Core.TypeCast
             // discover attributed methods
             foreach (var declaredMethod in type.DeclaredMethods)
             {
+                CurrentConverterByAttribute = new Tuple<TypeInfo, MethodInfo>(type, declaredMethod);
                 var customAttribute = declaredMethod.GetCustomAttribute<ConverterMethodAttribute>() as ConverterMethodAttribute;
                 if (customAttribute != null)
                 {
                     var declaredMethodParams = declaredMethod.GetParameters();
-                    
+
                     // create a wrapper taking the own class-instance as first argument for methods that are attributed by `ConverterMethod`:
                     if (
 
                         // the method has no arguments, thus no input-type yet has a ConverterMethod attribute or has the specific attribute property `PassInstance` set to `true`
                         ((declaredMethod.IsStatic == false && declaredMethodParams.Length == 0) || customAttribute.PassInstance == true) ||
-                        
+
                         // the first argument is already of the containing class, e.g. static implicit or explicit operators
                         (declaredMethod.IsStatic == true && declaredMethodParams.Length == 1 && declaredMethodParams.First().ParameterType.GetTypeInfo() == type) ||
-                        
+
                         // the method is declared in a class requiring parameters to instantiate, which implies that the method requires a specific class instance
                         ((declaredMethod.IsStatic == false && declaredMethodParams.Length == 1) && type.GetConstructorWithoutParameters() == null))
                     {
