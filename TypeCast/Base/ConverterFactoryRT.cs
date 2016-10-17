@@ -85,7 +85,7 @@ namespace Core.TypeCast.Base
                 throw new ConverterException(ConverterCause.ConverterArgumentDelegateTooManyParameters);
             }
 
-            converter.MergeFromMethodAttribute(methodInfo);
+            converter.MergeConverterMethodAttributes(methodInfo);
 
             return converter;
         }

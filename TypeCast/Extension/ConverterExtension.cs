@@ -185,7 +185,7 @@ namespace Core.TypeCast
         /// <remarks>
         /// Used to set a function-alias or Base-Type delegate for <see cref="ObjectExtension.Transform{TBase, TOut}(object, object, string, bool, bool)"/> lookup
         /// </remarks>
-        public static void MergeFromMethodAttribute(this Converter self, MethodInfo methodInfo)
+        public static void MergeConverterMethodAttributes(this Converter self, MethodInfo methodInfo)
         {
             var classAttribute = methodInfo.DeclaringType.GetTypeInfo().GetCustomAttribute<ConverterAttribute>();
             var methodAttribute = methodInfo.GetCustomAttribute<ConverterMethodAttribute>();
