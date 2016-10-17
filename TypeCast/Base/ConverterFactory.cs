@@ -103,6 +103,16 @@ namespace Core.TypeCast.Base
 
             converter.MergeConverterMethodAttributes(declaredMethod);
 
+            // merge any hereto declared ConverterMethodAttribute
+            if (declaredMethodParameters.Length == 0)
+            {
+                converter.FunctionAttribute = declaredMethod.GetCustomAttribute<ConverterMethodAttribute>();
+            }
+            else if(declaredMethodParameters.Length == 1)
+            {
+                converter.FunctionDefaultAttribute = declaredMethod.GetCustomAttribute<ConverterMethodAttribute>();
+            }
+
             return converter;
         }
 
