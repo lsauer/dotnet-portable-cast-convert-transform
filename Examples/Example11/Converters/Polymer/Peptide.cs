@@ -46,9 +46,9 @@ namespace BioCore.Converters
             this.Type = PolymerType.Peptide;
         }
 
-
         /// <summary>
-        /// Indicates a Peptidomimetic with other than (alpha)-aminoacids in its sequence, or in case of a <see cref="Protein"/> a non-functional version.
+        /// Indicates a Peptidomimetic with other than (alpha)-aminoacids in its sequence, or in case of a <see cref="Protein"/> 
+        /// a non-functional version of the declared element.
         /// </summary>
         public bool Pseudo
         {
@@ -70,7 +70,7 @@ namespace BioCore.Converters
         }
 
         /// <summary>
-        /// Accepted standard name for this feature.
+        /// Accepted standard name for the element in question.
         /// </summary>
         public string StandardName { get; set; }
 

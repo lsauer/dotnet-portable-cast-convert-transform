@@ -61,6 +61,10 @@
       <HintPath>..\..\packages\CSharp.Portable-Singleton.2.0.0.4\lib\Core.Singleton.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Core.TypeCast, Version=3.2.0.84, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Core.Cast-Transform-Convert.3.2.0.84\lib\portable-net45+sl50+MonoAndroid10+MonoTouch10\Core.TypeCast.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -81,12 +85,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\TypeCast\Core.TypeCast.csproj">
-      <Project>{c79492bc-d45c-469a-af8f-0952141b2369}</Project>
-      <Name>Core.TypeCast</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

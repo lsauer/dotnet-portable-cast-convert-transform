@@ -66,16 +66,6 @@ namespace BioCore.Converters
         /// </summary>
         public string GenomicPosition { get; set; }
 
-        /// <summary>
-        /// Indicates that this feature is a non-functional version of the element named by the feature key.
-        /// </summary>
-        public bool Pseudo { get; set; }
-
-        /// <summary>
-        /// Accepted standard name for this feature.
-        /// </summary>
-        public string StandardName { get; set; }
-
         [ConverterMethod(passInstance: true, name: nameof(ToVerbose))]
         public string ToVerbose(bool fullName)
         {

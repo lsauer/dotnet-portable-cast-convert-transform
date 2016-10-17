@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.25618.0
+VisualStudioVersion = 15.0.25807.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.TypeCast", "TypeCast\Core.TypeCast.csproj", "{C79492BC-D45C-469A-AF8F-0952141B2369}"
 EndProject
@@ -104,8 +104,8 @@ Global
 		{9FF0DBA7-75E3-444B-80C6-C32D6F643698}.Release|x64.Build.0 = Release|Any CPU
 		{9FF0DBA7-75E3-444B-80C6-C32D6F643698}.Release|x86.ActiveCfg = Release|Any CPU
 		{9FF0DBA7-75E3-444B-80C6-C32D6F643698}.Release|x86.Build.0 = Release|Any CPU
-		{08D56454-8A73-4546-A1FE-88E752B32A92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08D56454-8A73-4546-A1FE-88E752B32A92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08D56454-8A73-4546-A1FE-88E752B32A92}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{08D56454-8A73-4546-A1FE-88E752B32A92}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{08D56454-8A73-4546-A1FE-88E752B32A92}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{08D56454-8A73-4546-A1FE-88E752B32A92}.Debug|x64.Build.0 = Debug|Any CPU
 		{08D56454-8A73-4546-A1FE-88E752B32A92}.Debug|x86.ActiveCfg = Debug|Any CPU

@@ -46,7 +46,7 @@ namespace Core.TypeCast
         ///     Note that the <see cref="Type" /> `object` as `TOut` or set via `typeOut` is allowed although such a case is not sensible, except under special
         ///     circumstances, including for testing and debugging
         /// </remarks>
-        /// <remarks>If a <paramref name="attributeName"/> is provided, <paramref name="typeTo"> and <paramref name="self"/> may both be of Type `object` as the TypeInfo is ignored. </remarks>
+        /// <remarks>If a <paramref name="attributeName"/> is provided, <paramref name="typeTo"/> and <paramref name="self"/> may both be of Type `object` as the TypeInfo is ignored. </remarks>
         private static bool GetConverterOrDefault<TIn, TOut>(
             TIn self,
             out Converter converter,

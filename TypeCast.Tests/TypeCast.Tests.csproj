@@ -84,6 +84,10 @@
       <HintPath>..\packages\CSharp.Portable-Singleton.2.0.0.4\lib\Core.Singleton.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Core.TypeCast, Version=3.2.0.84, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Core.Cast-Transform-Convert.3.2.0.84\lib\portable-net45+sl50+MonoAndroid10+MonoTouch10\Core.TypeCast.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Moq, Version=4.5.21.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.5.21\lib\net45\Moq.dll</HintPath>
       <Private>True</Private>
@@ -116,12 +120,6 @@
     <Compile Include="Converters\CustomConverters.cs" />
     <Compile Include="Converters\ConverterStringToDecimal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TypeCast\Core.TypeCast.csproj">
-      <Project>{C79492BC-D45C-469A-AF8F-0952141B2369}</Project>
-      <Name>Core.TypeCast</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
