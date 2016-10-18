@@ -110,6 +110,7 @@
   <ItemGroup>
     <Compile Include="ConverterMethodAttributeTest.cs" />
     <Compile Include="ConverterAttributeTest.cs" />
+    <Compile Include="ConvertContextTest.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="TransformTest.cs" />
     <Compile Include="ConvertToTest.cs" />
