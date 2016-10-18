@@ -8,9 +8,17 @@ $nugetid = $args[2] # e.g. "CSharp.Portable-Singleton"
 $rootself = (split-path -parent $MyInvocation.MyCommand.Definition)
 $root = "$rootself\.."
 $releaseNotesPath = "$rootself\releaseNotes.txt"
-
+$buildPath = "\$env:Configuration"
+$addX64 = ""
+if($env:Platform -eq "x64") { 
+	$buildPath = "\$env:Platform\$env:Configuration" 
+	$addX64 = "x64"
+}
+if($env:Platform -eq "x86") { $buildPath = "\$env:Platform\$env:Configuration" }
+Write-Host "The build path is: $buildPath"
+ 
 Write-Host "Root is: $root; Inovcation Path: $rootself"
-$versionStr = [System.Diagnostics.FileVersionInfo]::GetVersionInfo("$root\$project\bin\Release\$dllname.dll").FileVersion.ToString()
+$versionStr = [System.Diagnostics.FileVersionInfo]::GetVersionInfo("$root\$project\bin$buildPath\$dllname.dll").FileVersion.ToString()
 Write-Host "Set $nugetid.nuspec version tag: $versionStr"
 Set-Content ..\VERSION $versionStr
 
@@ -25,8 +33,8 @@ if([System.IO.File]::Exists("$releaseNotesPath")){
 	$content = $content -replace '{releaseNotes}', $releaseNotes
 }
 
-$content | Out-File $root\NuGet\$nugetid.compiled.nuspec
+$content | Out-File $root\NuGet\$nugetid$addX64.compiled.nuspec
 
-& $root\NuGet\NuGet.exe pack $root\NuGet\$nugetid.compiled.nuspec
+& $root\NuGet\NuGet.exe pack $root\NuGet\$nugetid$addX64.compiled.nuspec
 
-$env:NuGetPackageName = "$nugetid.$versionStr.nupkg"
+$env:NuGetPackageName = "$nugetid$addX64.$versionStr.nupkg"
