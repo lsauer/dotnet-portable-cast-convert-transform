@@ -12,6 +12,11 @@
 
 ______________________________________________________
 
+### Changelog with the most recent changes
+
+{CHANGELOG_RLEASE}
+______________________________________________________
+
 ### Getting started in 4 steps
 
 1. *Install* with the &lt;a href="http://goo.gl/iekUWH" target="_blank"&gt;NuGet Package manager&lt;/a&gt;: `PM&gt; Install-Package Core.TypeCast`.  

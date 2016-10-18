@@ -31,6 +31,11 @@ $content = $content -replace '{version}',$versionStr
 if([System.IO.File]::Exists("$releaseNotesPath")){
 	$releaseNotes = [IO.File]::ReadAllText("$releaseNotesPath")
 	$content = $content -replace '{releaseNotes}', $releaseNotes
+
+	# append the last view changleog entries
+	cd $env:APPVEYOR_BUILD_FOLDER
+	$changeLog = git log HEAD~20..HEAD --graph --all --date=relative --no-color --pretty='format:%x09 %ad %d %s (%aN)' | Out-String
+	$content = $content -replace '{CHANGELOG_RLEASE}', $changeLog
 }
 
 $content | Out-File $root\NuGet\$nugetid$addX64.compiled.nuspec
