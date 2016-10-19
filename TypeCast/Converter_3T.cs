@@ -106,8 +106,6 @@ namespace Core.TypeCast
             {
                 this.FunctionInfo = methodInfo;
                 this.ConverterFunc = (Func<TIn, TOut>)methodInfo.CreateDelegate(typeof(Func<TIn, TOut>), null);
-                ;
-
             }
             else if(parameterCount == 2)
             {
