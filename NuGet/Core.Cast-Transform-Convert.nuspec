@@ -23,11 +23,11 @@
         <file src="..\LICENSE" target="about\Core-TypeCast\LICENSE" />
         <file src="..\README.md" target="about\Core-TypeCast-README.md" />
         <file src="..\VERSION" target="about\Core-TypeCast-VERSION" />
-        <file src="..\TypeCast\bin\Release\Core.TypeCast.dll" target="lib\portable-windows8+net45" />
-		<file src="..\TypeCast\bin\Release\Core.TypeCast.dll" target="lib\portable-net45+win+wp8+wpa81" />
-		<file src="..\TypeCast\bin\Release\Core.TypeCast.dll" target="lib\portable-net45+sl50+MonoAndroid10+MonoTouch10" />
-        <file src="..\TypeCast\bin\Release\Core.TypeCast.dll" target="lib\portable-windows8+net45" />
-		<file src="..\TypeCast\bin\Release\Core.TypeCast.dll" target="lib\portable-net45+win+wp8+wpa81" />
-		<file src="..\TypeCast\bin\Release\Core.TypeCast.dll" target="lib\portable-net45+sl50+MonoAndroid10+MonoTouch10" />
+        <file src="..\TypeCast\bin{buildPath}\Core.TypeCast.dll" target="lib\portable-windows8+net45" />
+		<file src="..\TypeCast\bin{buildPath}\Core.TypeCast.dll" target="lib\portable-net45+win+wp8+wpa81" />
+		<file src="..\TypeCast\bin{buildPath}\Core.TypeCast.dll" target="lib\portable-net45+sl50+MonoAndroid10+MonoTouch10" />
+        <file src="..\TypeCast\bin{buildPath}\Core.TypeCast.dll" target="lib\portable-windows8+net45" />
+		<file src="..\TypeCast\bin{buildPath}\Core.TypeCast.dll" target="lib\portable-net45+win+wp8+wpa81" />
+		<file src="..\TypeCast\bin{buildPath}\Core.TypeCast.dll" target="lib\portable-net45+sl50+MonoAndroid10+MonoTouch10" />
     </files>
 </package>
