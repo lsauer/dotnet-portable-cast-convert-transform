@@ -89,9 +89,9 @@ namespace Core.TypeCast
         public static bool MergeStandard(this Converter self, Converter converter)
         {
             // check that either converter has a Function and DefaultFunction set
-            if(self != null && self.Standard == true)
+            if (self != null && self.Standard == true)
             {
-                if((self.HasFunction == converter.HasFunction) && (self.HasDefaultFunction == converter.HasDefaultFunction))
+                if((self.HasFunction == converter.HasFunction) && (self.HasDefaultFunction == converter.HasDefaultFunction) && self.AllowDisambiguates == false)
                 {
                     throw new ConverterCollectionException(ConverterCollectionCause.ConverterExists, self.ToString());
                 }
@@ -200,6 +200,11 @@ namespace Core.TypeCast
             if(methodAttribute?.BaseType != null)
             {
                 self.BaseType = self.BaseType ?? methodAttribute.BaseType.GetTypeInfo();
+            }
+            // set attribute related properties
+            if (string.IsNullOrWhiteSpace(methodAttribute?.Name) == true)
+            {
+                self.AllowDisambiguates = true;
             }
         }
     }
