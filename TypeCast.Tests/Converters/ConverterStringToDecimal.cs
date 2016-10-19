@@ -8,32 +8,31 @@
 // <project>   https://github.com/lsauer/dotnet-portable-type-cast                      </project>
 namespace Core.TypeCast.Test
 {
+    using System.Globalization;
+
     using Core.TypeCast;
 
     /// <summary>
     /// This class demonstrates loading converters through the `Initialize` interface via explicit instancing of the `ConverterCollection`
     /// </summary>
+    [Converter]
     public class ConverterStringToDecimal
     {
         /// <summary>
         /// Parses an input string to a decimal value
         /// </summary>
         /// <param name="value">The string input value</param>
-        /// <param name="defaultValue">A default output decimal value if the conversion failed</param>
         /// <returns>Returns the converted decimal value</returns>
         [ConverterMethod]
-        public decimal StringToDecimal(string value, decimal defaultValue = 0M)
+        public decimal StringToDecimal(string value)
         {
             if (value != null)
             {
+                var nf = ConverterCollection.CurrentInstance.Settings.NumberFormat;
                 var s = value.Trim();
-                decimal n;
-                if (decimal.TryParse(s, out n))
-                {
-                    return n;
-                }
+                return decimal.Parse(s, nf);
             }
-            return defaultValue;
+            return default(decimal);
         }
 
         /// <summary>

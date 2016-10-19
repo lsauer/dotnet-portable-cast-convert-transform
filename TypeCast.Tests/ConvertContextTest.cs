@@ -14,7 +14,7 @@ namespace Core.TypeCast.Test
 
     using NUnit.Framework;
 
-    [Category(nameof(TypeCast))]
+    [Category(nameof(Core.TypeCast))]
     [TestFixture]
     [Converter(dependencyInjection: false, loadOnDemand: false, name: nameof(ConverterMethodAttributeTest),
          nameSpace: nameof(TypeCast))]

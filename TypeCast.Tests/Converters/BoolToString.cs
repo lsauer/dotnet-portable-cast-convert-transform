@@ -55,6 +55,8 @@ namespace Core.TypeCast.Test
         [ConverterMethod]
         public decimal Bool2StringWithContext(bool str, IConvertContext context)
         {
+            throw new CaptureDataException(context);
+
             return decimal.Parse(context.Value.ToString());
         }
 
@@ -67,6 +69,8 @@ namespace Core.TypeCast.Test
         [ConverterMethod]
         public string Bool2StringWithGeneric(bool str, object defval)
         {
+            throw new CaptureDataException(defval);
+
             return str.ToString() + ", Default: " + defval;
         }
 

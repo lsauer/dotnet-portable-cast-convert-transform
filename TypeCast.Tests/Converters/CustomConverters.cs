@@ -8,6 +8,8 @@
 // <project>   https://github.com/lsauer/dotnet-portable-type-cast                      </project>
 namespace Example1.Converters
 {
+    using System.Globalization;
+
     using Core.TypeCast;
 
     /// <summary>
@@ -43,9 +45,10 @@ namespace Example1.Converters
         {
             if (value != null)
             {
+                var nf = ConverterCollection.CurrentInstance.Settings.NumberFormat;
                 var s = value.Trim();
                 decimal n;
-                if (decimal.TryParse(s, out n))
+                if (decimal.TryParse(s, NumberStyles.Any, nf, out n))
                 {
                     return n;
                 }
