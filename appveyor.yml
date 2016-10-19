@@ -176,4 +176,5 @@ only_commits:
     - '**/*.csproj'
     - '**/*.config'
     - '**/*.sln'
+    - '**/*.ps1'
     - appveyor.yml
