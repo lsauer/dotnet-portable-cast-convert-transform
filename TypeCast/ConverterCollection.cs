@@ -13,6 +13,7 @@ namespace Core.TypeCast
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -59,7 +60,7 @@ namespace Core.TypeCast
         /// that require <see cref="Singleton{ConverterCollection}.CurrentInstance"/> </para>
         /// </summary>
         public ConverterCollection()
-            : this(application: null, numberFormatDefault: null, converterClasses: null)
+            : this(assemblyNameSpace: null, numberFormatDefault: null, converterClasses: null)
         {
         }
 
@@ -68,9 +69,9 @@ namespace Core.TypeCast
         /// <para>Instantiation with `new ConverterCollection(...)` must only be once and before any functions 
         /// that require <see cref="Singleton{ConverterCollection}.CurrentInstance"/> </para>
         /// </summary>
-        /// <param name="application">The <see cref="TypeInfo.BaseType"/> type which serves as the assembly entry point of the application e.g. `Program`</param>
-        public ConverterCollection(Type application)
-            : this(application: application, numberFormatDefault: null, converterClasses: null)
+        /// <param name="assemblyNameSpace">The <see cref="TypeInfo.BaseType"/> type which serves as the assembly entry point of the assemblyNameSpace e.g. `Program`</param>
+        public ConverterCollection(Type assemblyNameSpace)
+            : this(assemblyNameSpace: assemblyNameSpace, numberFormatDefault: null, converterClasses: null)
         {
         }
 
@@ -79,11 +80,11 @@ namespace Core.TypeCast
         /// <para>Instantiation with `new ConverterCollection(...)` must only be once and before any functions 
         /// that require <see cref="Singleton{ConverterCollection}.CurrentInstance"/> </para>
         /// </summary>
-        /// <param name="application">The <see cref="TypeInfo.BaseType"/> type which serves as the assembly entry point of the application e.g. `Program`</param>
+        /// <param name="assemblyNameSpace">The <see cref="TypeInfo.BaseType"/> type which serves as the assembly entry point of the assemblyNameSpace e.g. `Program`</param>
         /// <param name="converterClass">The type of a converter class to look for converters and load into the collection</param>
         /// <param name="numberFormatDefault">An optional <see cref="NumberFormatInfo"/> to provide to any added converters for formatting.</param>
-        public ConverterCollection(Type application, Type converterClass, NumberFormatInfo numberFormatDefault = null)
-            : this(application: application, numberFormatDefault: numberFormatDefault, converterClasses: converterClass)
+        public ConverterCollection(Type assemblyNameSpace, Type converterClass, NumberFormatInfo numberFormatDefault = null)
+            : this(assemblyNameSpace: assemblyNameSpace, numberFormatDefault: numberFormatDefault, converterClasses: converterClass)
         {
         }
 
@@ -95,7 +96,7 @@ namespace Core.TypeCast
         /// <param name="assembly">An assembly to look for <see cref="ConverterAttribute"/> to discover and load converters into the collection</param>
         /// <param name="numberFormatDefault">An optional <see cref="NumberFormatInfo"/> to provide to any added converters for formatting.</param>
         public ConverterCollection(Assembly assembly, NumberFormatInfo numberFormatDefault = null)
-            : this(application: null, numberFormatDefault: numberFormatDefault, converterClasses: null)
+            : this(assemblyNameSpace: null, numberFormatDefault: numberFormatDefault, converterClasses: null)
         {
             this.Initialize(assembly);
         }
@@ -103,10 +104,10 @@ namespace Core.TypeCast
         /// <summary>
         /// Initializes a new instance of the <see cref="ConverterCollection"/> class with default-parameters.
         /// </summary>
-        /// <param name="application">The <see cref="TypeInfo.BaseType"/> type which serves as the assembly entry point of the application e.g. `Program`</param>
+        /// <param name="assemblyNameSpace">The <see cref="TypeInfo.BaseType"/> type which serves as the assembly entry point of the assemblyNameSpace e.g. `Program`</param>
         /// <param name="converterClasses">The type of a converter class to look for converters and load into the collection  <see cref="Items"/></param>
-        public ConverterCollection(Type application = null, params Type[] converterClasses)
-            : this(application: application, numberFormatDefault: null, converterClasses: converterClasses)
+        public ConverterCollection(Type assemblyNameSpace = null, params Type[] converterClasses)
+            : this(assemblyNameSpace: assemblyNameSpace, numberFormatDefault: null, converterClasses: converterClasses)
         {
         }
 
@@ -127,10 +128,10 @@ namespace Core.TypeCast
         /// ```
         /// </code>
         /// </example>
-        /// <param name="application">The <see cref="TypeInfo.BaseType"/> type which serves as the assembly entry point of the application e.g. `Program`</param>
+        /// <param name="assemblyNameSpace">The <see cref="TypeInfo.BaseType"/> type which serves as the assembly entry point of the assemblyNameSpace e.g. `Program`</param>
         /// <param name="numberFormatDefault">An optional <see cref="NumberFormatInfo"/> to provide to any added converters for formatting.</param>
         /// <param name="converterClasses">The types of a converter classes to encapsulate in <see cref="Converter"/> instances and add into the collection <see cref="Items"/></param>
-        public ConverterCollection(Type application = null, NumberFormatInfo numberFormatDefault = null, params Type[] converterClasses)
+        public ConverterCollection(Type assemblyNameSpace = null, NumberFormatInfo numberFormatDefault = null, params Type[] converterClasses)
         {
             this.Settings = new ConverterCollectionSettings();
             this.loadOnDemandConverters = new Dictionary<string, List<Type>>();
@@ -143,9 +144,9 @@ namespace Core.TypeCast
             this.ConstructorAddedClasses = new List<Type>();
             this.Items = new BlockingCollection<Converter>(boundedCapacity: this.Settings.BoundedCapacity);
 
-            if (application != null)
+            if (assemblyNameSpace != null)
             {
-                ApplicationNameSpace = application.Namespace;
+                ApplicationNameSpace = assemblyNameSpace.Namespace;
                 this.Initialize(ApplicationNameSpace);
             }
 
