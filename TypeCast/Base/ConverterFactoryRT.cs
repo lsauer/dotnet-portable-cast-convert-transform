@@ -70,14 +70,15 @@ namespace Core.TypeCast.Base
             // create either a Converter_T2 or Converter_T3 container
             if(parameterInfos.Length == 2 || isInstanceMethod == true)
             {
-                converter = Instantiate<Converter>(typeof(Converter<,,>), parameters: parameterTypes.ToArray(), args: new[] { converterDelegate ?? methodInfo, parameterTypes.Arg });
+                var parameterType = parameterInfos.Length == 1 && isInstanceMethod ? typeof(object) : parameterTypes.Arg;
+                converter = Instantiate<Core.TypeCast.Base.Converter>(typeof(Core.TypeCast.Converter<,,>), parameters: parameterTypes.ToArray(), args: new[] { converterDelegate ?? methodInfo, parameterType });
 
                 converter.FunctionDefaultAttribute = methodAttribute;
                 converter.FunctionAttribute = methodAttribute;
             }
             else if(parameterInfos.Length == 1)
             {
-                converter = Instantiate<Converter>(typeof(Converter<,>), parameters: new[] { parameterTypes.In, parameterTypes.Out }, args: converterDelegate);
+                converter = Instantiate<Core.TypeCast.Base.Converter>(typeof(Core.TypeCast.Converter<,>), parameters: new[] { parameterTypes.In, parameterTypes.Out }, args: converterDelegate);
                 converter.FunctionAttribute = methodAttribute;
             }
             else

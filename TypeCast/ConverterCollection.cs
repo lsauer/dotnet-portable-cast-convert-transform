@@ -648,14 +648,21 @@ namespace Core.TypeCast
                 {
                     allowDisambiguates = true;
                 }
-
-                converter.AllowDisambiguates = allowDisambiguates;
                 // if there is already a standard converter try to merge them. The condition is that the converter argument type match or is not used
-                if (allowDisambiguates == false && converter.Standard)
+                if (converter.Standard)
                 {
-                    var converterLookup = this.Get(typeFrom: converter.From, typeTo: converter.To, typeArgument: typeof(object).GetTypeInfo(), loadOnDemand: false, isStandard: true);
                     try
                     {
+                        Converter converterLookup = null;
+                        if (converter.Argument.AsType() == typeof(object))
+                        {
+                            converterLookup = this.Get(typeFrom: converter.From, typeTo: converter.To, typeArgument: converter.To, loadOnDemand: false, isStandard: true);
+                        }
+                        else
+                        {
+                            converterLookup = this.Get(typeFrom: converter.From, typeTo: converter.To, typeArgument: typeof(object).GetTypeInfo(), loadOnDemand: false, isStandard: true);
+                        }
+
                         if (converterLookup?.MergeStandard(converter) == true)
                         {
                             return this;
