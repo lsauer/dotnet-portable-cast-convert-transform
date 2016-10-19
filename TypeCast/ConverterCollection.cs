@@ -866,8 +866,16 @@ namespace Core.TypeCast
         /// </example>
         public void Initialize(string applicationNameSpace)
         {
-            var types = Assembly.Load(new AssemblyName(applicationNameSpace)).DefinedTypes;
-            this.Initialize(types);
+            try
+            {
+                var assembly = Assembly.Load(new AssemblyName(applicationNameSpace));
+                var types = assembly.DefinedTypes;
+                this.Initialize(types);
+            }
+            catch (FileNotFoundException exc)
+            {
+                throw new ConverterCollectionException(ConverterCollectionCause.AssemblyFileNotFound, exc, new AssemblyName(applicationNameSpace).FullName);
+            }
         }
 
         /// <summary>
