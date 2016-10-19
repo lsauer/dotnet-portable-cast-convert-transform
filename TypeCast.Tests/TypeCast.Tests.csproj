@@ -84,10 +84,6 @@
       <HintPath>..\packages\CSharp.Portable-Singleton.2.0.0.4\lib\Core.Singleton.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Core.TypeCast, Version=3.2.0.84, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Core.Cast-Transform-Convert.3.2.0.84\lib\portable-net45+sl50+MonoAndroid10+MonoTouch10\Core.TypeCast.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Moq, Version=4.5.21.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.5.21\lib\net45\Moq.dll</HintPath>
       <Private>True</Private>
@@ -108,9 +104,11 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ConvertNumberFormatInfoTest.cs" />
     <Compile Include="ConverterMethodAttributeTest.cs" />
     <Compile Include="ConverterAttributeTest.cs" />
     <Compile Include="ConvertContextTest.cs" />
+    <Compile Include="Exception\CaptureDataException.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="TransformTest.cs" />
     <Compile Include="ConvertToTest.cs" />
@@ -124,6 +122,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TypeCast\Core.TypeCast.csproj">
+      <Project>{c79492bc-d45c-469a-af8f-0952141b2369}</Project>
+      <Name>Core.TypeCast</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
