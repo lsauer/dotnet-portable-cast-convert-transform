@@ -104,10 +104,13 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Converters\Perimeter.cs" />
+    <Compile Include="Converters\StringToImage.cs" />
     <Compile Include="ConvertNumberFormatInfoTest.cs" />
     <Compile Include="ConverterMethodAttributeTest.cs" />
     <Compile Include="ConverterAttributeTest.cs" />
     <Compile Include="ConvertContextTest.cs" />
+    <Compile Include="CastToTest.cs" />
     <Compile Include="Exception\CaptureDataException.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="TransformTest.cs" />

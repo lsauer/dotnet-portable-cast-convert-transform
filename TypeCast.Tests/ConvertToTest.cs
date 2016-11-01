@@ -19,20 +19,6 @@ namespace Core.TypeCast.Test
     public class ConvertToTests
     {
         [Test(Description = "Initialize the tests")]
-        public void CastTo_Int_MinValue_Okay()
-        {
-            var s = int.MinValue.ToString(CultureInfo.InvariantCulture);
-            Assert.IsTrue(s.CastTo<int>() == int.MinValue);
-        }
-
-        [Test(Description = "Initialize the tests")]
-        public void CastTo_ObjectToUInt_Typed_Okay()
-        {
-            var s = 42.ToString(CultureInfo.InvariantCulture);
-            Assert.IsTrue(((object)s).CastTo<object, uint>() == 42);
-        }
-
-        [Test(Description = "Initialize the tests")]
         public void CanConvertTo_Decimal_WithDefault_Okay()
         {
             var s = 500.ToString(CultureInfo.InvariantCulture);
