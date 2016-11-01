@@ -7,7 +7,7 @@
 [![Join the chat at https://gitter.im/dotnet-portable-cast-convert-transform/Lobby](https://badges.gitter.im/dotnet-portable-cast-convert-transform/Lobby.svg)](https://gitter.im/dotnet-portable-cast-convert-transform/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ---
-**author** | <a href="http://stackexchange.com/users/485574/lo-sauer"><img src="http://stackexchange.com/users/flair/485574.png" width="208" height="58" alt="profile for Lo Sauer on Stack Exchange, a network of free, community-driven Q&amp;A sites" title="profile for Lo Sauer on Stack Exchange, a network of free, community-driven Q&amp;A sites" /></a>
+**author** | <a href="http://stackexchange.com/users/485574/lo-sauer"><img src="http://stackexchange.com/users/flair/485574.png?theme=clean" width="208" height="58" alt="profile for Lo Sauer on Stack Exchange, a network of free, community-driven Q&amp;A sites" title="profile for Lo Sauer on Stack Exchange, a network of free, community-driven Q&amp;A sites" /></a>
 :------------ | :------------- 
 **website** | <a href="https://github.com/lsauer/dotnet-portable-cast-convert-transform" target="_blank">https://github.com/lsauer/dotnet-portable-cast-convert-transform</a>
 **license** | <a href="http://lsauer.mit-license.org/" target="_blank">MIT license</a>   
