@@ -574,10 +574,10 @@ namespace Core.TypeCast
 
             if (baseType == null)
             {
-                baseType = ((Delegate)converterDelegate).Target.GetType().DeclaringType;
+                baseType = ((Delegate)converterDelegate)?.Target?.GetType()?.DeclaringType;
             }
 
-            var methodInfo = ((Delegate)converterDelegate).GetMethodInfo(); //type.GetDeclaredMethod("Invoke");
+            var methodInfo = ((Delegate)converterDelegate)?.GetMethodInfo(); //type.GetDeclaredMethod("Invoke");
             return this.Add(methodInfo: methodInfo, converterDelegate: converterDelegate, baseType: baseType, cancellationToken: cancellationToken);
         }
 
