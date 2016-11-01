@@ -104,6 +104,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ConverterCollectionAddBuilderTest .cs" />
     <Compile Include="ConverterCollectionTest.cs" />
     <Compile Include="Converters\Perimeter.cs" />
     <Compile Include="Converters\StringToImage.cs" />
