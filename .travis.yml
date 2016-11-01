@@ -6,7 +6,7 @@ install:
 script:
   - mono --version
   - xbuild /p:Configuration=Release ".NET Portable TypeCast.sln"
-  - mono ./packages/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe --full --dispose-runners --workers=1 ./TypeCast.Tests/bin/Release/Tests.dll
+  - mono ./packages/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe --full --workers=1 ./TypeCast.Tests/bin/Release/Tests.dll
 mono:
   - latest
   - 4.4.2

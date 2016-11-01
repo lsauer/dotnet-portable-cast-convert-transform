@@ -245,8 +245,7 @@ namespace Core.TypeCast.Test
             Assert.AreEqual(matrixConverter, matrixConverterRef);
         }
 
-
-        [Test(Description = "Check that the AddBuilder in a comprehensive scenario using various properties.")]
+        [Test(Description = "Check that the AllowDynamicType setting works.")]
         public void ConverterCollectionTest_Instantiate_TestDynamic_Evaluation()
         {
             ConverterCollection.CurrentInstance.Dispose();
@@ -266,6 +265,16 @@ namespace Core.TypeCast.Test
             size = point.ConvertTo<Point, Size>(new Rectangle(1, 1, 2, 2));
 
             Assert.AreEqual(default(Size), size);
+        }
+
+        [Test(Description = "Check that a converter using 3 different types can be added and queried.")]
+        public void ConverterCollectionTest_Instantiate_AddT3Converter_Query_CustomConverter()
+        {
+            ConverterCollection.CurrentInstance.Dispose();
+
+            Point point = new Point(100, 300);
+
+            Rectangle rectangle = new Rectangle(1, 1, 2, 2);
 
             // simple converter function involving three different data types
             Func<Point, Rectangle, Size> PointToSizeFromRectangle = (ap, br) =>
@@ -291,13 +300,35 @@ namespace Core.TypeCast.Test
             Assert.IsNotNull(converter);
 
             Assert.IsInstanceOf<Converter>(converter);
-
-            Size sizeNew = point.ConvertTo<Point, Size>(rectangle);
-
-            var sizeNewEqual = converter.Convert(point, rectangle);
-
-            Assert.AreEqual(sizeNew, sizeNewEqual);
         }
+
+        [Test(Description = "Check that a converter using 3 different types can be added and invoked.")]
+        public void ConverterCollectionTest_Instantiate_AddT3Converter_Convert()
+        {
+            ConverterCollection.CurrentInstance.Dispose();
+
+            Point point = new Point(100, 300);
+
+            Rectangle rectangle = new Rectangle(1, 1, 2, 2);
+
+            // simple converter function involving three different data types
+            Func<Point, Rectangle, Size> PointToSizeFromRectangle = (ap, br) =>
+            {
+                var rect2 = (Rectangle)br;
+                if (ap.X * ap.Y > rect2.X * rect2.Y)
+                {
+                    return new Size(ap.X, ap.Y);
+                }
+                return new Size(rect2.X, rect2.Y);
+            };
+
+            ConverterCollection.CurrentInstance.Add(PointToSizeFromRectangle);
+
+            var sizeNewEqual = point.ConvertTo<Point, Size>(rectangle);
+
+            Assert.AreEqual((Size)point, sizeNewEqual);
+        }
+
 
     }
 }
