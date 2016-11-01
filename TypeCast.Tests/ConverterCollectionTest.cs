@@ -255,8 +255,6 @@ namespace Core.TypeCast.Test
 
             Rectangle rectangle = new Rectangle(1, 1, 2, 2);
 
-            var cc = new ConverterCollection();
-
             // Demonstrate invocation without a converter function, yielding a default(T) value
             Size size = point.ConvertTo<Point, Size>(new Rectangle(1, 1, 2, 2));
 
@@ -279,6 +277,9 @@ namespace Core.TypeCast.Test
                 }
                 return new Size(rect2.X, rect2.Y);
             };
+
+            var cc = ConverterCollection.CurrentInstance;
+
             cc.Add(PointToSizeFromRectangle);
 
             Assert.IsTrue(cc.CanConvertFrom<Point>());
