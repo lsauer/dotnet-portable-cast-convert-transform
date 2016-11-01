@@ -253,6 +253,8 @@ namespace Core.TypeCast.Test
         [Test(Description = "Check that all converter methods in the class are loaded and are set to their expected values, respectively")]
         public void ConverterMethodAttributeTest_InitializeAndGetMethodAttributeFromThis()
         {
+            ConverterCollection.CurrentInstance.Dispose();
+
             var someNumber = 100.CastTo<string>();
             var cc = ConverterCollection.CurrentInstance;
 
